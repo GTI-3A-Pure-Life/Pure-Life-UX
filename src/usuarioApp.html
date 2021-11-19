@@ -57,14 +57,36 @@
             <div>
                 <img class="icono" src="recursos/editIcon.png" alt="Icono editar">
             </div>
-
+            
         </div>
 
         <h1>Estadísticas</h1>
         <h3>La calidad del aire respirada hoy es: <span id="calidadMediaHoyApp">Buena</span></h3>
 
-        <!-- Aquí irán las gráficas, pero de momento ponemos la foto -->
-        <img src="" alt="Gráficas aire">
+        <div class="myProgress">
+
+            <h4>CO</h4>
+            <progress class="myBarCO" id="barCO" max="100"></progress>
+            <div id="graficaCO">
+                <canvas id="myChart" width="400" height="100"></canvas>
+            </div>
+            <h4>O3</h4> 
+            <progress class="myBarO3" id="barO3" max="100"></progress>
+            <div id="graficaO3">
+                <h1>Grafica</h1>
+            </div>
+            <h4>NO2</h4> 
+            <progress class="myBarNO2" id="barNO2" max="100"></progress>
+            <div id="graficaNO2">
+                <h1>Grafica</h1>
+            </div>
+            <h4>SO3</h4> 
+            <progress class="myBarSO3" id="barSO3" max="100"></progress>
+            <div id="graficaSO3">
+                <h1>Grafica</h1>
+            </div>
+
+        </div>
 
         <div class="contenedorTarjetasCalidadAire">
 
@@ -103,5 +125,71 @@
     </footer>
 
     <script src="logica/sesion.js"></script>
+    <script src="logica/progressBar.js"></script>
+    <script src="logica/mvc-etadisticasCalidadDelAire.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.6.0/dist/chart.min.js"></script>
+
+    <script>
+        window.onload = function(){
+
+            VistaCalidadDelAire.preparar("barCO","barO3","barNO2","barSO3","graficaCO", "graficaO3", "graficaNO2", "graficaSO3");
+            ControladorVistaCalidadDelAire.iniciarLasBarras();
+
+            document.getElementById("barCO").addEventListener("click", function() {
+                ControladorVistaCalidadDelAire.vista.toggleGrafica("graficaCO");
+            });
+            document.getElementById("barO3").addEventListener("click", function() {
+                ControladorVistaCalidadDelAire.vista.toggleGrafica("graficaO3");
+            });
+            document.getElementById("barNO2").addEventListener("click", function() {
+                ControladorVistaCalidadDelAire.vista.toggleGrafica("graficaNO2");
+            });
+            document.getElementById("barSO3").addEventListener("click", function() {
+                ControladorVistaCalidadDelAire.vista.toggleGrafica("graficaSO3");
+            });
+        }
+    </script>
+
+<script>
+    const ctx = document.getElementById('myChart').getContext('2d');
+
+    const myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            datasets: [{
+                label: '# of Votes',
+                data: [12, 19, 3, 5, 2, 3],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 3,
+                tension: 0.2,
+                pointRadius: 0
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                },
+            }
+        }
+    });
+    </script>
+
 </body>
 </html>
