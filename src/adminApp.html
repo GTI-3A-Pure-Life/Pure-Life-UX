@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mi perfil de administrador</title>
+    <link rel="stylesheet" href="css/estilos.css" />
+
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+  </head>
+  <body>
+    <header class="header">
+      <a class="linkLogo" href="index.html"><img class="logo-header" src="recursos/LogoPureLife.svg" alt="Logo PureLife"/></a>
+      <div class="contenedorEnlaces">
+        <div class="contenedorDiv">
+          <nav class="nav">
+            <ul>
+              <li><a href="mapa.html">Mapa</a></li>
+              <li><a href="contacto.html">Contacta con nosotros</a></li>
+            </ul>
+          </nav>
+        </div>
+        <div class="contenedorBoton">
+          <button class="botonIniciarSecion" onclick="location.href = 'login.html'">
+            Iniciar sesión
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div>
+      <button>Descargar informe 1</button>
+      <button>Descargar informe 2</button>
+    </div>
+		<div class="container">
+            <h2>Número de filas</h2>
+                    <div class="form-group"> 	<!--		Show Numbers Of Rows 		-->
+                         <select class  ="form-control" name="state" id="maxRows">
+                             <option value="5000">Mostrar todas las filas</option>
+                             <option value="5">5</option>
+                             <option value="10">10</option>
+                             <option value="15">15</option>
+                             <option value="20">20</option>
+                             <option value="50">50</option>
+                             <option value="70">70</option>
+                             <option value="100">100</option>
+                            </select>
+                         
+                      </div>
+    
+    <table class="table table-striped table-class" id= "tblDatos">
+        <tr>
+            <th>Id</th>
+            <th>Datos</th>
+            <th>Datos</th>
+            <th>Datos</th>
+            <th>Datos</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Dato</td>
+            <td>Dato</td>
+            <td>Dato</td>
+            <td>Dato</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Dato</td>
+            <td>Dato</td>
+            <td>Dato</td>
+            <td>Dato</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Dato</td>
+            <td>Dato</td>
+            <td>Dato</td>
+            <td>Dato</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>Dato</td>
+            <td>Dato</td>
+            <td>Dato</td>
+            <td>Dato</td>
+        </tr>
+
+        <tr>
+            <td>5</td>
+            <td>Dato</td>
+            <td>Dato</td>
+            <td>Dato</td>
+            <td>Dato</td>
+        </tr>
+        <tr>
+            <td>6</td>
+            <td>Dato</td>
+            <td>Dato</td>
+            <td>Dato</td>
+            <td>Dato</td>
+        </tr>
+        <tr>
+            <td>7</td>
+            <td>Dato</td>
+            <td>Dato</td>
+            <td>Dato</td>
+            <td>Dato</td>
+        </tr>
+        <tr>
+            <td>8</td>
+            <td>Dato</td>
+            <td>Dato</td>
+            <td>Dato</td>
+            <td>Dato</td>
+        </tr>
+
+
+
+
+        <tr>
+            <td>1</td>
+            <td>Dato</td>
+            <td>Dato</td>
+            <td>Dato</td>
+            <td>Dato</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Dato</td>
+            <td>Dato</td>
+            <td>Dato</td>
+            <td>Dato</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Dato</td>
+            <td>Dato</td>
+            <td>Dato</td>
+            <td>Dato</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>Dato</td>
+            <td>Dato</td>
+            <td>Dato</td>
+            <td>Dato</td>
+        </tr>
+
+        <tr>
+            <td>5</td>
+            <td>Dato</td>
+            <td>Dato</td>
+            <td>Dato</td>
+            <td>Dato</td>
+        </tr>
+        <tr>
+            <td>6</td>
+            <td>Dato</td>
+            <td>Dato</td>
+            <td>Dato</td>
+            <td>Dato</td>
+        </tr>
+        <tr>
+            <td>7</td>
+            <td>Dato</td>
+            <td>Dato</td>
+            <td>Dato</td>
+            <td>Dato</td>
+        </tr>
+        <tr>
+            <td>8</td>
+            <td>Dato</td>
+            <td>Dato</td>
+            <td>Dato</td>
+            <td>Dato</td>
+        </tr>
+    </table>
+    
+    <!--		Start Pagination -->
+                <div class='pagination-container' >
+                    <nav>
+                      <ul class="pagination">
+                
+                <li data-page="prev" >
+                                         <span><span class="sr-only"> << </span></span>
+                                        </li>
+                       <!--	Here the JS Function Will Add the Rows -->
+            <li data-page="next" id="prev">
+                                           <span><span class="sr-only"> >> </span></span>
+                                        </li>
+                      </ul>
+                    </nav>
+                </div>
+    
+    </div>
+
+    <footer>
+      <a class="linkLogo" href="index.html"><img class="logo-header" src="recursos/LogoPureLife.svg" alt="Logo PureLife"/></a>
+      <div class="contenedorFooter">
+        <p class="nombreEmpresa"> PureLife &copy; 2021. Todos los derechos reservados</p>
+      </div>
+    </footer>
+
+    <script src="logica/tabla.js"></script>
+    <script src="logica/cookies.js"></script>
+  </body>
+</html>

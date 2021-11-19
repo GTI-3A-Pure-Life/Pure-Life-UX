@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PureLife</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+    <header class="header">
+        <a class="linkLogo" href="index.html"><img class="logo-header" src="recursos/LogoPureLife.svg" alt="Logo PureLife"/></a>
+        <div class="contenedorEnlaces">
+            <div class="contenedorDiv">
+                <nav class="nav">
+                    <ul>
+                        <li><a href="mapa.html">Mapa</a></li>
+                        <li><a href="contacto.html">Contacta con nosotros</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="contenedorBoton">
+                <button class="botonIniciarSecion" onclick="location.href = 'login.html'">Iniciar sesión</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="contenedorImagen">
+        <div class="contenidoMain">
+            <img class="logo-grande" src="recursos/WallpaperPureLifeBlanco.png" alt="Logo PureLife"/>
+            <h1 class="textoDeReclamo">Juntos por un aire más puro</h1>
+            <button class="botonVerMapas" onclick="location.href = 'mapa.html'">Ver mapa</button>
+        </div>
+    </main>
+
+    <img class="flechaHaciaAbajo" src="recursos/flecha.png" alt="Flecha hacia abajo">
+
+    <section class="contenedorDeExplicacion">
+        <p class="textoPrincipal">La aplicación Pure Life se encarga de recoger las medidas de diferentes gases 
+            contamines y nocivos para las personas, mientras el usuario se desplaza con transporte 
+            libre de emisiones, patinetes eléctricos y bicicletas. Nuestro sensor se instalará en la red 
+            de transporte publico mediante una carcasa que albergará al sensor, será posible 
+            instalar este sistema a la red existente de patinetes y bicicletas públicas. </p>
+            
+        <p class="textoPrincipal"> La aplicación
+            avisara al usuario en el caso de que este expuesto a altos niveles nocivos de gases. Con 
+            todos estos datos se construirán mapas que albergarán toda la información de la calidad 
+            del aire en la zona.</p>
+
+        <p class="textoPrincipal">Nuestro objetivo principal es que nuestro usuario sepa que respira en todo momento.</p>
+
+        <div class="contenedorTarjetasExplicacion">
+
+            <div class="contenedorTarjetas">
+                <img src="recursos/numero-uno.png" alt="Avatar" style="width:100%">
+                <div class="containerTarjeta">
+                    <h4><b>Paso 1</b></h4> 
+                    <p>Descarga la APP de la Google play.</p> 
+                  </div>
+            </div>
+            
+            <div class="contenedorTarjetas2">
+                <img src="recursos/numero-dos.png" alt="Avatar" style="width:100%">
+                <div class="containerTarjeta">
+                    <h4><b>Paso 2</b></h4> 
+                    <p>Encuentra un patinete o bicicleta PureLife en tu zona.</p> 
+                  </div>
+            </div>
+
+            <div class="contenedorTarjetas3">
+                <img src="recursos/numero-tres.png" alt="Avatar" style="width:100%">
+                <div class="containerTarjeta">
+                    <h4><b>Paso 3</b></h4> 
+                    <p>Escanea el codigo QR que encontraras en el patinete con tu APP PureLife.</p> 
+                  </div>
+            </div>
+
+            <div class="contenedorTarjetas">
+                <img src="recursos/numero-cuatro.png" alt="Avatar" style="width:100%">
+                <div class="containerTarjeta">
+                    <h4><b>Paso 3</b></h4> 
+                    <p>A disfrutar de un transporte libre de emisiones!</p> 
+                  </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="contenedorInicioDeSesion">
+        <div class="contenidoDeInicioDeSesion">  
+            <h1 class="tituloInicioSesion">Una cuenta libre de emisiones</h1>
+            <p class="subTituloInicioSesion">Con tu cuenta PureLife puedes consultar la calidad del aire que respiras.</p>
+    
+            <div>
+                <button class="botonIniciarSecion" onclick="location.href = 'login.html'">Iniciar sesión</button>
+                <a class="botonCrearCuenta" href="registrar.html">Crear una cuenta PureLife</a>
+            </div>
+        </div>
+    
+    </section>
+
+    <section>
+        <div>
+            <img src="" alt="Foto bici">
+            <img src="" alt="Foto patinete">
+        </div>
+        <div>
+            <img src="" alt="Foto caja sensor">
+            <p>Lorem</p>
+        </div>
+        <div>
+            <img src="" alt="Foto app móvil">
+            <div>
+                <img src="" alt="Foto que no sabemos aún">
+                <p>Lorem</p>
+                <button onclick="location.href = 'contacto.html'">Contacta con nosotros</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <a class="linkLogo" href="index.html"><img class="logo-header" src="recursos/LogoPureLife.svg" alt="Logo PureLife"/></a>
+        <div class="contenedorFooter">
+            <p class="nombreEmpresa">PureLife &copy; 2021. Todos los derechos reservados</p>
+        </div>
+    </footer>
+    
+    <script src="logica/cookies.js"></script>
+</body>
+</html>

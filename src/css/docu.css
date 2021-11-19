@@ -1,0 +1,147 @@
+/* 
+    *******************************************
+    *******************************************
+    *******************************************
+    *******************************************
+    IMPORTANTE LEER
+    *******************************************
+    *******************************************
+    *******************************************
+    *******************************************
+
+    Este archivo estaba ya con cosas, te las comento para que no te molesten, pero si necesitas algo lo puedas pillar. 
+    Lo que no necesites lo borras, incluido este comentario
+
+    Abajo del todo, en un comentario separado hay unas animaciones que pueden sernos útiles
+*/
+
+/*
+nav{
+    border-bottom: 1px solid black;
+    margin-bottom: 1rem;
+}
+nav ul{
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+}
+nav ul li{
+    margin: 1rem;
+
+}
+nav ul li.active button{
+    color: white;
+    background: black;
+}
+
+
+
+#contenedor-contenido-asignaturas{
+    display: none;
+}
+
+
+form  p{
+    display: none;
+    background: red;
+    color: white;
+    max-width: 150px;
+    border-radius: 15px;
+    padding: 0.2rem;
+}
+
+
+
+#error{
+    width: 100px;
+    height: 100px;
+    background: red;
+    display: none;
+}
+
+#carga{
+    width: 100px;
+    height: 100px;
+    background: blue;
+    display: none;
+}
+
+
+
+ul.lista-elementos{
+    list-style: none;
+    padding: 0;
+}
+
+ul.lista-elementos li{
+    margin: 0.5rem;
+    padding: 1rem;
+    background: white;
+    border-radius: 5px;
+    border: #333 1px solid;
+}
+
+#snackbar {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+    font-size: 17px;
+}
+
+#snackbarError{
+    background: #d93434;
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+    font-size: 17px;
+}
+#snackbar.show, #snackbarError.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+*/
+
+/*
+
+@-webkit-keyframes fadein {
+from {bottom: 0; opacity: 0;} 
+to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+from {bottom: 0; opacity: 0;}
+to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+from {bottom: 30px; opacity: 1;} 
+to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+from {bottom: 30px; opacity: 1;}
+to {bottom: 0; opacity: 0;}
+}
+*/
+
+
+
