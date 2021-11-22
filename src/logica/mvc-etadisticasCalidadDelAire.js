@@ -6,38 +6,50 @@
 //======================================================================================================
 var VistaCalidadDelAire = {
 
-    controlador:{},
-    idBarSO3:{},
-    idBarO3:{},
-    idBarNO2:{},
-    idBarSO3:{},
-    idGraficaCO:{},
-    idGraficaO3:{},
-    idGraficaNO2:{},
-    idGraficaSO3:{},
+    controlador: {},
 
-    preparar: function(barCO,barO3,barNO2,barSO3,graficaCO, graficaO3, graficaNO2, graficaSO3){
+    idBarSO3: {},
+    idBarO3: {},
+    idBarNO2: {},
+    idBarSO3: {},
+
+    idGraficaCO: {},
+    idGraficaO3: {},
+    idGraficaNO2: {},
+    idGraficaSO3: {},
+    
+    idChartCO: {},
+    idChartO3: {},
+    idChartNO2: {},
+    idChartSO3: {},
+
+    preparar: function (barCO, barO3, barNO2, barSO3, graficaCO, graficaO3, graficaNO2, graficaSO3,chartCO,chartO3,chartNO2,chartSO3) {
 
         this.idBarCO = document.getElementById(barCO);
         this.idBarO3 = document.getElementById(barO3);
         this.idBarNO2 = document.getElementById(barNO2);
         this.idBarSO3 = document.getElementById(barSO3);
-        
+
         this.idGraficaCO = document.getElementById(graficaCO);
         this.idGraficaO3 = document.getElementById(graficaO3);
         this.idGraficaNO2 = document.getElementById(graficaNO2);
         this.idGraficaSO3 = document.getElementById(graficaSO3);
-        
+
+        this.idChartCO = document.getElementById(chartCO);
+        this.idChartO3 = document.getElementById(chartO3);
+        this.idChartNO2 = document.getElementById(chartNO2);
+        this.idChartSO3 = document.getElementById(chartSO3);
+
     },
 
-    ocultarGraficas: function(){
+    ocultarGraficas: function () {
         this.idGraficaCO.style.display = "none";
         this.idGraficaO3.style.display = "none";
         this.idGraficaNO2.style.display = "none";
         this.idGraficaSO3.style.display = "none";
-    }, 
+    },
 
-    toggleGrafica: function(idGrafica) {
+    toggleGrafica: function (idGrafica) {
         let grafica = document.getElementById(idGrafica);
 
         switch (grafica) {
@@ -69,11 +81,72 @@ var VistaCalidadDelAire = {
                     this.idGraficaSO3.style.display = "none";
                 }
                 break;
-            
+
             default:
                 break;
         }
-    }
+    },
+
+    // metodo representar graficas 4 arrays
+    representarGraficas: function(listaCo,listaO3,listaNO2,lisitaSO3){
+        this.cargarDatosEnGrafica(this.idChartCO,listaCo)
+        this.cargarDatosEnGrafica(this.idChartO3,listaO3)
+        this.cargarDatosEnGrafica(this.idChartNO2,listaNO2)
+        this.cargarDatosEnGrafica(this.idChartSO3,lisitaSO3)
+    },
+    // metodo idHtml grafic 
+
+    cargarDatosEnGrafica: function (idGrafica, datos) {
+        console.log("hola",idGrafica)
+        console.log("xddd");
+        let valores = new Array();
+        let tiempo = new Array();
+        datos.forEach(m => {
+            valores.push(m.valor)
+            tiempo.push(m.fechaHora)
+        });
+        console.log(valores);
+        console.log(tiempo);
+        const ctx = idGrafica.getContext('2d');
+
+        const myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: tiempo,
+                datasets: [{
+                    label: 'ug/m3',
+                    data: valores,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 3,
+                    tension: 0.2,
+                    pointRadius: 0
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    },
+                }
+            }
+        });
+    },
+
 
 }// vista
 
@@ -82,8 +155,8 @@ var ControladorVistaCalidadDelAire = {
     vista: VistaCalidadDelAire,
 
     // inicia las barras
-    iniciarLasBarras: function(){
-        
+    iniciarLasBarras: async function () {
+
         let elemCO = this.vista.idBarCO;
         elemCO.value = 100;
         let elemO3 = this.vista.idBarO3;
@@ -93,8 +166,68 @@ var ControladorVistaCalidadDelAire = {
         let elemSO3 = this.vista.idBarSO3;
         elemSO3.value = 20;
 
+        //=================================================================================================
+        // llamar a la logica
+        //=================================================================================================
+        let user = JSON.parse(localStorage.getItem("sesion"))
+        var date = new Date();
+        var strRes = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+        let fechaInicio = strRes + " 00:00:00";
+        let fechaFin = strRes + " 23:59:59";
+        let mediciones = await LogicaFalsa.obtenerMedicionesDeHastaPorUsuario(fechaInicio, fechaFin,user.id);
+        console.log(mediciones)
+        let medicionesCO = new Array();
+        let medicionesO3 = new Array();
+        let medicionesNO2 = new Array();
+        let medicionesSO2 = new Array();
+
+        for(let i = 0; i< mediciones.length; i++){
+            switch (mediciones[i].tipoGas) {
+                case 1:
+                        medicionesCO.push(mediciones[i]);
+                    break;
+                case 2:
+                        medicionesNO2.push(mediciones[i]);
+                    break;
+                case 3:
+                        medicionesSO2.push(mediciones[i]);
+                    break;
+                case 4:
+                        medicionesO3.push(mediciones[i]);
+                    break;
+                default:
+                    break;
+            }
+        }
+        medicionesCO = medicionesCO.sort(this.orednarPorFecha);
+        medicionesO3 = medicionesO3.sort(this.orednarPorFecha);
+        medicionesNO2 = medicionesNO2.sort(this.orednarPorFecha);
+        medicionesSO2 = medicionesSO2.sort(this.orednarPorFecha);
+        // en el callback recibes 1 array
+        // ese array dividirlo en 4 por tipo
+        // ordenar por fecha
+        // llamar a metodo de la vista que reciba esos 4 arrrays
         this.vista.ocultarGraficas();
+        this.vista.representarGraficas(medicionesCO,medicionesO3,medicionesNO2,medicionesSO2);
 
     },
+
+    ordenarPorFecha: function(medicion1,medicion2){
+
+        let fecha1 = new Date(medicion1.fechaHora);
+
+        let fecha2 = new Date(medicion2.fechaHora);
+
+        if (fecha1 > fecha2) {
+            return 1;
+          }
+          if (fecha1< fecha2) {
+            return -1;
+          }
+          // a must be equal to b
+          return 0;
+
+    }
+
 
 }// controlador 

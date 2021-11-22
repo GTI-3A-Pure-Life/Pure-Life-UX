@@ -109,6 +109,8 @@ nav ul li a:hover {
     flex-direction: column;
 }
 .contenedorTituloYBoton{
+    padding-left: 7rem;
+    padding-right: 7rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -124,6 +126,8 @@ nav ul li a:hover {
     border: none;
 }
 .contenedorDatosCuenta{
+    padding-left: 7rem;
+    padding-right: 7rem;
     padding-top: 2rem;
     padding-bottom: 2rem;
     display: flex;
@@ -142,6 +146,10 @@ nav ul li a:hover {
 .contenedorDirecciones{
     margin-left: 4rem;
 }
+.contendorTituloEstadisticas{
+    padding-left: 7rem;
+    padding-right: 7rem;
+}
 /*=========================================================================================*/
 /*icono*/
 /*=========================================================================================*/
@@ -154,6 +162,8 @@ nav ul li a:hover {
 /*=========================================================================================*/
 .myProgress {
     width: 100%;
+     padding-left: 7rem;
+    padding-right: 7rem;
 }
 .myBarCO{
     width: 100%;
