@@ -162,7 +162,8 @@ var ControladorVistaCalidadDelAire = {
 
         let user = JSON.parse(localStorage.getItem("sesion"))
         var date = new Date();
-        var strRes = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+        //var strRes = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+        var strRes = "2021-11-22";
         let fechaInicio = strRes + " 00:00:00";
         let fechaFin = strRes + " 23:59:59";
         let mediciones = await LogicaFalsa.obtenerMedicionesDeHastaPorUsuario(fechaInicio, fechaFin,user.id);
@@ -203,26 +204,26 @@ var ControladorVistaCalidadDelAire = {
         //===============================================================================================
 
         let calidadAireAQI = await LogicaFalsa.obtenerCalidadAirePorTiempoYUsuario(fechaInicio, fechaFin,user.id);
-        
+        console.log(calidadAireAQI);
         let elemCO = this.vista.idBarCO;
         elemCO.value = calidadAireAQI[0].valor;
         this.asignarColorBarras(elemCO, calidadAireAQI[0].valor);
+        let elemNO2 = this.vista.idBarNO2;
+        elemNO2.value = calidadAireAQI[1].valor;
+        this.asignarColorBarras(elemNO2, calidadAireAQI[1].valor);
+        let elemSO3 = this.vista.idBarSO3;
+        elemSO3.value = calidadAireAQI[2].valor;
+        this.asignarColorBarras(elemSO3, calidadAireAQI[2].valor);
         let elemO3 = this.vista.idBarO3;
         elemO3.value = calidadAireAQI[3].valor;
         this.asignarColorBarras(elemO3, calidadAireAQI[3].valor);
-        let elemNO2 = this.vista.idBarNO2;
-        elemNO2.value = calidadAireAQI[2].valor;
-        this.asignarColorBarras(elemNO2, calidadAireAQI[2].valor);
-        let elemSO3 = this.vista.idBarSO3;
-        elemSO3.value = calidadAireAQI[1].valor;
-        this.asignarColorBarras(elemSO3, calidadAireAQI[1].valor);
 
         let textosAQI = document.getElementsByClassName("myProgress")[0].getElementsByTagName("span");
 
         textosAQI[0].innerText = "AQI " + elemCO.value;
-        textosAQI[1].innerText = "AQI " + elemSO3.value;
+        textosAQI[1].innerText = "AQI " + elemO3.value;
         textosAQI[2].innerText = "AQI " + elemNO2.value;
-        textosAQI[3].innerText = "AQI " + elemO3.value;
+        textosAQI[3].innerText = "AQI " + elemSO3.value;
 
         //=================================================================================================
         // llamar a la logica obtenerMedicionesDeHastaPorUsuario
