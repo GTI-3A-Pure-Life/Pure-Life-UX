@@ -4,6 +4,8 @@
 // Rubén Pardo Casanova 29/09/2021
 // .....................................................................
 
+//const { report } = require("process");
+
 const IP_PUERTO="http://localhost:8080"
 
 LogicaFalsa = {
@@ -122,7 +124,9 @@ LogicaFalsa = {
         return respuesta;
         
     },
-
+//==============================================================================================================================
+//obtenerMedicionesDeHastaPorUsuario
+//==============================================================================================================================
     obtenerMedicionesDeHastaPorUsuario : async function(fechaInicio,fechaFin,idUsuario){
         let respuesta = await fetch(IP_PUERTO+"/mediciones/usuario?idUsuario="+idUsuario+"&fecha_inicio="+fechaInicio+"&fecha_fin="+fechaFin,{
                       headers : { 'User-Agent' : 'Ruben', 'Content-Type' : 'application/json' },
@@ -139,9 +143,49 @@ LogicaFalsa = {
         });
         return respuesta
     },
-    // .................................................................
-    // cerrar() -->
-    // .................................................................
+//==============================================================================================================================
+//obtenerCalidadAirePorTiempoYZona
+//==============================================================================================================================
+    obtenerCalidadAirePorTiempoYZona : async function(fechaInicio,fechaFin, latitud,longitud, radio) {
+
+        let respuesta = await fetch(IP_PUERTO+"/calidad_aire/zona?fecha_inicio="+fechaInicio+"&fecha_fin="+fechaFin+"&latitud="+latitud+"&longitud="+longitud+"&radio="+radio,{
+            headers : { 'User-Agent' : 'Ruben', 'Content-Type' : 'application/json' },
+        }).then(response =>{
+            if(response.status == 200) {
+                return response.json()
+            } else if (response.status == 204) {
+                return[];
+            }else if (response.status == 400) {
+                throw Error("Error en datos");
+            } else if (response.status == 500) {
+                throw Error("Error en servidor");
+            }
+        });
+            return respuesta
+    },
+//==============================================================================================================================
+//obtenerCalidadAirePorTiempoYUsuario
+//==============================================================================================================================
+obtenerCalidadAirePorTiempoYUsuario : async function(fechaInicio,fechaFin, idUsuario) {
+
+    let respuesta = await fetch(IP_PUERTO+"/calidad_aire/usuario?fecha_inicio="+fechaInicio+"&fecha_fin="+fechaFin+"&idUsuario="+idUsuario,{
+        headers : { 'User-Agent' : 'Ruben', 'Content-Type' : 'application/json' },
+    }).then(response =>{
+        if(response.status == 200) {
+            return response.json()
+        } else if (response.status == 204) {
+            return[];
+        }else if (response.status == 400) {
+            throw Error("Error en datos");
+        } else if (response.status == 500) {
+            throw Error("Error en servidor");
+        }
+    });
+        return respuesta
+},
+// .................................................................
+// cerrar() -->
+// .................................................................
     cerrar:function() {
         return new Promise( (resolver, rechazar) => {
         this.laConexion.close( (err)=>{

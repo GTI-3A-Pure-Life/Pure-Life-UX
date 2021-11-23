@@ -97,8 +97,6 @@ var VistaCalidadDelAire = {
     // metodo idHtml grafic 
 
     cargarDatosEnGrafica: function (idGrafica, datos) {
-        console.log("hola",idGrafica)
-        console.log("xddd");
         let valores = new Array();
         let tiempo = new Array();
         datos.forEach(m => {
@@ -157,17 +155,14 @@ var ControladorVistaCalidadDelAire = {
     // inicia las barras
     iniciarLasBarras: async function () {
 
-        let elemCO = this.vista.idBarCO;
-        elemCO.value = 100;
-        let elemO3 = this.vista.idBarO3;
-        elemO3.value = 50;
-        let elemNO2 = this.vista.idBarNO2;
-        elemNO2.value = 70;
-        let elemSO3 = this.vista.idBarSO3;
-        elemSO3.value = 20;
-
         //=================================================================================================
-        // llamar a la logica
+        // llamar a la logica obtenerMedicionesDeHastaPorUsuario
+        //=================================================================================================
+        let calidadAireTiempoZona = await LogicaFalsa.obtenerCalidadAirePorTiempoYZona("2021-11-23 00:00:00","2021-11-23 23:59:00","38.995591","-0.167129","18");
+
+    
+        //=================================================================================================
+        // llamar a la logica obtenerMedicionesDeHastaPorUsuario
         //=================================================================================================
         let user = JSON.parse(localStorage.getItem("sesion"))
         var date = new Date();
@@ -199,17 +194,48 @@ var ControladorVistaCalidadDelAire = {
                     break;
             }
         }
+
         medicionesCO = medicionesCO.sort(this.orednarPorFecha);
         medicionesO3 = medicionesO3.sort(this.orednarPorFecha);
         medicionesNO2 = medicionesNO2.sort(this.orednarPorFecha);
         medicionesSO2 = medicionesSO2.sort(this.orednarPorFecha);
-        // en el callback recibes 1 array
-        // ese array dividirlo en 4 por tipo
-        // ordenar por fecha
-        // llamar a metodo de la vista que reciba esos 4 arrrays
+
         this.vista.ocultarGraficas();
         this.vista.representarGraficas(medicionesCO,medicionesO3,medicionesNO2,medicionesSO2);
 
+        //===============================================================================================
+        //obtenerMedicionesDeHastaPorUsuario
+        //===============================================================================================
+        let calidadAireAQUI = await LogicaFalsa.obtenerCalidadAirePorTiempoYUsuario(fechaInicio, fechaFin,user.id);
+
+        console.log("Hola mira que bien me va sola",calidadAireAQUI)
+
+        
+        
+        let elemCO = this.vista.idBarCO;
+        elemCO.value = calidadAireAQUI[0].valor;
+        this.asignarColor(elemCO, calidadAireAQUI[0].valor);
+        let elemO3 = this.vista.idBarO3;
+        elemO3.value = calidadAireAQUI[3].valor;
+        this.asignarColor(elemO3, calidadAireAQUI[3].valor);
+        let elemNO2 = this.vista.idBarNO2;
+        elemNO2.value = calidadAireAQUI[2].valor;
+        this.asignarColor(elemNO2, calidadAireAQUI[2].valor);
+        let elemSO3 = this.vista.idBarSO3;
+        elemSO3.value = calidadAireAQUI[1].valor;
+        this.asignarColor(elemSO3, calidadAireAQUI[1].valor);
+
+    },
+    asignarColor(barra, valor) {
+        if(valor >= 0 && valor <= 50) {
+            barra.classList.add("verde");
+        } else if(valor > 50 && valor <= 150) {
+            barra.classList.add("amarillo");
+        } else if(valor > 150 && valor <= 200) {
+            barra.classList.add("rojo");
+        } else {
+            barra.classList.add("morado");
+        }
     },
 
     ordenarPorFecha: function(medicion1,medicion2){
