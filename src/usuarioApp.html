@@ -85,10 +85,10 @@
             <div id="graficaNO2">
                 <canvas id="chartNO2" width="400" height="100"></canvas>
             </div>
-            <h4>SO3 <span style="font-weight: normal;"></span></h4> 
-            <progress class="myBarSO3" id="barSO3" max="350"></progress>
-            <div id="graficaSO3">
-                <canvas id="chartSO3" width="400" height="100"></canvas>
+            <h4>SO2 <span style="font-weight: normal;"></span></h4> 
+            <progress class="myBarSO2" id="barSO2" max="350"></progress>
+            <div id="graficaSO2">
+                <canvas id="chartSO2" width="400" height="100"></canvas>
             </div>
 
         </div>
@@ -131,16 +131,16 @@
             <p class="nombreEmpresa">PureLife &copy; 2021. Todos los derechos reservados</p>
         </div>
     </footer>
-    <script src = "logica/LogicaFalsa.js"></script>
+    <script src ="logica/LogicaFalsa.js"></script>
     <script src="logica/sesion.js"></script>
     <script src="logica/progressBar.js"></script>
-    <script src="logica/mvc-etadisticasCalidadDelAire.js"></script>
+    <script src="logica/mvc-estadisticasCalidadDelAire.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.6.0/dist/chart.min.js"></script>
 
     <script>
         window.onload = function(){
 
-            VistaCalidadDelAire.preparar("barCO","barO3","barNO2","barSO3","graficaCO", "graficaO3", "graficaNO2", "graficaSO3","chartCO","chartO3","chartNO2","chartSO3");
+            VistaCalidadDelAire.preparar("barCO","barO3","barNO2","barSO2","graficaCO", "graficaO3", "graficaNO2", "graficaSO2","chartCO","chartO3","chartNO2","chartSO2");
             ControladorVistaCalidadDelAire.iniciarLasBarras();
 
             document.getElementById("barCO").addEventListener("click", function() {
@@ -152,8 +152,8 @@
             document.getElementById("barNO2").addEventListener("click", function() {
                 ControladorVistaCalidadDelAire.vista.toggleGrafica("graficaNO2");
             });
-            document.getElementById("barSO3").addEventListener("click", function() {
-                ControladorVistaCalidadDelAire.vista.toggleGrafica("graficaSO3");
+            document.getElementById("barSO2").addEventListener("click", function() {
+                ControladorVistaCalidadDelAire.vista.toggleGrafica("graficaSO2");
             });
         }
     </script>

@@ -8,39 +8,39 @@ var VistaCalidadDelAire = {
 
     controlador: {},
 
-    idBarSO3: {},
+    idBarSO2: {},
     idBarO3: {},
     idBarNO2: {},
-    idBarSO3: {},
+    idBarSO2: {},
 
     idGraficaCO: {},
     idGraficaO3: {},
     idGraficaNO2: {},
-    idGraficaSO3: {},
+    idGraficaSO2: {},
     
     idChartCO: {},
     idChartO3: {},
     idChartNO2: {},
-    idChartSO3: {},
+    idChartSO2: {},
 
-    preparar: function (barCO, barO3, barNO2, barSO3, 
-        graficaCO, graficaO3, graficaNO2, graficaSO3, 
-        chartCO, chartO3, chartNO2, chartSO3) {
+    preparar: function (barCO, barO3, barNO2, barSO2, 
+        graficaCO, graficaO3, graficaNO2, graficaSO2, 
+        chartCO, chartO3, chartNO2, chartSO2) {
 
         this.idBarCO = document.getElementById(barCO);
         this.idBarO3 = document.getElementById(barO3);
         this.idBarNO2 = document.getElementById(barNO2);
-        this.idBarSO3 = document.getElementById(barSO3);
+        this.idBarSO2 = document.getElementById(barSO2);
 
         this.idGraficaCO = document.getElementById(graficaCO);
         this.idGraficaO3 = document.getElementById(graficaO3);
         this.idGraficaNO2 = document.getElementById(graficaNO2);
-        this.idGraficaSO3 = document.getElementById(graficaSO3);
+        this.idGraficaSO2 = document.getElementById(graficaSO2);
 
         this.idChartCO = document.getElementById(chartCO);
         this.idChartO3 = document.getElementById(chartO3);
         this.idChartNO2 = document.getElementById(chartNO2);
-        this.idChartSO3 = document.getElementById(chartSO3);
+        this.idChartSO2 = document.getElementById(chartSO2);
 
     },
 
@@ -48,7 +48,7 @@ var VistaCalidadDelAire = {
         this.idGraficaCO.style.display = "none";
         this.idGraficaO3.style.display = "none";
         this.idGraficaNO2.style.display = "none";
-        this.idGraficaSO3.style.display = "none";
+        this.idGraficaSO2.style.display = "none";
     },
 
     toggleGrafica: function (idGrafica) {
@@ -76,11 +76,11 @@ var VistaCalidadDelAire = {
                     this.idGraficaNO2.style.display = "none";
                 }
                 break;
-            case this.idGraficaSO3:
-                if (this.idGraficaSO3.style.display == "none") {
-                    this.idGraficaSO3.style.display = "block";
+            case this.idGraficaSO2:
+                if (this.idGraficaSO2.style.display == "none") {
+                    this.idGraficaSO2.style.display = "block";
                 } else {
-                    this.idGraficaSO3.style.display = "none";
+                    this.idGraficaSO2.style.display = "none";
                 }
                 break;
 
@@ -90,11 +90,11 @@ var VistaCalidadDelAire = {
     },
 
     // metodo representar graficas 4 arrays
-    representarGraficas: function(listaCO,listaO3,listaNO2,listaSO3){
+    representarGraficas: function(listaCO,listaO3,listaNO2,listaSO2){
         this.cargarDatosEnGrafica(this.idChartCO,listaCO)
         this.cargarDatosEnGrafica(this.idChartO3,listaO3)
         this.cargarDatosEnGrafica(this.idChartNO2,listaNO2)
-        this.cargarDatosEnGrafica(this.idChartSO3,listaSO3)
+        this.cargarDatosEnGrafica(this.idChartSO2,listaSO2)
     },
     // metodo idHtml grafic 
 
@@ -167,7 +167,7 @@ var ControladorVistaCalidadDelAire = {
         let fechaFin = strRes + " 23:59:59";
         let mediciones = await LogicaFalsa.obtenerMedicionesDeHastaPorUsuario(fechaInicio, fechaFin,user.id);
         let medicionesCO = new Array();
-        let medicionesO3 = new Array();
+        let medicioneSO2 = new Array();
         let medicionesNO2 = new Array();
         let medicionesSO2 = new Array();
 
@@ -183,7 +183,7 @@ var ControladorVistaCalidadDelAire = {
                         medicionesSO2.push(mediciones[i]);
                     break;
                 case 4:
-                        medicionesO3.push(mediciones[i]);
+                        medicioneSO2.push(mediciones[i]);
                     break;
                 default:
                     break;
@@ -191,12 +191,12 @@ var ControladorVistaCalidadDelAire = {
         }
 
         medicionesCO = medicionesCO.sort(this.orednarPorFecha);
-        medicionesO3 = medicionesO3.sort(this.orednarPorFecha);
+        medicioneSO2 = medicioneSO2.sort(this.orednarPorFecha);
         medicionesNO2 = medicionesNO2.sort(this.orednarPorFecha);
         medicionesSO2 = medicionesSO2.sort(this.orednarPorFecha);
 
         this.vista.ocultarGraficas();
-        this.vista.representarGraficas(medicionesCO,medicionesO3,medicionesNO2,medicionesSO2);
+        this.vista.representarGraficas(medicionesCO,medicioneSO2,medicionesNO2,medicionesSO2);
 
         //===============================================================================================
         //obtenerCalidadAirePorTiempoYUsuario
@@ -210,9 +210,9 @@ var ControladorVistaCalidadDelAire = {
         let elemNO2 = this.vista.idBarNO2;
         elemNO2.value = calidadAireAQI[1].valor;
         this.asignarColorBarras(elemNO2, calidadAireAQI[1].valor);
-        let elemSO3 = this.vista.idBarSO3;
-        elemSO3.value = calidadAireAQI[2].valor;
-        this.asignarColorBarras(elemSO3, calidadAireAQI[2].valor);
+        let elemSO2 = this.vista.idBarSO2;
+        elemSO2.value = calidadAireAQI[2].valor;
+        this.asignarColorBarras(elemSO2, calidadAireAQI[2].valor);
         let elemO3 = this.vista.idBarO3;
         elemO3.value = calidadAireAQI[3].valor;
         this.asignarColorBarras(elemO3, calidadAireAQI[3].valor);
@@ -222,7 +222,7 @@ var ControladorVistaCalidadDelAire = {
         textosAQI[0].innerText = "AQI " + elemCO.value;
         textosAQI[1].innerText = "AQI " + elemO3.value;
         textosAQI[2].innerText = "AQI " + elemNO2.value;
-        textosAQI[3].innerText = "AQI " + elemSO3.value;
+        textosAQI[3].innerText = "AQI " + elemSO2.value;
 
         //=================================================================================================
         // llamar a la logica obtenerMedicionesDeHastaPorUsuario
