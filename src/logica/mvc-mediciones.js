@@ -208,7 +208,7 @@ var ControladorMediciones = {
 
         try{
 
-            this.mediciones = await LogicaFalsa.obtenerTodasMediciones();
+            this.mediciones = await LogicaFalsa.obtenerTodasMediciones("http://localhost:8080");
             
             this.vista.representarTodasLasMediciones(this.mediciones)
 

@@ -20,8 +20,8 @@ LogicaFalsa = {
      * 
      * @returns Una Lista<MedicionCO2> con todas las mediciones de la BD
      */
-    obtenerTodasMediciones : async function() {
-        let respuesta = await fetch(  IP_PUERTO+"/mediciones",{
+    obtenerTodasMediciones : async function(ipDestino) {
+        let respuesta = await fetch(  ipDestino+"/mediciones",{
                       headers : { 'User-Agent' : 'Ruben', 'Content-Type' : 'application/json' },
                      }).then(response=>{
 
