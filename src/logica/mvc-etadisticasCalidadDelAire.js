@@ -23,7 +23,9 @@ var VistaCalidadDelAire = {
     idChartNO2: {},
     idChartSO3: {},
 
-    preparar: function (barCO, barO3, barNO2, barSO3, graficaCO, graficaO3, graficaNO2, graficaSO3,chartCO,chartO3,chartNO2,chartSO3) {
+    preparar: function (barCO, barO3, barNO2, barSO3, 
+        graficaCO, graficaO3, graficaNO2, graficaSO3, 
+        chartCO, chartO3, chartNO2, chartSO3) {
 
         this.idBarCO = document.getElementById(barCO);
         this.idBarO3 = document.getElementById(barO3);
@@ -88,11 +90,11 @@ var VistaCalidadDelAire = {
     },
 
     // metodo representar graficas 4 arrays
-    representarGraficas: function(listaCo,listaO3,listaNO2,lisitaSO3){
-        this.cargarDatosEnGrafica(this.idChartCO,listaCo)
+    representarGraficas: function(listaCO,listaO3,listaNO2,listaSO3){
+        this.cargarDatosEnGrafica(this.idChartCO,listaCO)
         this.cargarDatosEnGrafica(this.idChartO3,listaO3)
         this.cargarDatosEnGrafica(this.idChartNO2,listaNO2)
-        this.cargarDatosEnGrafica(this.idChartSO3,lisitaSO3)
+        this.cargarDatosEnGrafica(this.idChartSO3,listaSO3)
     },
     // metodo idHtml grafic 
 
@@ -103,8 +105,7 @@ var VistaCalidadDelAire = {
             valores.push(m.valor)
             tiempo.push(m.fechaHora)
         });
-        console.log(valores);
-        console.log(tiempo);
+
         const ctx = idGrafica.getContext('2d');
 
         const myChart = new Chart(ctx, {
@@ -158,19 +159,13 @@ var ControladorVistaCalidadDelAire = {
         //=================================================================================================
         // llamar a la logica obtenerMedicionesDeHastaPorUsuario
         //=================================================================================================
-        let calidadAireTiempoZona = await LogicaFalsa.obtenerCalidadAirePorTiempoYZona("2021-11-23 00:00:00","2021-11-23 23:59:00","38.995591","-0.167129","18");
 
-    
-        //=================================================================================================
-        // llamar a la logica obtenerMedicionesDeHastaPorUsuario
-        //=================================================================================================
         let user = JSON.parse(localStorage.getItem("sesion"))
         var date = new Date();
         var strRes = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
         let fechaInicio = strRes + " 00:00:00";
         let fechaFin = strRes + " 23:59:59";
         let mediciones = await LogicaFalsa.obtenerMedicionesDeHastaPorUsuario(fechaInicio, fechaFin,user.id);
-        console.log(mediciones)
         let medicionesCO = new Array();
         let medicionesO3 = new Array();
         let medicionesNO2 = new Array();
@@ -204,29 +199,56 @@ var ControladorVistaCalidadDelAire = {
         this.vista.representarGraficas(medicionesCO,medicionesO3,medicionesNO2,medicionesSO2);
 
         //===============================================================================================
-        //obtenerMedicionesDeHastaPorUsuario
+        //obtenerCalidadAirePorTiempoYUsuario
         //===============================================================================================
-        let calidadAireAQUI = await LogicaFalsa.obtenerCalidadAirePorTiempoYUsuario(fechaInicio, fechaFin,user.id);
 
-        console.log("Hola mira que bien me va sola",calidadAireAQUI)
-
-        
+        let calidadAireAQI = await LogicaFalsa.obtenerCalidadAirePorTiempoYUsuario(fechaInicio, fechaFin,user.id);
         
         let elemCO = this.vista.idBarCO;
-        elemCO.value = calidadAireAQUI[0].valor;
-        this.asignarColor(elemCO, calidadAireAQUI[0].valor);
+        elemCO.value = calidadAireAQI[0].valor;
+        this.asignarColorBarras(elemCO, calidadAireAQI[0].valor);
         let elemO3 = this.vista.idBarO3;
-        elemO3.value = calidadAireAQUI[3].valor;
-        this.asignarColor(elemO3, calidadAireAQUI[3].valor);
+        elemO3.value = calidadAireAQI[3].valor;
+        this.asignarColorBarras(elemO3, calidadAireAQI[3].valor);
         let elemNO2 = this.vista.idBarNO2;
-        elemNO2.value = calidadAireAQUI[2].valor;
-        this.asignarColor(elemNO2, calidadAireAQUI[2].valor);
+        elemNO2.value = calidadAireAQI[2].valor;
+        this.asignarColorBarras(elemNO2, calidadAireAQI[2].valor);
         let elemSO3 = this.vista.idBarSO3;
-        elemSO3.value = calidadAireAQUI[1].valor;
-        this.asignarColor(elemSO3, calidadAireAQUI[1].valor);
+        elemSO3.value = calidadAireAQI[1].valor;
+        this.asignarColorBarras(elemSO3, calidadAireAQI[1].valor);
 
+        let textosAQI = document.getElementsByClassName("myProgress")[0].getElementsByTagName("span");
+
+        textosAQI[0].innerText = "AQI " + elemCO.value;
+        textosAQI[1].innerText = "AQI " + elemSO3.value;
+        textosAQI[2].innerText = "AQI " + elemNO2.value;
+        textosAQI[3].innerText = "AQI " + elemO3.value;
+
+        //=================================================================================================
+        // llamar a la logica obtenerMedicionesDeHastaPorUsuario
+        //=================================================================================================
+        let tarjetas = document.getElementsByClassName("contenedorTarjetas");
+        
+        if(user.posCasa != null) {
+        let calidadAireCasa = await LogicaFalsa.obtenerCalidadAirePorTiempoYZona(fechaInicio,fechaFin,user.posCasa.latitud,user.posCasa.longitud,"18");
+        this.asignarColorTarjetas(tarjetas[0], this.getMaximoAQI(calidadAireCasa))
+        }else{
+            tarjetas[0].getElementsByTagName("p")[0].innerText = "No tienes asignada la ubicación de tu casa";
+            tarjetas[0].getElementsByTagName("p")[1].style.display = "none";
+        }
+        if(user.posTrabajo   != null) {
+        let calidadAireTrabajo = await LogicaFalsa.obtenerCalidadAirePorTiempoYZona(fechaInicio,fechaFin,user.posTrabajo.latitud,user.posTrabajo.longitud,"18");
+        this.asignarColorTarjetas(tarjetas[1], this.getMaximoAQI(calidadAireTrabajo))
+        }else{
+            tarjetas[1].getElementsByTagName("p")[0].innerText = "No tienes asignada la ubicación de tu trabajo";
+            tarjetas[1].getElementsByTagName("p")[1].style.display = "none";
+        }
+        let calidadAireExterior = this.getMaximoAQI(calidadAireAQI);
+        this.asignarColorTarjetas(tarjetas[2], calidadAireExterior)
+        this.resumenCalidadAire(calidadAireExterior);
     },
-    asignarColor(barra, valor) {
+
+    asignarColorBarras: function(barra, valor) {
         if(valor >= 0 && valor <= 50) {
             barra.classList.add("verde");
         } else if(valor > 50 && valor <= 150) {
@@ -236,6 +258,46 @@ var ControladorVistaCalidadDelAire = {
         } else {
             barra.classList.add("morado");
         }
+    },
+
+    resumenCalidadAire: function(valor) {
+        let resumen = document.getElementById("calidadMediaHoyApp");
+        if(valor >= 0 && valor <= 50) {
+            resumen.innerText = "Buena"
+        } else if(valor > 50 && valor <= 150) {
+            resumen.innerText = " Moderada";
+        } else if(valor > 150 && valor <= 200) {
+            resumen.innerText = " Mala";
+        } else {
+            resumen.innerText = " Muy mala";
+        }
+    },
+
+    getMaximoAQI: function(lista) {
+        let maximo = 0;
+        lista.forEach( gas=> {
+            if(gas.valor > maximo) {
+                maximo = gas.valor;
+            }
+        });
+        return maximo;
+    },
+
+    asignarColorTarjetas: function(tarjeta, valor) {
+        if(valor >= 0 && valor <= 50) {
+            tarjeta.getElementsByTagName("img")[0].classList.add("fondoDeTarjetaVerde");
+            tarjeta.getElementsByTagName("p")[0].innerText += " Buena";
+        } else if(valor > 50 && valor <= 150) {
+            tarjeta.getElementsByTagName("img")[0].classList.add("fondoDeTarjetaAmarillo");
+            tarjeta.getElementsByTagName("p")[0].innerText += " Moderada";
+        } else if(valor > 150 && valor <= 200) {
+            tarjeta.getElementsByTagName("img")[0].classList.add("fondoDeTarjetaRojo");
+            tarjeta.getElementsByTagName("p")[0].innerText += " Mala";
+        } else {
+            tarjeta.getElementsByTagName("img")[0].classList.add("fondoDeTarjetaMorado");
+            tarjeta.getElementsByTagName("p")[0].innerText += " Muy mala";
+        }
+        tarjeta.getElementsByTagName("p")[1].innerText += " " + valor;
     },
 
     ordenarPorFecha: function(medicion1,medicion2){

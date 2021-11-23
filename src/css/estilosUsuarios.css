@@ -173,16 +173,16 @@ progress::-webkit-progress-value {
     background-color:#3ABB90; 
 
 }
-.amarillo {
-    color: sandybrown;
+.amarillo::-webkit-progress-value {
+    background-color: sandybrown;
 
 }
-.rojo {
-    color: tomato;
+.rojo::-webkit-progress-value {
+    background-color: tomato;
 
 }
-.morado {
-    color: purple;
+.morado::-webkit-progress-value {
+    background-color: purple;
 
 }
 
@@ -220,18 +220,17 @@ progress::-webkit-progress-bar {
 .contenedorTarjetas:hover {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
+.fondoDeTarjetaMorado{
+    background-color: purple;
+}
 .fondoDeTarjetaRojo{
     background-color: tomato;
-    width: 10rem;
 }
 .fondoDeTarjetaAmarillo{
     background-color: sandybrown;
-    width: 10rem;
 }
 .fondoDeTarjetaVerde{
     background-color: #3ABB90;
-    padding: 3rem;
-    width: 10rem;
 }
 /*=========================================================================================*/
 /*footer*/
