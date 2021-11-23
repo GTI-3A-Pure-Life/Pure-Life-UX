@@ -44,7 +44,7 @@ var ControladorMapas = {
     // inicia el mapa
     iniciarMapa: async function(){
 
-        this.vista.bloqueMapa = L.map(this.vista.idMapa).setView([39.0, -0.2], 13); 
+        this.vista.bloqueMapa = L.map(this.vista.idMapa).setView([38.995591, -0.167129], 13); 
 
         try{
 

@@ -88,33 +88,26 @@ var VistaMediciones = {
     // esconder los elementos y mostrar la lista de mediciones
     representarTodasLasMediciones: function(mediciones){
 
-        console.log("REPRESENTAR",mediciones);
+        console.log("REPRESENTAR",addressPoints.concat(this.controlador.toArray(mediciones)));
         //pintar los elementos por mediciones
         
         if(mediciones !=null){
-            //addressPoints = this.controlador.toArray(mediciones);
 
-            this.map = L.map('map').setView([31, 31], 10);
+            this.map = L.map('map').setView([38.995591, -0.167129], 12);
 
             var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
             }).addTo(this.map);
-        
             this.idw = L.idwLayer(addressPoints.concat(this.controlador.toArray(mediciones)),{
                     opacity: 0.5,
                     maxZoom: 18,
                     cellSize: 3,
                     exp: 3,
-                    max: 300 
+                    max: 400 
                 }).addTo(this.map);
 
             this.cargarDatos();
         }
-
-
-        //this.esconderTodosLosElementosObtenerMediciones();
-        //this.mostrarContenido(true);
-        
     },
 
       /**
@@ -247,12 +240,11 @@ var ControladorMediciones = {
 
     toArray: function(lista) {
         var arrayMediciones = [];
-        let calidadInventada = 0;
-        let sumaPos = 0
+
         for (let i = 0; i < lista.length; i++) {
             arrayMediciones[i] = new Array(3);
-            arrayMediciones[i][0] = lista[i].posMedicion.latitud;
-            arrayMediciones[i][1] = lista[i].posMedicion.longitud;
+            arrayMediciones[i][0] = lista[i].posMedicion.latitud + 0.0025*i;
+            arrayMediciones[i][1] = lista[i].posMedicion.longitud + 0.0025*i;
             arrayMediciones[i][2] = lista[i].valor;
             
         }
