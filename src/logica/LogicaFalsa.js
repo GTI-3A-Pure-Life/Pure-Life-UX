@@ -163,6 +163,25 @@ LogicaFalsa = {
         });
             return respuesta
     },
+
+
+    obetenerRegistros : async function() {
+
+        let respuesta = await fetch(IP_PUERTO+"/registro_estado_sensor",{
+            headers : { 'User-Agent' : 'Ruben', 'Content-Type' : 'application/json' },
+        }).then(response =>{
+            if(response.status == 200) {
+                return response.json();
+            } else if (response.status == 204) {
+                return[];
+            }else if (response.status == 400) {
+                throw Error("Error en datos");
+            } else if (response.status == 500) {
+                throw Error("Error en servidor");
+            }
+        });
+            return respuesta;
+    },
 //==============================================================================================================================
 //obtenerCalidadAirePorTiempoYUsuario
 //==============================================================================================================================

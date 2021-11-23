@@ -10,7 +10,8 @@
   </head>
   <body>
     <header class="header">
-      <a class="linkLogo" href="index.html"><img class="logo-header" src="recursos/LogoPureLife.svg" alt="Logo PureLife"/></a>
+      <a class="linkLogo" href="index.html"
+        ><img class="logo-header" src="recursos/LogoPureLife.svg" alt="Logo PureLife"/></a>
       <div class="contenedorEnlaces">
         <div class="contenedorDiv">
           <nav class="nav">
@@ -21,196 +22,86 @@
           </nav>
         </div>
         <div class="contenedorBoton">
-          <button class="botonIniciarSecion" onclick="location.href = 'login.html'">
-            Iniciar sesión
-          </button>
+          <button class="botonIniciarSecion" onclick="location.href = 'login.html'">Iniciar sesión</button>
         </div>
       </div>
     </header>
 
     <div class="contenedorMain">
-
       <div>
         <button class="botonPaginaAdmin">Descargar informe 1</button>
         <button class="botonPaginaAdmin">Descargar informe 2</button>
       </div>
-  
+
       <div class="container">
-              <h2>Número de filas</h2>
-                      <div class="form-group"> 	<!--		Show Numbers Of Rows 		-->
-                           <select class  ="form-control" name="state" id="maxRows">
-                               <option value="5000">Mostrar todas las filas</option>
-                               <option value="5">5</option>
-                               <option value="10">10</option>
-                               <option value="15">15</option>
-                               <option value="20">20</option>
-                               <option value="50">50</option>
-                               <option value="70">70</option>
-                               <option value="100">100</option>
-                              </select>
-                        </div>
+        <h2>Número de filas</h2>
+        <div class="form-group">
+          <!--		Show Numbers Of Rows 		-->
+          <select class="form-control" name="state" id="maxRows">
+            <option value="5000">Mostrar todas las filas</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="70">70</option>
+            <option value="100">100</option>
+          </select>
+        </div>
 
-      <div class="containerTabla">
+        <div class="containerTabla">
+          <table class="table table-striped table-class" id="tblDatos">
+            <tr>
+              <th>Sensor</th>
+              <th>Averiado</th>
+              <th>Poca batería</th>
+              <th>Descalibrado</th>
+              <th>Fecha</th>
+              <th>Leído</th>
+            </tr>
+          </table>
+        </div>
 
-        <table class="table table-striped table-class" id= "tblDatos">
-          
-          <tr>
-              <th>Id</th>
-              <th>Datos</th>
-              <th>Datos</th>
-              <th>Datos</th>
-              <th>Datos</th>
-          </tr>
-          <tr>
-              <td>1</td>
-              <td>Dato</td>
-              <td>Dato</td>
-              <td>Dato</td>
-              <td>Dato</td>
-          </tr>
-          <tr>
-              <td>2</td>
-              <td>Dato</td>
-              <td>Dato</td>
-              <td>Dato</td>
-              <td>Dato</td>
-          </tr>
-          <tr>
-              <td>3</td>
-              <td>Dato</td>
-              <td>Dato</td>
-              <td>Dato</td>
-              <td>Dato</td>
-          </tr>
-          <tr>
-              <td>4</td>
-              <td>Dato</td>
-              <td>Dato</td>
-              <td>Dato</td>
-              <td>Dato</td>
-          </tr>
-  
-          <tr>
-              <td>5</td>
-              <td>Dato</td>
-              <td>Dato</td>
-              <td>Dato</td>
-              <td>Dato</td>
-          </tr>
-          <tr>
-              <td>6</td>
-              <td>Dato</td>
-              <td>Dato</td>
-              <td>Dato</td>
-              <td>Dato</td>
-          </tr>
-          <tr>
-              <td>7</td>
-              <td>Dato</td>
-              <td>Dato</td>
-              <td>Dato</td>
-              <td>Dato</td>
-          </tr>
-          <tr>
-              <td>8</td>
-              <td>Dato</td>
-              <td>Dato</td>
-              <td>Dato</td>
-              <td>Dato</td>
-          </tr>
-  
-  
-  
-  
-          <tr>
-              <td>1</td>
-              <td>Dato</td>
-              <td>Dato</td>
-              <td>Dato</td>
-              <td>Dato</td>
-          </tr>
-          <tr>
-              <td>2</td>
-              <td>Dato</td>
-              <td>Dato</td>
-              <td>Dato</td>
-              <td>Dato</td>
-          </tr>
-          <tr>
-              <td>3</td>
-              <td>Dato</td>
-              <td>Dato</td>
-              <td>Dato</td>
-              <td>Dato</td>
-          </tr>
-          <tr>
-              <td>4</td>
-              <td>Dato</td>
-              <td>Dato</td>
-              <td>Dato</td>
-              <td>Dato</td>
-          </tr>
-  
-          <tr>
-              <td>5</td>
-              <td>Dato</td>
-              <td>Dato</td>
-              <td>Dato</td>
-              <td>Dato</td>
-          </tr>
-          <tr>
-              <td>6</td>
-              <td>Dato</td>
-              <td>Dato</td>
-              <td>Dato</td>
-              <td>Dato</td>
-          </tr>
-          <tr>
-              <td>7</td>
-              <td>Dato</td>
-              <td>Dato</td>
-              <td>Dato</td>
-              <td>Dato</td>
-          </tr>
-          <tr>
-              <td>8</td>
-              <td>Dato</td>
-              <td>Dato</td>
-              <td>Dato</td>
-              <td>Dato</td>
-          </tr>
-      </table>
-      </div>
-      
-      
-      <!--		Start Pagination -->
-                  <div class='pagination-container' >
-                      <nav>
-                        <ul class="pagination">
-                  
-                  <li data-page="prev" >
-                                           <span><span class="sr-only"> << </span></span>
-                                          </li>
-                         <!--	Here the JS Function Will Add the Rows -->
+        <!--		Start Pagination -->
+        <div class="pagination-container">
+          <nav>
+            <ul class="pagination">
+              <li data-page="prev">
+                <span><span class="sr-only"> << </span></span>
+              </li>
+              <!--	Here the JS Function Will Add the Rows -->
               <li data-page="next" id="prev">
-                                             <span><span class="sr-only"> >> </span></span>
-                                          </li>
-                        </ul>
-                      </nav>
-                  </div>
-      
+                <span><span class="sr-only"> >> </span></span>
+              </li>
+            </ul>
+          </nav>
+        </div>
       </div>
-
     </div>
 
     <footer>
-      <a class="linkLogo" href="index.html"><img class="logo-header" src="recursos/LogoPureLife.svg" alt="Logo PureLife"/></a>
+      <a class="linkLogo" href="index.html"
+        ><img
+          class="logo-header"
+          src="recursos/LogoPureLife.svg"
+          alt="Logo PureLife"
+      /></a>
       <div class="contenedorFooter">
-        <p class="nombreEmpresa"> PureLife &copy; 2021. Todos los derechos reservados</p>
+        <p class="nombreEmpresa">
+          PureLife &copy; 2021. Todos los derechos reservados
+        </p>
       </div>
     </footer>
 
-    <script src="logica/tabla.js"></script>
+    <script src="logica/LogicaFalsa.js"></script>
+    <script src="logica/paginacion.js"></script>
+    <script src="logica/mvc-tabla.js"></script>
     <script src="logica/cookies.js"></script>
+
+    <script>
+      window.onload = function () {
+        ControladorTabla.iniciarTabla();
+      }
+    </script>
   </body>
 </html>
