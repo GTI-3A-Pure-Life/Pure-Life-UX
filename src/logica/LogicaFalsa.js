@@ -37,7 +37,7 @@ LogicaFalsa = {
                          
                         
                      }).then(medicionesJSON=>{
-                        return medicionesJSON.datos;
+                        return medicionesJSON;
                      })
                     
         return respuesta;
