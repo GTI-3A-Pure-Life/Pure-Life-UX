@@ -162,8 +162,7 @@ var ControladorVistaCalidadDelAire = {
 
         let user = JSON.parse(localStorage.getItem("sesion"))
         var date = new Date();
-        //var strRes = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
-        var strRes = "2021-11-22";
+        var strRes = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
         let fechaInicio = strRes + " 00:00:00";
         let fechaFin = strRes + " 23:59:59";
         let mediciones = await LogicaFalsa.obtenerMedicionesDeHastaPorUsuario(fechaInicio, fechaFin,user.id);
