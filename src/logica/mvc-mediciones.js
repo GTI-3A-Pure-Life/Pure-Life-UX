@@ -202,13 +202,13 @@ var ControladorMediciones = {
 
 
     // inicia la obtencion de todas las mediciones 
-    iniciarTodasObtenerMediciones: async function(){
+    iniciarTodasObtenerMediciones: async function(ipPuerto){
         //this.vista.mostrarCargarObtenerMediciones();
         this.vista.controlador = this;
 
         try{
 
-            this.mediciones = await LogicaFalsa.obtenerTodasMediciones("http://localhost:8080");
+            this.mediciones = await LogicaFalsa.obtenerTodasMediciones(ipPuerto);
             
             this.vista.representarTodasLasMediciones(this.mediciones)
 
