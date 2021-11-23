@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>  
+<head>
+    <title>GridLayer Test</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.css"/>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+        html, body, #map {
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+
+<link rel="stylesheet" href="css/estilosMapa.css">
+<link rel="stylesheet" href="css/carga.css">
+</head>
+<body>
+    <div id="loader"></div>
+    <div id="map"></div>
+
+    <div class="contenedorDeGases">
+        <h4 class="tituloDeContenedorDeGases">Tipo de gas</h4>
+        <button class="botonDeGases botonInactivo" value="1" onclick="ControladorMediciones.filtrarPorGas(value)">CO</button>
+        <button class="botonDeGases botonInactivo" value="2" onclick="ControladorMediciones.filtrarPorGas(value)">NO2 </button>
+        <button class="botonDeGases botonInactivo" value="3" onclick="ControladorMediciones.filtrarPorGas(value)">SO2 </button>
+        <button class="botonDeGases botonInactivo" value="4" onclick="ControladorMediciones.filtrarPorGas(value)">O3 </button>
+    </div>
+</body>
+    <script src="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.js"> </script>
+    <script src="logica/leaflet-idw.js"></script>
+    <script src="logica/LogicaFalsa.js"></script>
+    <script src="logica/mvc-mediciones.js"></script>
+
+    <script>
+        window.onload = function() {
+                ControladorMediciones.iniciarTodasObtenerMediciones.call(ControladorMediciones);
+        }
+    </script>
+</html>

@@ -4,6 +4,33 @@
 // .....................................................................
 
 
+
+var addressPoints = [
+    [-37.8839, 175.3745188667, 300],
+    [-37.8869090667, 175.3657417333, 250],
+    [-37.8894207167, 175.4015351167, 200],
+    [-37.8927369333, 175.4087452333, 150],
+    [-37.90585105, 175.4453463833, 100],
+    [-37.9064188833, 175.4441556833, 50],
+    [-37.90584715, 175.4463564333, 0],
+    [-37.9022371333, 175.47991035, 10],
+    [-37.9020014833, 175.4799581667, 1],
+    [-37.9020824, 175.4802630167, 2],
+    [-37.9018589833, 175.4804760833, 3],
+    [-37.9018211333, 175.4806769667, 4],
+    [-37.9021543667, 175.4805538833, 5],
+    [-37.9022658, 175.4807579333, 6],
+    [-37.9024517833, 175.4806480667, 7],
+    [-37.9024251167, 175.48041985, 8],
+    [-37.9023317833, 175.4802119667, 9],
+    [-37.9321212167, 175.4555088, 39],
+    [-37.8956185167, 175.4719458667, 4],
+    [-37.8954566, 175.4728120333, 20],
+    [-37.8957231833, 175.4727906, 22],
+    [-37.8956085833, 175.4726702, 22],
+    [-37.8956460167, 175.4718485167, 300],
+    ]
+
 var VistaMediciones = {
 
     controlador:{},
@@ -15,7 +42,9 @@ var VistaMediciones = {
 
     formularioUltimasMediciones:{},
     errorFormCuantas:{},
-
+    map:{},
+    idw:{},
+    loader: {},
     
 
     // funcion que recibe los id de elementos html para controlarlos
@@ -62,21 +91,29 @@ var VistaMediciones = {
         console.log("REPRESENTAR",mediciones);
         //pintar los elementos por mediciones
         
-        this.bloqueTabla.innerHTML ="";
         if(mediciones !=null){
-            for(let i = 0; i<mediciones.length;i++){
-                
-                let li = document.createElement("li")
-                li.innerHTML = `${mediciones[i].sensor_id} | ${mediciones[i].usuario_id} | ${mediciones[i].medicion_valor} | ${this.formatearFecha(mediciones[i].medicion_fecha)} `
-    
-                this.bloqueTabla.append(li)
-            }
-            
+            //addressPoints = this.controlador.toArray(mediciones);
+
+            this.map = L.map('map').setView([31, 31], 10);
+
+            var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+            }).addTo(this.map);
+        
+            this.idw = L.idwLayer(addressPoints.concat(this.controlador.toArray(mediciones)),{
+                    opacity: 0.5,
+                    maxZoom: 18,
+                    cellSize: 3,
+                    exp: 3,
+                    max: 300 
+                }).addTo(this.map);
+
+            this.cargarDatos();
         }
 
 
-        this.esconderTodosLosElementosObtenerMediciones();
-        this.mostrarContenido(true);
+        //this.esconderTodosLosElementosObtenerMediciones();
+        //this.mostrarContenido(true);
         
     },
 
@@ -137,6 +174,31 @@ var VistaMediciones = {
         setTimeout(()=>{ this.snackBarError.classList.remove("show"); }, 3000);
     },
 
+    pintarMapa: function (mediciones) {
+
+        this.map.removeLayer(this.idw);
+        let puntos = addressPoints.concat(mediciones);
+        console.log(puntos);
+    
+        this.idw = L.idwLayer(puntos,{
+                opacity: 0.5,
+                maxZoom: 18,
+                cellSize: 3,
+                exp: 3,
+                max: 300 
+            }).addTo(this.map);
+        setTimeout(() => {this.cargarDatos()},  500);
+    },
+
+    iniciarLoader: function () {
+        document.getElementById("loader").style.display = "block";
+        document.getElementById("map").style.display = "none";
+    },
+    cargarDatos: function() {
+        document.getElementById("loader").style.display = "none";
+        document.getElementById("map").style.display = "block";
+    }
+
 
 }// vista
 
@@ -148,7 +210,7 @@ var ControladorMediciones = {
 
     // inicia la obtencion de todas las mediciones 
     iniciarTodasObtenerMediciones: async function(){
-        this.vista.mostrarCargarObtenerMediciones();
+        //this.vista.mostrarCargarObtenerMediciones();
         this.vista.controlador = this;
 
         try{
@@ -159,12 +221,9 @@ var ControladorMediciones = {
 
        }catch(e){
             console.error(e);
-            this.vista.representarError(e);
+            //this.vista.representarError(e);
         
        }
-
-
-
     },
 
      // inicia la obtencion de todas las mediciones 
@@ -176,7 +235,6 @@ var ControladorMediciones = {
             try{
 
                 this.mediciones = await LogicaFalsa.obtenerUltimasMediciones(this.vista.formularioUltimasMediciones.cuantas.value);
-                
                 this.vista.representarTodasLasMediciones(this.mediciones)
 
             }catch(e){
@@ -185,12 +243,51 @@ var ControladorMediciones = {
                 
             }
         }
-
-
-
     },
 
+    toArray: function(lista) {
+        var arrayMediciones = [];
+        let calidadInventada = 0;
+        let sumaPos = 0
+        for (let i = 0; i < lista.length; i++) {
+            arrayMediciones[i] = new Array(3);
+            arrayMediciones[i][0] = lista[i].posMedicion.latitud;
+            arrayMediciones[i][1] = lista[i].posMedicion.longitud;
+            arrayMediciones[i][2] = lista[i].valor;
+            
+        }
 
+        return arrayMediciones;
+    },
 
+    filtrarPorGas: function(tipoGas) {
+        this.vista.iniciarLoader()
 
+        let botones = document.getElementsByClassName("botonDeGases");
+        let arrayMediciones = new Array();
+        for (let i = 0; i < botones.length; i++) {
+            if(botones[i].value == tipoGas && botones[i].classList.contains("botonInactivo")) {
+                botones[i].classList.remove("botonInactivo")
+                botones[i].classList.add("botonActivo")
+            }
+            else {
+                botones[i].classList.add("botonInactivo")
+                botones[i].classList.remove("botonActivo")
+            }
+
+            if (botones[i].classList.contains("botonActivo")) {
+                this.mediciones.forEach(medicion => {
+                    if(medicion.tipoGas == tipoGas) {
+                        console.log(medicion.tipoGas);
+                        let datos = new Array(3);
+                        datos[0] = medicion.posMedicion.latitud;
+                        datos[1] = medicion.posMedicion.longitud;
+                        datos[2] = medicion.valor;
+                        arrayMediciones.push(datos);
+                    }
+                });
+            }
+        }
+        this.vista.pintarMapa(arrayMediciones);
+    }
 }// controlador 
