@@ -124,6 +124,28 @@ LogicaFalsa = {
         return respuesta;
         
     },
+
+    //==============================================================================================================================
+    //actualizar_leido
+    // @author Florescu, Lorena-Ioana
+    // @version 24/11/2021
+    //==============================================================================================================================
+
+    actualizar_leido : async function (id) {
+        let respuesta = await fetch(IP_PUERTO+"/registro_estado_sensor/leido",  {
+            method: "PUT",
+            headers : { 'User-Agent' : 'Ruben', 'Content-Type' : 'application/json' },
+            body : JSON.stringify({res:{id:id}})
+        }).then(response => {
+            if(response.status == 200) {
+                return response.json();
+            } else if (response.status == 500) {
+                throw Error("Error en servidor");
+            }
+        });
+        return respuesta;
+        
+    },
 //==============================================================================================================================
 //obtenerMedicionesDeHastaPorUsuario
 //==============================================================================================================================
@@ -165,7 +187,7 @@ LogicaFalsa = {
     },
 
 
-    obetenerRegistros : async function() {
+    obtenerRegistros : async function() {
 
         let respuesta = await fetch(IP_PUERTO+"/registro_estado_sensor",{
             headers : { 'User-Agent' : 'Ruben', 'Content-Type' : 'application/json' },
