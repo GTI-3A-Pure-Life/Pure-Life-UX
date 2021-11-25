@@ -29,8 +29,7 @@
 
     <div class="contenedorMain">
       <div>
-        <button class="botonPaginaAdmin">Descargar informe 1</button>
-        <button class="botonPaginaAdmin">Descargar informe 2</button>
+        <button class="botonPaginaAdmin" onclick="createPDF()">Descargar informe</button>
       </div>
 
       <div class="container">
@@ -95,6 +94,8 @@
       window.onload = function () {
         ControladorTabla.iniciarTabla();
       }
+
+      
     </script>
   </body>
 </html>

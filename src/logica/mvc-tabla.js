@@ -68,3 +68,45 @@ var ControladorTabla = {
     }
 }
 
+function createPDF() {
+    var tabla = document.getElementById('tblDatos');
+    let tablaM ="<table><tbody>";
+
+      for (let i = 0; i < tabla.rows.length; i++) {
+        tablaM += "<tr>";
+          for (let j = 0; j < tabla.rows[i].cells.length; j++) {
+            let texto = ""
+            texto = tabla.rows[i].cells[j].innerText
+            if(i == 0 && !texto.includes("Leído")) {
+              console.log(texto);
+              tablaM += "<th>" + tabla.rows[i].cells[j].innerHTML + "</th>"
+
+            } else if (!texto.includes("Marcar como leído") && !texto.includes("Leído")) {
+              tablaM += "<td>" + tabla.rows[i].cells[j].innerHTML + "</td>"
+              
+            }              
+          }
+      tablaM += "</tr>";
+      }
+      tablaM += "</tbody></table>";
+
+    var style = "<style>";
+    style = style + "table {width: 100%;font: 17px Calibri;}";
+    style = style + "table, th, td {border: solid 1px #DDD; border-collapse: collapse;";
+    style = style + "padding: 2px 3px;text-align: center;}";
+    style = style + "</style>";
+
+    // CREATE A WINDOW OBJECT.
+    var win = window.open('', '', 'height=700,width=700');
+
+    win.document.write('<html><head>');
+    win.document.write(style);          // ADD STYLE INSIDE THE HEAD TAG.
+    win.document.write('</head><body>');
+    win.document.write('<h1>Sensores averiados y descalibrados</h1>');
+    win.document.write(tablaM);       // THE TABLE CONTENTS INSIDE THE BODY TAG.
+    win.document.write('</body></html>');
+
+    win.document.close(); 	// CLOSE THE CURRENT WINDOW.
+
+    win.print();    // PRINT THE CONTENTS.
+}
