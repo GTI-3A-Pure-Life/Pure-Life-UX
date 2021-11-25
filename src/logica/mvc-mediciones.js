@@ -3,283 +3,283 @@
 // Rubén Pardo Casanova 29/09/2021
 // .....................................................................
 
-
-
-var addressPoints = [
-    [-37.8839, 175.3745188667, 300],
-    [-37.8869090667, 175.3657417333, 250],
-    [-37.8894207167, 175.4015351167, 200],
-    [-37.8927369333, 175.4087452333, 150],
-    [-37.90585105, 175.4453463833, 100],
-    [-37.9064188833, 175.4441556833, 50],
-    [-37.90584715, 175.4463564333, 0],
-    [-37.9022371333, 175.47991035, 10],
-    [-37.9020014833, 175.4799581667, 1],
-    [-37.9020824, 175.4802630167, 2],
-    [-37.9018589833, 175.4804760833, 3],
-    [-37.9018211333, 175.4806769667, 4],
-    [-37.9021543667, 175.4805538833, 5],
-    [-37.9022658, 175.4807579333, 6],
-    [-37.9024517833, 175.4806480667, 7],
-    [-37.9024251167, 175.48041985, 8],
-    [-37.9023317833, 175.4802119667, 9],
-    [-37.9321212167, 175.4555088, 39],
-    [-37.8956185167, 175.4719458667, 4],
-    [-37.8954566, 175.4728120333, 20],
-    [-37.8957231833, 175.4727906, 22],
-    [-37.8956085833, 175.4726702, 22],
-    [-37.8956460167, 175.4718485167, 300],
-    ]
+var puntosCO = [];
+var puntosNO2 = [];
+var puntosSO2 = [];
+var puntosO3 = [];
 
 var VistaMediciones = {
+    controlador: {},
 
-    controlador:{},
-
-    bloqueContenedor:{},
-    bloqueTabla:{},
-    bloqueCargaObtenerMediciones:{},
-    snackBarError:{},
-
-    formularioUltimasMediciones:{},
-    errorFormCuantas:{},
-    map:{},
-    idw:{},
+    map: {},
+    idw: {},
     loader: {},
-    
+    puntos: [],
+    mediciones: [],
+    circulos: [],
 
-    // funcion que recibe los id de elementos html para controlarlos
-    preparar: function(idContenedor,idTabla,idCargaObtenerMediciones,idSnackBarError, idFormUltimasMediciones, errorFormCuantas){
-
-        this.bloqueContenedor = document.getElementById(idContenedor);
-        this.bloqueTabla = document.getElementById(idTabla);
-        this.bloqueCargaObtenerMediciones = document.getElementById(idCargaObtenerMediciones);
-        this.snackBarError = document.getElementById(idSnackBarError);  
-
-        this.formularioUltimasMediciones = document.getElementById(idFormUltimasMediciones);
-        this.errorFormCuantas = document.getElementById(errorFormCuantas);
-
-        this.esconderTodosLosElementosObtenerMediciones();
-
-    },
-
-    //-----------------------------------------
-    // lista de mediciones
-    //----------------------------------------
-
-    // esconder todos los elementos html de lista medicion
-    esconderTodosLosElementosObtenerMediciones:function(){
-        this.bloqueCargaObtenerMediciones.style.display = "none";
-        this.bloqueContenedor.style.display = "none";
-        this.errorFormCuantas.style.display = "none";
-    },
-
-    // esconder los elementos y mostrar la carga
-    mostrarCargarObtenerMediciones: function(){
-        this.esconderTodosLosElementosObtenerMediciones();
-        this.bloqueCargaObtenerMediciones.style.display = "block";
-    },
-
-    // T/F->()
-    // esconde o muestra el contenido
-    mostrarContenido: function(mostrar){
-        this.bloqueContenedor.style.display = mostrar ? "block" : "none";
-    },
 
     // esconder los elementos y mostrar la lista de mediciones
-    representarTodasLasMediciones: function(mediciones){
+    representarTodasLasMediciones: function (mediciones) {
+        this.mediciones = this.controlador.toArray(mediciones);
+        this.mediciones.forEach((medicion) => {
+            switch (medicion[3]) {
+                case 1:
+                    puntosCO.push([medicion[0], medicion[1], medicion[2], medicion[3]]);
+                    break;
+                case 2:
+                    puntosNO2.push([medicion[0], medicion[1], medicion[2], medicion[3]]);
+                    break;
+                case 3:
+                    puntosSO2.push([medicion[0], medicion[1], medicion[2], medicion[3]]);
+                    break;
+                case 4:
+                    puntosO3.push([medicion[0], medicion[1], medicion[2], medicion[3]]);
+                    break;
 
-        console.log("REPRESENTAR",addressPoints.concat(this.controlador.toArray(mediciones)));
+                default:
+                    break;
+            }
+        });
+
         //pintar los elementos por mediciones
-        
-        if(mediciones !=null){
 
-            this.map = L.map('map').setView([38.995591, -0.167129], 12);
+        if (this.mediciones != null) {
 
+            /*let max = this.getMaximoValor(this.puntos)
+                  console.log(max);
+      
+                  var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+                  }).addTo(this.map);
+                  this.idw = L.idwLayer(this.puntos ,{
+                          opacity: 0.5,
+                          maxZoom: 18,
+                          cellSize: 3,
+                          exp: 3,
+                          max: max
+                      }).addTo(this.map);
+      
+                  this.cargarDatos();*/
+            this.map = L.map("map").setView([38.995591, -0.167129], 12);
             var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
             }).addTo(this.map);
-            this.idw = L.idwLayer(addressPoints.concat(this.controlador.toArray(mediciones)),{
-                    opacity: 0.5,
-                    maxZoom: 18,
-                    cellSize: 3,
-                    exp: 3,
-                    max: 400 
-                }).addTo(this.map);
-
+            
+            this.crearArrayPuntos(this.mediciones);
+            this.crearMarkers(this.puntos)
             this.cargarDatos();
+
         }
     },
 
-      /**
-     * Texto -> formatearFecha() -> Texto
-     * @param {String} fechaAFormatear 
-     * @returns fecha formateada 2021/10/7 10:50:31
-     */
-       formatearFecha(fechaAFormatear){
-        let date = new Date(fechaAFormatear);
-        let strRes = 
-        (date.getFullYear()+
-        "/"+(date.getMonth()+1)+
-        "/"+date.getDate()+
-        " "+date.getHours()+
-        ":"+date.getMinutes()+
-        ":"+date.getSeconds());
-
-        return strRes;
-    },
-
-    //---------------------------------------------
-    // checkFormularioUltimasMediciones() -> V/F
-    // comrpueba que no haya ningun campo vacio ni incorrecto en el formulario
-    // de ultimas mediciones
-    //--------------------------------------
-    checkFormularioUltimasMediciones:function(){
-        let valid = true;
-
-        let cuantas = this.formularioUltimasMediciones.cuantas.value;
+    crearArrayPuntos: async function (lista) {
+        this.puntos = []
         
-        // comrpobar dni vacio
-        if(cuantas <= 0){
-            // mostrar error dni
-            valid = false;
-            this.errorFormCuantas.style.display = "block"
+        for (let i = 0; i < document.getElementsByClassName("botonDeGases").length; i++) {
+            if (document.getElementsByClassName("botonDeGases")[i].classList.contains("botonActivo")) {
+                if(document.getElementsByClassName("botonDeGases")[i].value == 1) {
+                    this.puntos = this.puntos.concat(puntosCO);
+                }
+                if(document.getElementsByClassName("botonDeGases")[i].value == 2) {
+                    this.puntos = this.puntos.concat(puntosNO2);
+                }
+                if(document.getElementsByClassName("botonDeGases")[i].value == 3) {
+                    this.puntos = this.puntos.concat(puntosSO2);
+                }
+                if(document.getElementsByClassName("botonDeGases")[i].value == 4) {
+                    this.puntos = this.puntos.concat(puntosO3);
+                 }
+            }
         }
-
-
-        return valid;
-    }, // check form insertar
-    
-
-    //-----------------------------------------
-    // FIN lista de mediciones
-    //----------------------------------------
-
-   
-    /**
-     * Funcion que muestra un snack bar de error durante unos pocos segundos
-     * @param {Texto} mensaje a mostrar 
-     */
-    representarError:function(mensaje){
-        
-        this.snackBarError.innerHTML = mensaje;
-        this.snackBarError.className = "show";
-        
-        setTimeout(()=>{ this.snackBarError.classList.remove("show"); }, 3000);
     },
 
-    pintarMapa: function (mediciones) {
-
-        this.map.removeLayer(this.idw);
-        let puntos = addressPoints.concat(mediciones);
-        console.log(puntos);
-    
-        this.idw = L.idwLayer(puntos,{
-                opacity: 0.5,
-                maxZoom: 18,
-                cellSize: 3,
-                exp: 3,
-                max: 300 
+    crearMarkers: function(lista) {
+        
+        let gases = document.getElementsByClassName("botonActivo").length;
+        let lista1 = lista
+        for (let i = 0; i < gases; i++) {
+            let listaProv = []
+            let gas = 0;
+            for (let j = 0; j < lista1.length; j++) {
+                if(gases != 1) {
+                    if (lista1.length != gases) {
+                        if(lista1[j] != undefined && lista1[j][3] != gas) {
+                        
+                            listaProv.push(lista1[j]);
+                            lista1.splice(lista1.indexOf(lista1[j]), 1);
+                            gas = lista1[j][3];
+                        }
+                    } else {
+                        listaProv = lista1;
+                        break;
+                    }
+                }
+                else {
+                    listaProv = lista1;
+                }
+            }
+            if(gases != 1) {
+                let maximo = 0;
+            let elementoMaximo;
+            listaProv.forEach(element => {
+                if (element[2] > maximo) {
+                    elementoMaximo = element;
+                    maximo = element[2];
+                }
+            });
+            let circle = L.circle([elementoMaximo[0], elementoMaximo[1]], {
+                color: this.getColorCirculo(elementoMaximo[2]),
+                fillColor: this.getGas(elementoMaximo[3]),
+                fillOpacity: 0.5,
+                radius: 5000
             }).addTo(this.map);
-        setTimeout(() => {this.cargarDatos()},  500);
+            this.circulos.push(circle); 
+            }
+            else {
+                listaProv.forEach(element => {
+                let circle = L.circle([element[0], element[1]], {
+                    color: this.getColorCirculo(element[2]),
+                    fillColor: this.getGas(element[3]),
+                    fillOpacity: 0.5,
+                    radius: 5000
+                }).addTo(this.map);
+                this.circulos.push(circle); 
+                });
+            }
+        }
+    },
+
+    getGas: function(valor) {
+        if(valor == 1) {
+            return "brown"
+        } else if(valor == 2) {
+            return "orange"
+        } else if(valor == 3) {
+            return "black"
+        } else {
+            return "grey"
+        }
+    },
+
+    getColorCirculo: function(valor) {
+        if(valor >= 0 && valor <= 50) {
+            return "green"
+        } else if(valor > 50 && valor <= 150) {
+            return "yellow"
+        } else if(valor > 150 && valor <= 200) {
+            return "red"
+        } else {
+            return "purple"
+        }
+    },
+
+    getMaximoValor: function (lista) {
+        let maximo = 0;
+        lista.forEach((dato) => {
+            if (dato[2] > maximo) {
+                maximo = dato[2];
+            }
+        });
+
+        return maximo;
+    },
+
+    pintarMapa: function () {
+
+            this.crearArrayPuntos(this.mediciones);
+            this.crearMarkers(this.puntos)
+            this.cargarDatos();
     },
 
     iniciarLoader: function () {
         document.getElementById("loader").style.display = "block";
         document.getElementById("map").style.display = "none";
     },
-    cargarDatos: function() {
+    cargarDatos: function () {
         document.getElementById("loader").style.display = "none";
         document.getElementById("map").style.display = "block";
-    }
-
-
-}// vista
+    },
+}; // vista
 
 var ControladorMediciones = {
-
     vista: VistaMediciones,
     mediciones: [],
+    todosLosGases: false,
 
-
-    // inicia la obtencion de todas las mediciones 
-    iniciarTodasObtenerMediciones: async function(ipPuerto){
-        //this.vista.mostrarCargarObtenerMediciones();
+    // inicia la obtencion de todas las mediciones
+    iniciarTodasObtenerMediciones: async function (ipPuerto) {
         this.vista.controlador = this;
 
-        try{
-
+        try {
             this.mediciones = await LogicaFalsa.obtenerTodasMediciones(ipPuerto);
-            
-            this.vista.representarTodasLasMediciones(this.mediciones)
 
-       }catch(e){
+            this.vista.representarTodasLasMediciones(this.mediciones);
+        } catch (e) {
             console.error(e);
-            //this.vista.representarError(e);
-        
-       }
-    },
-
-     // inicia la obtencion de todas las mediciones 
-     iniciarUltimasObtenerMediciones: async function(event){
-        event.preventDefault();
-        if(this.vista.checkFormularioUltimasMediciones()){
-            this.vista.controlador = this;
-            this.vista.mostrarCargarObtenerMediciones();
-            try{
-
-                this.mediciones = await LogicaFalsa.obtenerUltimasMediciones(this.vista.formularioUltimasMediciones.cuantas.value);
-                this.vista.representarTodasLasMediciones(this.mediciones)
-
-            }catch(e){
-                    console.error(e);
-                    this.vista.representarError(e);
-                
-            }
         }
     },
 
-    toArray: function(lista) {
+    toArray: function (lista) {
         var arrayMediciones = [];
 
         for (let i = 0; i < lista.length; i++) {
             arrayMediciones[i] = new Array(3);
-            arrayMediciones[i][0] = lista[i].posMedicion.latitud + 0.0025*i;
-            arrayMediciones[i][1] = lista[i].posMedicion.longitud + 0.0025*i;
+            arrayMediciones[i][0] = lista[i].posMedicion.latitud;
+            arrayMediciones[i][1] = lista[i].posMedicion.longitud;
             arrayMediciones[i][2] = lista[i].valor;
-            
+            arrayMediciones[i][3] = lista[i].tipoGas;
         }
-
         return arrayMediciones;
     },
 
-    filtrarPorGas: function(tipoGas) {
-        this.vista.iniciarLoader()
+    filtrarPorGas: function (tipoGas) {
+        this.vista.iniciarLoader();
+        this.vista.mediciones = []
 
         let botones = document.getElementsByClassName("botonDeGases");
-        let arrayMediciones = new Array();
-        for (let i = 0; i < botones.length; i++) {
-            if(botones[i].value == tipoGas && botones[i].classList.contains("botonInactivo")) {
-                botones[i].classList.remove("botonInactivo")
-                botones[i].classList.add("botonActivo")
-            }
-            else {
-                botones[i].classList.add("botonInactivo")
-                botones[i].classList.remove("botonActivo")
-            }
+        let botonActual;
 
-            if (botones[i].classList.contains("botonActivo")) {
-                this.mediciones.forEach(medicion => {
-                    if(medicion.tipoGas == tipoGas) {
-                        console.log(medicion.tipoGas);
-                        let datos = new Array(3);
-                        datos[0] = medicion.posMedicion.latitud;
-                        datos[1] = medicion.posMedicion.longitud;
-                        datos[2] = medicion.valor;
-                        arrayMediciones.push(datos);
-                    }
-                });
+        for (let i = 0; i < botones.length; i++) {
+            if (botones[i].value == tipoGas) {
+                botonActual = botones[i]
             }
         }
-        this.vista.pintarMapa(arrayMediciones);
+
+        if (botonActual.classList.contains("botonActivo") && document.getElementsByClassName("botonActivo").length != botones.length) {
+            this.todosGasesActivos(botones)
+        } else {
+            this.todosGasesInactivos(botones);
+            for (let i = 0; i < 4; i++) {
+                if (botones[i].value == tipoGas) {
+                    botones[i].classList.remove("botonInactivo");
+                    botones[i].classList.add("botonActivo");
+                }
+            }
+        }
+
+        for (let i = 0; i < this.vista.circulos.length; i++) {
+            this.vista.map.removeLayer(this.vista.circulos[i])
+        }
+        this.vista.pintarMapa();
+    },
+
+    todosGasesActivos: function(botones) {
+        
+        for (let i = 0; i < botones.length; i++) {
+            if(botones[i].classList.contains("botonInactivo")) {
+                botones[i].classList.remove("botonInactivo");
+                botones[i].classList.add("botonActivo");
+            }   
+        }
+    },
+
+    todosGasesInactivos: function(botones) {
+        for (let i = 0; i < botones.length; i++) {
+            if(botones[i].classList.contains("botonActivo")) {
+                botones[i].classList.add("botonInactivo");
+                botones[i].classList.remove("botonActivo");
+            }   
+        }
     }
-}// controlador 
+}; // controlador
