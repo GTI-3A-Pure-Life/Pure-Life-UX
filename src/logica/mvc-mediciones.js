@@ -21,26 +21,39 @@ var VistaMediciones = {
 
     // esconder los elementos y mostrar la lista de mediciones
     representarTodasLasMediciones: function (mediciones) {
-        this.mediciones = this.controlador.toArray(mediciones);
-        this.mediciones.forEach((medicion) => {
-            switch (medicion[3]) {
-                case 1:
-                    puntosCO.push([medicion[0], medicion[1], medicion[2], medicion[3]]);
-                    break;
-                case 2:
-                    puntosNO2.push([medicion[0], medicion[1], medicion[2], medicion[3]]);
-                    break;
-                case 3:
-                    puntosSO2.push([medicion[0], medicion[1], medicion[2], medicion[3]]);
-                    break;
-                case 4:
-                    puntosO3.push([medicion[0], medicion[1], medicion[2], medicion[3]]);
-                    break;
+        console.log(mediciones);
 
-                default:
-                    break;
+        let posiciones = mediciones.map(medicion => {
+            return medicion.posMedicion
+        })
+
+        // Coger posiciones no duplicadas
+        let posSet = posiciones.filter((element, index, self) =>
+        index === self.findIndex((t) => (
+            t.latitud == element.latitud && t.longitud == element.longitud
+        ))
+      )
+        posSet = posSet.map(element => {
+            return {pos: element, valor: []}
+        })
+
+        for (let i = 0; i < posSet.length; i++) {
+
+            for (let j = 0; j < mediciones.length; j++) {
+                if(posSet[i].pos.latitud == mediciones[j].posMedicion.latitud && posSet[i].pos.longitud == mediciones[j].posMedicion.longitud) {
+                    posSet[i].valor.push(mediciones[j])
+                }
             }
-        });
+        }
+        // Jordi porfa no me pegues uWu
+        for (let i = 0; i < posSet.length; i++) {
+            posSet[i].valor.sort(function(medicion1, medicion2) {
+                return new Date(medicion2.fechaHora) - new Date(medicion1.fechaHora)
+            })
+        }
+        this.mediciones = posSet;
+        console.log(posSet);
+        //this.mediciones = mediciones.sort( a=> {});
 
         //pintar los elementos por mediciones
 
@@ -61,13 +74,12 @@ var VistaMediciones = {
                       }).addTo(this.map);
       
                   this.cargarDatos();*/
-            this.map = L.map("map").setView([38.995591, -0.167129], 12);
-            var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-            }).addTo(this.map);
             
-            this.crearArrayPuntos(this.mediciones);
-            this.crearMarkers(this.puntos)
+            this.mediciones = posSet;
+            for (let i = 0; i < posSet.length; i++) {
+            this.crearMarkers(posSet[i])
+                
+            }
             this.cargarDatos();
 
         }
@@ -76,78 +88,37 @@ var VistaMediciones = {
     crearArrayPuntos: async function (lista) {
         this.puntos = []
         
-        for (let i = 0; i < document.getElementsByClassName("botonDeGases").length; i++) {
-            if (document.getElementsByClassName("botonDeGases")[i].classList.contains("botonActivo")) {
+        console.log("lista", lista);
+
+        for (let i = 0; i < lista.length; i++) {
+            if(document.getElementsByClassName("botonDeGases")[i].classList.contains("botonActivo")) {
                 if(document.getElementsByClassName("botonDeGases")[i].value == 1) {
-                    this.puntos = this.puntos.concat(puntosCO);
+                    console.log(lista[0]);
+                    this.puntos = this.puntos.push(lista[0])
                 }
                 if(document.getElementsByClassName("botonDeGases")[i].value == 2) {
-                    this.puntos = this.puntos.concat(puntosNO2);
+                    this.puntos = this.puntos.push(lista[1])
                 }
                 if(document.getElementsByClassName("botonDeGases")[i].value == 3) {
-                    this.puntos = this.puntos.concat(puntosSO2);
+                    this.puntos = this.puntos.push(lista[2])
+
                 }
                 if(document.getElementsByClassName("botonDeGases")[i].value == 4) {
-                    this.puntos = this.puntos.concat(puntosO3);
-                 }
-            }
+                    this.puntos = this.puntos.push(lista[3])
+
+                }
+            }            
         }
     },
 
     crearMarkers: function(lista) {
-        
-        let gases = document.getElementsByClassName("botonActivo").length;
-        let lista1 = lista
-        for (let i = 0; i < gases; i++) {
-            let listaProv = []
-            let gas = 0;
-            for (let j = 0; j < lista1.length; j++) {
-                if(gases != 1) {
-                    if (lista1.length != gases) {
-                        if(lista1[j] != undefined && lista1[j][3] != gas) {
-                        
-                            listaProv.push(lista1[j]);
-                            lista1.splice(lista1.indexOf(lista1[j]), 1);
-                            gas = lista1[j][3];
-                        }
-                    } else {
-                        listaProv = lista1;
-                        break;
-                    }
-                }
-                else {
-                    listaProv = lista1;
-                }
-            }
-            if(gases != 1) {
-                let maximo = 0;
-            let elementoMaximo;
-            listaProv.forEach(element => {
-                if (element[2] > maximo) {
-                    elementoMaximo = element;
-                    maximo = element[2];
-                }
-            });
-            let circle = L.circle([elementoMaximo[0], elementoMaximo[1]], {
-                color: this.getColorCirculo(elementoMaximo[2]),
-                fillColor: this.getGas(elementoMaximo[3]),
+            let circle = L.circle([lista.pos.latitud, lista.pos.longitud], {
+                color: this.getColorCirculo(lista.valor[0].valor),
+                fillColor: this.getColorCirculo(lista.valor[0].valor),
                 fillOpacity: 0.5,
                 radius: 5000
             }).addTo(this.map);
             this.circulos.push(circle); 
-            }
-            else {
-                listaProv.forEach(element => {
-                let circle = L.circle([element[0], element[1]], {
-                    color: this.getColorCirculo(element[2]),
-                    fillColor: this.getGas(element[3]),
-                    fillOpacity: 0.5,
-                    radius: 5000
-                }).addTo(this.map);
-                this.circulos.push(circle); 
-                });
-            }
-        }
     },
 
     getGas: function(valor) {
@@ -185,10 +156,9 @@ var VistaMediciones = {
         return maximo;
     },
 
-    pintarMapa: function () {
+    pintarMapa: function (mediciones) {
 
-            this.crearArrayPuntos(this.mediciones);
-            this.crearMarkers(this.puntos)
+            this.crearMarkers(mediciones);
             this.cargarDatos();
     },
 
@@ -214,6 +184,11 @@ var ControladorMediciones = {
         try {
             this.mediciones = await LogicaFalsa.obtenerTodasMediciones(ipPuerto);
 
+            this.vista.map = L.map("map").setView([38.995591, -0.167129], 12);
+            var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+            }).addTo(this.vista.map);
+
             this.vista.representarTodasLasMediciones(this.mediciones);
         } catch (e) {
             console.error(e);
@@ -235,7 +210,7 @@ var ControladorMediciones = {
 
     filtrarPorGas: function (tipoGas) {
         this.vista.iniciarLoader();
-        this.vista.mediciones = []
+        //this.vista.mediciones = []
 
         let botones = document.getElementsByClassName("botonDeGases");
         let botonActual;
@@ -248,6 +223,11 @@ var ControladorMediciones = {
 
         if (botonActual.classList.contains("botonActivo") && document.getElementsByClassName("botonActivo").length != botones.length) {
             this.todosGasesActivos(botones)
+            for (let i = 0; i < this.vista.circulos.length; i++) {
+                this.vista.map.removeLayer(this.vista.circulos[i])
+            }
+        this.vista.representarTodasLasMediciones(this.mediciones)
+            return;
         } else {
             this.todosGasesInactivos(botones);
             for (let i = 0; i < 4; i++) {
@@ -261,7 +241,12 @@ var ControladorMediciones = {
         for (let i = 0; i < this.vista.circulos.length; i++) {
             this.vista.map.removeLayer(this.vista.circulos[i])
         }
-        this.vista.pintarMapa();
+
+        let medicionesFiltradas = this.mediciones.filter(element => {
+            return element.tipoGas == tipoGas;
+        })
+        this.vista.representarTodasLasMediciones(medicionesFiltradas)
+        //this.vista.pintarMapa(medicionesFiltradas);
     },
 
     todosGasesActivos: function(botones) {
