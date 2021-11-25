@@ -113,7 +113,7 @@ var VistaCalidadDelAire = {
             data: {
                 labels: tiempo,
                 datasets: [{
-                    label: 'ug/m3',
+                    label: 'AQI',
                     data: valores,
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
@@ -165,11 +165,15 @@ var ControladorVistaCalidadDelAire = {
         var strRes = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
         let fechaInicio = strRes + " 00:00:00";
         let fechaFin = strRes + " 23:59:59";
+        fechaInicio = "2021-09-29 00:00:00"
+        fechaFin = "2021-09-29 23:59:59"
         let mediciones = await LogicaFalsa.obtenerMedicionesDeHastaPorUsuario(fechaInicio, fechaFin,user.id);
         let medicionesCO = new Array();
-        let medicioneSO2 = new Array();
-        let medicionesNO2 = new Array();
         let medicionesSO2 = new Array();
+        let medicionesNO2 = new Array();
+        let medicionesO3 = new Array();
+
+        
 
         for(let i = 0; i< mediciones.length; i++){
             switch (mediciones[i].tipoGas) {
@@ -183,20 +187,78 @@ var ControladorVistaCalidadDelAire = {
                         medicionesSO2.push(mediciones[i]);
                     break;
                 case 4:
-                        medicioneSO2.push(mediciones[i]);
+                     medicionesO3.push(mediciones[i]);
                     break;
                 default:
                     break;
             }
         }
+        console.log("mediciones antes",medicionesCO);
 
-        medicionesCO = medicionesCO.sort(this.orednarPorFecha);
-        medicioneSO2 = medicioneSO2.sort(this.orednarPorFecha);
-        medicionesNO2 = medicionesNO2.sort(this.orednarPorFecha);
-        medicionesSO2 = medicionesSO2.sort(this.orednarPorFecha);
+        medicionesCO = medicionesCO.sort(function(medicion1,medicion2){
 
+            let fecha1 = new Date(medicion1.fechaHora);
+    
+            let fecha2 = new Date(medicion2.fechaHora);
+            if (fecha1 > fecha2) {
+                return 1;
+              }
+              if (fecha1< fecha2) {
+                return -1;
+              }
+              // a must be equal to b
+              return 0;
+    
+        });
+        medicionesO3 = medicionesO3.sort(function(medicion1,medicion2){
+
+            let fecha1 = new Date(medicion1.fechaHora);
+    
+            let fecha2 = new Date(medicion2.fechaHora);
+            if (fecha1 > fecha2) {
+                return 1;
+              }
+              if (fecha1< fecha2) {
+                return -1;
+              }
+              // a must be equal to b
+              return 0;
+    
+        });
+        medicionesNO2 = medicionesNO2.sort(function(medicion1,medicion2){
+
+            let fecha1 = new Date(medicion1.fechaHora);
+    
+            let fecha2 = new Date(medicion2.fechaHora);
+            if (fecha1 > fecha2) {
+                return 1;
+              }
+              if (fecha1< fecha2) {
+                return -1;
+              }
+              // a must be equal to b
+              return 0;
+    
+        });
+        medicionesSO2 = medicionesSO2.sort(function(medicion1,medicion2){
+
+            let fecha1 = new Date(medicion1.fechaHora);
+    
+            let fecha2 = new Date(medicion2.fechaHora);
+            if (fecha1 > fecha2) {
+                return 1;
+              }
+              if (fecha1< fecha2) {
+                return -1;
+              }
+              // a must be equal to b
+              return 0;
+    
+        });
+
+        console.log("mediciones despues",medicionesCO);
         this.vista.ocultarGraficas();
-        this.vista.representarGraficas(medicionesCO,medicioneSO2,medicionesNO2,medicionesSO2);
+        this.vista.representarGraficas(medicionesCO,medicionesSO2,medicionesNO2,medicionesSO2);
 
         //===============================================================================================
         //obtenerCalidadAirePorTiempoYUsuario
@@ -228,8 +290,9 @@ var ControladorVistaCalidadDelAire = {
         // llamar a la logica obtenerMedicionesDeHastaPorUsuario
         //=================================================================================================
         let tarjetas = document.getElementsByClassName("contenedorTarjetas");
-        
+       
         if(user.posCasa != null) {
+            
         let calidadAireCasa = await LogicaFalsa.obtenerCalidadAirePorTiempoYZona(fechaInicio,fechaFin,user.posCasa.latitud,user.posCasa.longitud,"18");
         this.asignarColorTarjetas(tarjetas[0], this.getMaximoAQI(calidadAireCasa))
         }else{
@@ -305,7 +368,6 @@ var ControladorVistaCalidadDelAire = {
         let fecha1 = new Date(medicion1.fechaHora);
 
         let fecha2 = new Date(medicion2.fechaHora);
-
         if (fecha1 > fecha2) {
             return 1;
           }
