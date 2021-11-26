@@ -116,7 +116,7 @@ var VistaMediciones = {
                 color: this.getColorCirculo(lista.valor[0].valor),
                 fillColor: this.getColorCirculo(lista.valor[0].valor),
                 fillOpacity: 0.5,
-                radius: 5000
+                radius: 20
             }).addTo(this.map);
             this.circulos.push(circle); 
     },
