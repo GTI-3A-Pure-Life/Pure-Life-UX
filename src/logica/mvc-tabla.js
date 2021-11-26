@@ -15,19 +15,19 @@ var VistaTabla = {
                 this.tabla.innerHTML += "<tr>" + 
                 "<td>" + datos[i].id + "</td>" + 
                 "<td>" + datos[i].uuidSensor + "</td>" + 
-                "<td>" + datos[i].averiado + "</td>" + 
+                "<td class = 'Averiado'>" + datos[i].averiado + "</td>" + 
                 "<td>" + datos[i].pocaBateria + "</td>" + 
-                "<td>" + datos[i].descalibrado + "</td>" + 
-                "<td>" + datos[i].fechaHora + "</td>" + 
+                "<td class = 'Descalibrado'>" + datos[i].descalibrado + "</td>" + 
+                "<td class = 'Fecha'>" + datos[i].fechaHora + "</td>" + 
                 "<td><button onclick='ControladorTabla.publicarLeido("+ datos[i].id +")'>Marcar como leído</button></td></tr>";
             } else {
                 this.tabla.innerHTML += "<tr>" + 
                 "<td>" + datos[i].id + "</td>" + 
                 "<td>" + datos[i].uuidSensor + "</td>" + 
-                "<td>" + datos[i].averiado + "</td>" + 
+                "<td class = 'Averiado'>" + datos[i].averiado + "</td>" + 
                 "<td>" + datos[i].pocaBateria + "</td>" + 
-                "<td>" + datos[i].descalibrado + "</td>" + 
-                "<td>" + datos[i].fechaHora + "</td>" + 
+                "<td class = 'Descalibrado'>" + datos[i].descalibrado + "</td>" + 
+                "<td class = 'Fecha'>" + datos[i].fechaHora + "</td>" + 
                 "<td><button disabled>Marcar como leído</button></td></tr>";
             }
         }
@@ -71,22 +71,36 @@ var ControladorTabla = {
 function createPDF() {
     var tabla = document.getElementById('tblDatos');
     let tablaM ="<table><tbody>";
-
+    var estado = tabla.getElementsByClassName("Averiado");
+    var fecha = tabla.getElementsByClassName("Fecha");
       for (let i = 0; i < tabla.rows.length; i++) {
-        tablaM += "<tr>";
-          for (let j = 0; j < tabla.rows[i].cells.length; j++) {
-            let texto = ""
-            texto = tabla.rows[i].cells[j].innerText
-            if(i == 0 && !texto.includes("Leído")) {
-              console.log(texto);
-              tablaM += "<th>" + tabla.rows[i].cells[j].innerHTML + "</th>"
-
-            } else if (!texto.includes("Marcar como leído") && !texto.includes("Leído")) {
-              tablaM += "<td>" + tabla.rows[i].cells[j].innerHTML + "</td>"
-              
-            }              
-          }
-      tablaM += "</tr>";
+        tablaM += "<tr>"; 
+        averiado = estado[i]
+        fechaDeUno = fecha[i]
+        
+        if(averiado!=undefined && averiado.innerHTML=="1"){
+            let fechaDate = new Date(fechaDeUno.innerText)
+            //fechaDeUno = new Date(fechaDeUno.innerHTML)
+            let horas = (Date.now() - fechaDate.getTime())/1000/60/24
+            if(horas>=24){
+                for (let j = 0; j < tabla.rows[i].cells.length; j++) {
+                    let texto = ""
+                   
+                    
+                    texto = tabla.rows[i].cells[j].innerText
+                    if(i == 0 && !texto.includes("Leído")) {
+                      console.log(texto);
+                      tablaM += "<th>" + tabla.rows[i].cells[j].innerHTML + "</th>"
+        
+                    } else if (!texto.includes("Marcar como leído") && !texto.includes("Leído")) {
+                      tablaM += "<td>" + tabla.rows[i].cells[j].innerHTML + "</td>"
+                      
+                    } 
+                                
+                }
+            }
+        }
+        tablaM += "</tr>";
       }
       tablaM += "</tbody></table>";
 
@@ -102,7 +116,7 @@ function createPDF() {
     win.document.write('<html><head>');
     win.document.write(style);          // ADD STYLE INSIDE THE HEAD TAG.
     win.document.write('</head><body>');
-    win.document.write('<h1>Sensores averiados y descalibrados</h1>');
+    win.document.write('<h1>Sensores averiados de más de 24 horas</h1>');
     win.document.write(tablaM);       // THE TABLE CONTENTS INSIDE THE BODY TAG.
     win.document.write('</body></html>');
 
