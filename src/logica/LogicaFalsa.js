@@ -4,6 +4,8 @@
 // Rubén Pardo Casanova 29/09/2021
 // .....................................................................
 
+//const { report } = require("process");
+
 const IP_PUERTO="http://localhost:8080"
 
 LogicaFalsa = {
@@ -18,8 +20,8 @@ LogicaFalsa = {
      * 
      * @returns Una Lista<MedicionCO2> con todas las mediciones de la BD
      */
-    obtenerTodasMediciones : async function() {
-        let respuesta = await fetch(  IP_PUERTO+"/mediciones",{
+    obtenerTodasMediciones : async function(ipDestino) {
+        let respuesta = await fetch(  ipDestino+"/mediciones",{
                       headers : { 'User-Agent' : 'Ruben', 'Content-Type' : 'application/json' },
                      }).then(response=>{
 
@@ -37,7 +39,7 @@ LogicaFalsa = {
                          
                         
                      }).then(medicionesJSON=>{
-                        return medicionesJSON.datos;
+                        return medicionesJSON;
                      })
                     
         return respuesta;
@@ -123,10 +125,108 @@ LogicaFalsa = {
         
     },
 
+    //==============================================================================================================================
+    //actualizar_leido
+    // @author Florescu, Lorena-Ioana
+    // @version 24/11/2021
+    //==============================================================================================================================
 
-    // .................................................................
-    // cerrar() -->
-    // .................................................................
+    actualizar_leido : async function (id) {
+        let respuesta = await fetch(IP_PUERTO+"/registro_estado_sensor/leido",  {
+            method: "PUT",
+            headers : { 'User-Agent' : 'Ruben', 'Content-Type' : 'application/json' },
+            body : JSON.stringify({res:{id:id}})
+        }).then(response => {
+            if(response.status == 200) {
+                return response.json();
+            } else if (response.status == 500) {
+                throw Error("Error en servidor");
+            }
+        });
+        return respuesta;
+        
+    },
+//==============================================================================================================================
+//obtenerMedicionesDeHastaPorUsuario
+//==============================================================================================================================
+    obtenerMedicionesDeHastaPorUsuario : async function(fechaInicio,fechaFin,idUsuario){
+        let respuesta = await fetch(IP_PUERTO+"/mediciones/usuario?idUsuario="+idUsuario+"&fecha_inicio="+fechaInicio+"&fecha_fin="+fechaFin,{
+                      headers : { 'User-Agent' : 'Ruben', 'Content-Type' : 'application/json' },
+        }).then(response => {
+            if(response.status == 200) {
+                return response.json()
+            } else if (response.status == 204) {
+                return[];
+            }else if (response.status == 400) {
+                throw Error("Error en datos");
+            } else if (response.status == 500) {
+                throw Error("Error en servidor");
+            }
+        });
+        return respuesta
+    },
+//==============================================================================================================================
+//obtenerCalidadAirePorTiempoYZona
+//==============================================================================================================================
+    obtenerCalidadAirePorTiempoYZona : async function(fechaInicio,fechaFin, latitud,longitud, radio) {
+
+        let respuesta = await fetch(IP_PUERTO+"/calidad_aire/zona?fecha_inicio="+fechaInicio+"&fecha_fin="+fechaFin+"&latitud="+latitud+"&longitud="+longitud+"&radio="+radio,{
+            headers : { 'User-Agent' : 'Ruben', 'Content-Type' : 'application/json' },
+        }).then(response =>{
+            if(response.status == 200) {
+                return response.json()
+            } else if (response.status == 204) {
+                return[];
+            }else if (response.status == 400) {
+                throw Error("Error en datos");
+            } else if (response.status == 500) {
+                throw Error("Error en servidor");
+            }
+        });
+            return respuesta
+    },
+
+
+    obtenerRegistros : async function() {
+
+        let respuesta = await fetch(IP_PUERTO+"/registro_estado_sensor",{
+            headers : { 'User-Agent' : 'Ruben', 'Content-Type' : 'application/json' },
+        }).then(response =>{
+            if(response.status == 200) {
+                return response.json();
+            } else if (response.status == 204) {
+                return[];
+            }else if (response.status == 400) {
+                throw Error("Error en datos");
+            } else if (response.status == 500) {
+                throw Error("Error en servidor");
+            }
+        });
+            return respuesta;
+    },
+//==============================================================================================================================
+//obtenerCalidadAirePorTiempoYUsuario
+//==============================================================================================================================
+obtenerCalidadAirePorTiempoYUsuario : async function(fechaInicio,fechaFin, idUsuario) {
+
+    let respuesta = await fetch(IP_PUERTO+"/calidad_aire/usuario?fecha_inicio="+fechaInicio+"&fecha_fin="+fechaFin+"&idUsuario="+idUsuario,{
+        headers : { 'User-Agent' : 'Ruben', 'Content-Type' : 'application/json' },
+    }).then(response =>{
+        if(response.status == 200) {
+            return response.json()
+        } else if (response.status == 204) {
+            return[];
+        }else if (response.status == 400) {
+            throw Error("Error en datos");
+        } else if (response.status == 500) {
+            throw Error("Error en servidor");
+        }
+    });
+        return respuesta
+},
+// .................................................................
+// cerrar() -->
+// .................................................................
     cerrar:function() {
         return new Promise( (resolver, rechazar) => {
         this.laConexion.close( (err)=>{

@@ -130,15 +130,27 @@ height: 87vh;
     background-color: white;
     border-radius: 8px;
     padding: 0.5rem;
+    z-index: 999;
+    position: absolute;
+    top: 1vh;
+    right: 1%;
 }
 .botonDeGases{
     height: 2.5rem;
     width: 2.5rem;
-    font-weight: bold;
-    background-color: #3ABB90;
-    color: white;
+    font-weight: bold;   
     border-radius: 8px;
     border: none;
+}
+
+.botonActivo {
+    background-color: #3ABB90;
+    color: white;
+}
+
+.botonInactivo {
+    color: #3ABB90;
+    background-color: white;
 }
 .tituloDeContenedorDeGases{
     display: flex;

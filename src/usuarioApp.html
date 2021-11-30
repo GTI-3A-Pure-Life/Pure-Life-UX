@@ -57,38 +57,68 @@
             <div>
                 <img class="icono" src="recursos/editIcon.png" alt="Icono editar">
             </div>
-
+            
         </div>
 
-        <h1>Estadísticas</h1>
-        <h3>La calidad del aire respirada hoy es: <span id="calidadMediaHoyApp">Buena</span></h3>
+        <div class="contendorTituloEstadisticas">
+            <h1>Estadísticas</h1>
+            <h3>La calidad del aire respirada hoy es: <span id="calidadMediaHoyApp">Buena</span></h3>
+            <p></p>
+        </div>
 
-        <!-- Aquí irán las gráficas, pero de momento ponemos la foto -->
-        <img src="" alt="Gráficas aire">
+        
+
+        <div class="myProgress">
+
+            <h4>CO <span style="font-weight: normal;"></span></h4>
+            <progress class="myBarCO" id="barCO" max="350"></progress>
+            <div id="graficaCO">
+                <canvas id="chartCO" width="400" height="100"></canvas>
+            </div>
+            <h4>O3 <span style="font-weight: normal;"></span></h4> 
+            <progress class="myBarO3" id="barO3" max="350"></progress>
+            <div id="graficaO3">
+                <canvas id="chartO3" width="400" height="100"></canvas>
+            </div>
+            <h4>NO2 <span style="font-weight: normal;"></span></h4> 
+            <progress class="myBarNO2" id="barNO2" max="350"></progress>
+            <div id="graficaNO2">
+                <canvas id="chartNO2" width="400" height="100"></canvas>
+            </div>
+            <h4>SO2 <span style="font-weight: normal;"></span></h4> 
+            <progress class="myBarSO2" id="barSO2" max="350"></progress>
+            <div id="graficaSO2">
+                <canvas id="chartSO2" width="400" height="100"></canvas>
+            </div>
+
+        </div>
 
         <div class="contenedorTarjetasCalidadAire">
 
             <div class="contenedorTarjetas">
-                <img class="fondoDeTarjetaVerde" src="recursos/392500_estate_home_house_real_icon.png" alt="Avatar" style="width:100%">
+                <img class="" src="recursos/392500_estate_home_house_real_icon.png" alt="Avatar" style="width:100%; padding: 3rem;">
                 <div class="containerTarjeta">
                     <h4><b>Casa</b></h4> 
-                    <p>Calidad del aire: Buena</p> 
+                    <p>Calidad del aire: </p> 
+                    <p>AQI: </p>
                   </div>
             </div>
 
             <div class="contenedorTarjetas">
-                <img class="fondoDeTarjetaAmarillo" src="recursos/commerical.png" alt="Avatar" style="width:100%">
+                <img class="" src="recursos/commerical.png" alt="Avatar" style="width:100%">
                 <div class="containerTarjeta">
                     <h4><b>Trabajo</b></h4> 
-                    <p>Calidad del aire: Mala</p> 
+                    <p>Calidad del aire: </p> 
+                    <p>AQI: </p>
                   </div>
             </div>
 
             <div class="contenedorTarjetas">
-                <img class="fondoDeTarjetaRojo" src="recursos/cityIcon.png" alt="Avatar" style="width:100%">
+                <img class="" src="recursos/cityIcon.png" alt="Avatar" style="width:100%">
                 <div class="containerTarjeta">
-                    <h4><b>Ciudad</b></h4> 
-                    <p>Calidad del aire: Muy mala</p> 
+                    <h4><b>Exterior</b></h4> 
+                    <p>Calidad del aire: </p> 
+                    <p>AQI: </p>
                   </div>
             </div>
 
@@ -101,7 +131,32 @@
             <p class="nombreEmpresa">PureLife &copy; 2021. Todos los derechos reservados</p>
         </div>
     </footer>
-
+    <script src ="logica/LogicaFalsa.js"></script>
     <script src="logica/sesion.js"></script>
+    <script src="logica/progressBar.js"></script>
+    <script src="logica/mvc-estadisticasCalidadDelAire.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.6.0/dist/chart.min.js"></script>
+
+    <script>
+        window.onload = function(){
+
+            VistaCalidadDelAire.preparar("barCO","barO3","barNO2","barSO2","graficaCO", "graficaO3", "graficaNO2", "graficaSO2","chartCO","chartO3","chartNO2","chartSO2");
+            ControladorVistaCalidadDelAire.iniciarLasBarras();
+
+            document.getElementById("barCO").addEventListener("click", function() {
+                ControladorVistaCalidadDelAire.vista.toggleGrafica("graficaCO");
+            });
+            document.getElementById("barO3").addEventListener("click", function() {
+                ControladorVistaCalidadDelAire.vista.toggleGrafica("graficaO3");
+            });
+            document.getElementById("barNO2").addEventListener("click", function() {
+                ControladorVistaCalidadDelAire.vista.toggleGrafica("graficaNO2");
+            });
+            document.getElementById("barSO2").addEventListener("click", function() {
+                ControladorVistaCalidadDelAire.vista.toggleGrafica("graficaSO2");
+            });
+        }
+    </script>
+
 </body>
 </html>

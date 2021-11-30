@@ -1,8 +1,8 @@
 /*=========================================================================================*/
 /*
-Nombre archivo: estilosLogin.css
+Nombre archivo: estilosAppAdmin.css
 Autor: Juan Ferrera Sala
-Fecha: 14/11/2021
+Fecha: 18/11/2021
 */
 /*=========================================================================================*/
 /*Login*/
@@ -98,49 +98,54 @@ nav ul li a:hover {
     border: none;
 }
 /*=========================================================================================*/
-/*contenedorPrincipalDeContacto*/
+/*contenedorMain*/
 /*=========================================================================================*/
-.contenedorPrincipalDeContacto{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 60vh;
-}
-.tituloPrincipalContacto{
-    margin-top: 4rem;
-    margin-left: 2rem;
-}
-.contenedorCorreoYTel{
+.contenedorMain{
+    width: 100%;
+    min-height: 75vh;
+    padding-top: 2.5rem;
     padding-right: 2rem;
-    border-right: 3px black solid;
-}
-.contenedorRedes{
     padding-left: 2rem;
 }
-.contenidoADestacar{
-    color: #3ABB90;
+.botonPaginaAdmin{
+    height: 2.5rem;
+    width: 9rem;
     font-weight: bold;
-    font-size: 20px;
+    background-color: #3ABB90;
+    color: white;
+    border-radius: 8px;
+    border: none;
 }
-.contenedorIconoYNombreRed{
+h2{
+    font-size: 30px;
+    color: black;
+}
+.container{
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
 }
-.iconoRedes{
-    height: 2rem;
-    width: 2rem;
-    margin-right: 1rem;
+
+#tblDatos, .containerTabla {
+    width: 100%;
+}
+.pagination-container {
+    display: flex;
+    justify-content: right;
+}
+th {
+    text-align: left;
 }
 /*=========================================================================================*/
 /*footer*/
 /*=========================================================================================*/
 footer{
+    margin-top: 2rem;
     height: 12.5vh;
     background:rgb(242, 242, 242);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    display:flex;
     justify-content: start;
     flex-basis: 80%;
     color: black;
@@ -157,6 +162,7 @@ footer .linkLogo{
 .nombreEmpresa{
     margin-left: 2rem;
 }
+
 #userIcon {
     width: 2rem;
     margin-right: 2rem;
