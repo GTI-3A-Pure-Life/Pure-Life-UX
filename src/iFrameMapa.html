@@ -17,18 +17,40 @@
 
 <link rel="stylesheet" href="css/estilosMapa.css">
 <link rel="stylesheet" href="css/carga.css">
+<link href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 </head>
 <body>
     <div id="loader"></div>
     <div id="map"></div>
 
+    <div class="contenedorDeInfo"><dialog id="extra-info" class="dialogo-info">
+    
+        <h3 id="leve">LEVE</h3>
+        La calidad del aire se considera satisfactoria y la contaminación atmosférica presenta un riesgo escaso o nulo.
+        <h3 id="moderado">MODERADO</h3>
+        Los miembros de grupos sensibles pueden padecer efectos en la salud. Probablemente no afectará a las personas en general.
+        <h3 id="alto">ALTO</h3>
+        Todos pueden comenzar a padecer efectos en la salud y los miembros de grupos sensibles pueden padecer efectos más graves.
+        <h3 id="muyAlto">MUY ALTO</h3>
+        Alerta sanitaria: todos pueden padecer efectos sanitarios más graves.
+        <br>
+        <a href="https://www.who.int/phe/health_topics/AQG_spanish.pdf" class="leerMax">Leer Más</a>
+    
+        <button type="buttonCerrar" onclick="cerrarDialogo('extra-info')">Cerrar</button>
+      
+    </dialog>
+    </div>
     <div class="contenedorDeGases">
         <h4 class="tituloDeContenedorDeGases">Tipo de gas</h4>
+        <i class="icon-info-sign" onclick="abrirDialogo('extra-info')"></i>
         <button class="botonDeGases botonActivo" value="1" onclick="ControladorMediciones.filtrarPorGas(value)">CO</button>
         <button class="botonDeGases botonActivo" value="2" onclick="ControladorMediciones.filtrarPorGas(value)">NO2 </button>
         <button class="botonDeGases botonActivo" value="3" onclick="ControladorMediciones.filtrarPorGas(value)">SO2 </button>
         <button class="botonDeGases botonActivo" value="4" onclick="ControladorMediciones.filtrarPorGas(value)">O3 </button>
     </div>
+
+    
+    
 </body>
     <script src="logica/leaflet.js"> </script>
     <script src="logica/leaflet-idw.js"></script>
@@ -38,6 +60,18 @@
     <script>
         window.onload = function() {
                 ControladorMediciones.iniciarTodasObtenerMediciones("http://localhost:8080");
+        }
+
+        function abrirDialogo (dialog){
+            var dialogo = document.getElementById(dialog);
+            dialogo.show();
+
+        }
+
+        function cerrarDialogo (dialog){
+            var dialogo = document.getElementById(dialog);
+            dialogo.close();
+
         }
     </script>
 </html>

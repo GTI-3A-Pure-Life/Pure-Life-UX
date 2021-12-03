@@ -9,6 +9,7 @@ Fecha: 15/11/2021
     box-sizing:border-box;
     font-family: 'Overpass', sans-serif;
 }
+
 /*=========================================================================================*/
 /*Body*/
 /*=========================================================================================*/
@@ -197,6 +198,25 @@ progress::-webkit-progress-bar {
   background-color: #fff;
   border-radius: 2rem;
 }
+
+/**********************/
+/****Boton informacion**/
+/*************************/
+
+#leve {
+    color: #3abb90;
+}
+#moderado {
+    color: sandybrown;
+}
+
+#alto {
+    color: tomato;
+}
+#muyAlto {
+    color: purple;
+}
+
 
 /*=========================================================================================*/
 /*Tarjetas*/
