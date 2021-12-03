@@ -101,51 +101,86 @@ var VistaCalidadDelAire = {
     cargarDatosEnGrafica: function (idGrafica, datos) {
         let valores = new Array();
         let tiempo = new Array();
+        let colors = new Array();
         datos.forEach(m => {
             valores.push(m.valor)
-            tiempo.push(m.fechaHora)
+            colors.push(this.obtenerColorHexPorValor(m.valor))
+            let horaStr = m.fecha.getHours()>=10 ? m.fecha.getHours() : "0"+m.fecha.getHours();
+            fecha = " "+horaStr+":00    ";
+            tiempo.push(fecha)
         });
 
         const ctx = idGrafica.getContext('2d');
-
+        // lineas limite de peligro
+        const annotation = {
+            annotations: {
+              line1: {
+                type: 'line',
+                yMin: 50,
+                yMax: 50,
+                borderColor: this.obtenerColorHexPorValor(150),
+                borderWidth: 2,
+                borderDash: [5],
+              },
+              line2: {
+                type: 'line',
+                yMin: 150,
+                yMax: 150,
+                borderColor: this.obtenerColorHexPorValor(200),
+                borderWidth: 2,
+                borderDash: [5],
+              },
+              line3: {
+                type: 'line',
+                yMin: 200,
+                yMax: 200,
+                borderColor: this.obtenerColorHexPorValor(300),
+                borderWidth: 2,
+                borderDash: [5],
+              }
+            }
+          };
         const myChart = new Chart(ctx, {
-            type: 'line',
+            type: 'bar',
             data: {
                 labels: tiempo,
                 datasets: [{
                     label: 'AQI',
                     data: valores,
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 3,
-                    tension: 0.2,
+                    backgroundColor: colors,
+                    borderWidth: 1,
                     pointRadius: 0
                 }]
             },
             options: {
                 scales: {
                     y: {
+                        suggestedMax: 300,
                         beginAtZero: true
                     },
-                }
+                },
+                plugins: {
+                    legend: {
+                      display: false
+                    },
+                    annotation
+                  }
             }
         });
     },
 
+
+    obtenerColorHexPorValor: function(valor) {
+        if(valor >= 0 && valor <= 50) {
+            return '#3ABB90'
+        } else if(valor > 50 && valor <= 150) {
+            return '#ffc300'
+        } else if(valor > 150 && valor <= 200) {
+            return '#e43939'
+        } else {
+            return '#86003b'
+        }
+    }
 
 }// vista
 
@@ -165,12 +200,17 @@ var ControladorVistaCalidadDelAire = {
         var strRes = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
         let fechaInicio = strRes + " 00:00:00";
         let fechaFin = strRes + " 23:59:59";
-        let mediciones = await LogicaFalsa.obtenerMedicionesDeHastaPorUsuario(fechaInicio, fechaFin,user.id);
+
+        fechaInicio = "2021-11-26 00:00:00"
+        fechaFin = "2021-11-26 23:59:59"
+
+        let mediciones = await LogicaFalsa.obtenerMedicionesDeHastaPorUsuario(fechaInicio, fechaFin,13/*user.id*/);
         let medicionesCO = new Array();
         let medicionesSO2 = new Array();
         let medicionesNO2 = new Array();
         let medicionesO3 = new Array();
 
+       
         
 
         for(let i = 0; i< mediciones.length; i++){
@@ -191,70 +231,13 @@ var ControladorVistaCalidadDelAire = {
                     break;
             }
         }
-        console.log("mediciones antes",medicionesCO);
-
-        medicionesCO = medicionesCO.sort(function(medicion1,medicion2){
-
-            let fecha1 = new Date(medicion1.fechaHora);
-    
-            let fecha2 = new Date(medicion2.fechaHora);
-            if (fecha1 > fecha2) {
-                return 1;
-              }
-              if (fecha1< fecha2) {
-                return -1;
-              }
-              // a must be equal to b
-              return 0;
-    
-        });
-        medicionesO3 = medicionesO3.sort(function(medicion1,medicion2){
-
-            let fecha1 = new Date(medicion1.fechaHora);
-    
-            let fecha2 = new Date(medicion2.fechaHora);
-            if (fecha1 > fecha2) {
-                return 1;
-              }
-              if (fecha1< fecha2) {
-                return -1;
-              }
-              // a must be equal to b
-              return 0;
-    
-        });
-        medicionesNO2 = medicionesNO2.sort(function(medicion1,medicion2){
-
-            let fecha1 = new Date(medicion1.fechaHora);
-    
-            let fecha2 = new Date(medicion2.fechaHora);
-            if (fecha1 > fecha2) {
-                return 1;
-              }
-              if (fecha1< fecha2) {
-                return -1;
-              }
-              // a must be equal to b
-              return 0;
-    
-        });
-        medicionesSO2 = medicionesSO2.sort(function(medicion1,medicion2){
-
-            let fecha1 = new Date(medicion1.fechaHora);
-    
-            let fecha2 = new Date(medicion2.fechaHora);
-            if (fecha1 > fecha2) {
-                return 1;
-              }
-              if (fecha1< fecha2) {
-                return -1;
-              }
-              // a must be equal to b
-              return 0;
-    
-        });
-
-        console.log("mediciones despues",medicionesCO);
+        
+        
+        medicionesCO = this.transformarMedicionesAArrayMedicionesPorHora24Horas(medicionesCO)
+        medicionesNO2 = this.transformarMedicionesAArrayMedicionesPorHora24Horas(medicionesNO2)
+        medicionesO3 = this.transformarMedicionesAArrayMedicionesPorHora24Horas(medicionesO3)
+        medicionesSO2 = this.transformarMedicionesAArrayMedicionesPorHora24Horas(medicionesSO2)
+       
         this.vista.ocultarGraficas();
         this.vista.representarGraficas(medicionesCO,medicionesSO2,medicionesNO2,medicionesSO2);
 
@@ -262,7 +245,7 @@ var ControladorVistaCalidadDelAire = {
         //obtenerCalidadAirePorTiempoYUsuario
         //===============================================================================================
 
-        let calidadAireAQI = await LogicaFalsa.obtenerCalidadAirePorTiempoYUsuario(fechaInicio, fechaFin,user.id);
+        let calidadAireAQI = await LogicaFalsa.obtenerCalidadAirePorTiempoYUsuario(fechaInicio, fechaFin,13/*user.id*/);
         let elemCO = this.vista.idBarCO;
         elemCO.value = calidadAireAQI[0].valor;
         this.asignarColorBarras(elemCO, calidadAireAQI[0].valor);
@@ -374,7 +357,72 @@ var ControladorVistaCalidadDelAire = {
           // a must be equal to b
           return 0;
 
+    },
+
+    transformarMedicionesAArrayMedicionesPorHora24Horas: function(mediciones) {
+        let horas = 24;
+        let mediciones24Horas = new Array();
+        let dateHoy = new Date(Date.now());
+        fechaHoy = dateHoy.getFullYear()+"-"+dateHoy.getMonth()+"-"+dateHoy.getDate();
+        fechaHoy = "2021-11-16";//TODO quitar
+        // inicializar array
+        for(let i = 0; i<horas; i++){
+            let fecha = fechaHoy;
+            // multiplo de 60, solo hora
+            let horaStr = i>=10 ? i : "0"+i;
+            fecha += " "+horaStr+":00:00";
+            mediciones24Horas.push({fecha:new Date(fecha),valor:0});
+        }
+
+        console.log("mediciones 24 hora", mediciones24Horas)
+        // poner los valores en cada uno de los minutos correspondientes, si hay varios en el mismo
+        // media aritmetica
+
+        let anteriorHora = -1;
+        let contadorMedicionesMismaHora = 1;
+        let media = 1;
+        
+        mediciones.forEach(m=>{
+            let hora = new Date(m.fechaHora).getHours();
+            console.log("hora",new Date(m.fechaHora).getHours())
+            console.log("FECHA24", "----------------------------------------------");
+            console.log("FECHA24", "transformarMedicionesAArrayMedicionesPorMinuto24Horas: indice: "+hora);
+            console.log("FECHA24", "transformarMedicionesAArrayMedicionesPorMinuto24Horas: valor: "+m.valor);
+
+            if(anteriorHora != hora){
+                anteriorHora = hora;
+                contadorMedicionesMismaHora = 1;
+                media = m.valor;
+                mediciones24Horas[hora].valor = m.valor;
+
+            }
+            else{
+
+                let valorAnterior = mediciones24Horas[hora].valor;
+                console.log("FECHA24", "transformarMedicionesAArrayMedicionesPorMinuto24Horas: valor anterior: "+valorAnterior+"");
+
+                console.log("FECHA24", "transformarMedicionesAArrayMedicionesPorMinuto24Horas: media anterior: "+media+"");
+                console.log("FECHA24", "transformarMedicionesAArrayMedicionesPorMinuto24Horas: hay : "+contadorMedicionesMismaHora+" mediciones");
+                contadorMedicionesMismaHora++;
+                let nuevaMedia = (contadorMedicionesMismaHora*media - valorAnterior + m.valor)/ contadorMedicionesMismaHora;
+                console.log("FECHA24", "transformarMedicionesAArrayMedicionesPorMinuto24Horas: nueva media: "+nuevaMedia+"");
+
+                media = nuevaMedia;
+                mediciones24Horas[hora].valor = (nuevaMedia);
+
+            }
+        })
+
+        /*console.log("GRAFICA", "transformarMedicionesAArrayMedicionesPorHora24Horas------------------------------");
+
+        for(let m  in  mediciones24Horas){
+            console.log("GRAFICA", "Fecha: "+mediciones24Horas[m].fecha+ " - valor: "+mediciones24Horas[m].valor);
+        }
+        console.log("GRAFICA", "transformarMedicionesAArrayMedicionesPorHora24Horas------------------------------");*/
+
+        return mediciones24Horas;
     }
+
 
 
 }// controlador 

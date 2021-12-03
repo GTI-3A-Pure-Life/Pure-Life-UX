@@ -174,15 +174,15 @@ progress::-webkit-progress-value {
 
 }
 .amarillo::-webkit-progress-value {
-    background-color: sandybrown;
+    background-color: #ffc300;
 
 }
 .rojo::-webkit-progress-value {
-    background-color: tomato;
+    background-color: #e43939;
 
 }
 .morado::-webkit-progress-value {
-    background-color: purple;
+    background-color: #86003b;
 
 }
 
