@@ -100,6 +100,10 @@ nav ul li a:hover {
 /*=========================================================================================*/
 /*contenedorPrincipalDeContacto*/
 /*=========================================================================================*/
+h1{
+    font-size: 30px;
+    color: black;
+}
 .contenedorPrincipalDeContacto{
     display: flex;
     align-items: center;

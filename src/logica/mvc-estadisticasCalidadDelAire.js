@@ -263,7 +263,6 @@ var ControladorVistaCalidadDelAire = {
         //===============================================================================================
 
         let calidadAireAQI = await LogicaFalsa.obtenerCalidadAirePorTiempoYUsuario(fechaInicio, fechaFin,user.id);
-        console.log(calidadAireAQI);
         let elemCO = this.vista.idBarCO;
         elemCO.value = calidadAireAQI[0].valor;
         this.asignarColorBarras(elemCO, calidadAireAQI[0].valor);
