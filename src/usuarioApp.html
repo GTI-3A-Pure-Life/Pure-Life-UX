@@ -2,61 +2,61 @@
 <html lang="es">
 
 <style>
+    dialog[open] {
+        position: fixed;
+        width: 50%;
+        max-width: 750px;
+        top: 10px;
+    }
 
-dialog[open] {
-    position: fixed;
-    width: 50%;
-    max-width: 750px;
-    top: 10px;
-}
+    .leyendas {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        width: 70%;
+        padding-left: 30%;
+    }
 
-.leyendas {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    width: 70%;
-    padding-left: 30%;
-}
+    .circulo-leve {
+        height: 1rem;
+        width: 1rem;
+        margin-right: 1rem;
+        border-radius: 6rem;
+        background-color: #3ABB90;
+    }
 
-.circulo-leve {
-    height: 1rem;
-    width: 1rem;
-    margin-right: 1rem;
-    border-radius: 6rem;
-    background-color: #3ABB90;
-  }
-  .circulo-moderado {
-    height: 1rem;
-    width: 1rem;
-    margin-right: 1rem;
-    border-radius: 6rem;
-    background-color: #ffc300;
-  }
-  .circulo-alto {
-    height: 1rem;
-    width: 1rem;
-    margin-right: 1rem;
-    border-radius: 6rem;
-    background-color: #e43939;
-  }
-  .circulo-muy-alto {
-    height: 1rem;
-    width: 1rem;
-    margin-right: 1rem;
-    border-radius: 6rem;
-    background-color: #86003b;
-  }
-  .circuloYTexto{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
+    .circulo-moderado {
+        height: 1rem;
+        width: 1rem;
+        margin-right: 1rem;
+        border-radius: 6rem;
+        background-color: #ffc300;
+    }
 
-  
+    .circulo-alto {
+        height: 1rem;
+        width: 1rem;
+        margin-right: 1rem;
+        border-radius: 6rem;
+        background-color: #e43939;
+    }
 
+    .circulo-muy-alto {
+        height: 1rem;
+        width: 1rem;
+        margin-right: 1rem;
+        border-radius: 6rem;
+        background-color: #86003b;
+    }
+
+    .circuloYTexto {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
 </style>
 
 <head>
@@ -67,10 +67,12 @@ dialog[open] {
     <link href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 
 </head>
+
 <body>
-    
+
     <header class="header">
-        <a class="linkLogo" href="index.html"><img class="logo-header" src="recursos/LogoPureLife.svg" alt="Logo PureLife"/></a>
+        <a class="linkLogo" href="index.html"><img class="logo-header" src="recursos/LogoPureLife.svg"
+                alt="Logo PureLife" /></a>
         <div class="contenedorEnlaces">
             <div class="contenedorDiv">
                 <nav class="nav">
@@ -104,7 +106,7 @@ dialog[open] {
                     <h3>Teléfono</h3>
                     <p id="telefonoApp">Añade un número de teléfono</p>
                 </div>
-        
+
                 <div class="contenedorDirecciones">
                     <h3>Ubicación casa</h3>
                     <p id="direccionCasaApp">Añade la dirección de tu casa</p>
@@ -113,11 +115,11 @@ dialog[open] {
                 </div>
 
             </div>
-    
+
             <div>
                 <img class="icono" src="recursos/edit.svg" alt="Icono editar">
             </div>
-            
+
         </div>
 
         <div class="contendorTituloEstadisticas">
@@ -125,48 +127,64 @@ dialog[open] {
             <div class="contenedorBotonInfoYTitulo">
                 <h1>Estadísticas</h1>
 
-                <a onclick="abrirDialogo('extra-info')"><img class="iconoInfo" src="recursos/info2.svg" alt="icono info"/></a>
-            </div>   
-        
-            <div class="info">
-        
-                <dialog id="extra-info" class="dialogo-info">
+                <button id="myBtn" class="botonAbrirDialog"><img class="iconoInfo" src="recursos/info2.svg" alt="icono info"/></button>
+            </div>
 
+            <!-- The Modal -->
+            <div id="myModal" class="modal">
+
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <span class="close">&times;</span>
                     <h3 id="leve">LEVE</h3>
-                    La calidad del aire se considera satisfactoria y la contaminación atmosférica presenta un riesgo escaso o nulo.
+                    La calidad del aire se considera satisfactoria y la contaminación atmosférica presenta un riesgo
+                    escaso o nulo.
                     <h3 id="moderado">MODERADO</h3>
-                    Los miembros de grupos sensibles pueden padecer efectos en la salud. Probablemente no afectará a las personas en general.
+                    Los miembros de grupos sensibles pueden padecer efectos en la salud. Probablemente no afectará a las
+                    personas en general.
                     <h3 id="alto">ALTO</h3>
-                    Todos pueden comenzar a padecer efectos en la salud y los miembros de grupos sensibles pueden padecer efectos más graves.
+                    Todos pueden comenzar a padecer efectos en la salud y los miembros de grupos sensibles pueden
+                    padecer efectos más graves.
                     <h3 id="muyAlto">MUY ALTO</h3>
                     Alerta sanitaria: todos pueden padecer efectos sanitarios más graves.
-                    <br>
 
                     <div class="contendorBotonesDialog">
 
-                        <button class="botonCerrarInfo"onclick="cerrarDialogo('extra-info')">Volver</button>
-                        <button class="botonAbrirInfo"><a href="https://www.who.int/phe/health_topics/AQG_spanish.pdf" class="leerMas">Leer Más</a></button>
+                        <button class="botonAbrirInfo"><a href="https://www.who.int/phe/health_topics/AQG_spanish.pdf"
+                                class="leerMas">Leer Más</a></button>
 
                     </div>
-                    
-                </dialog>
-                              
+
+                </div>
+
             </div>
-            
-            <br/>
-            
+
+            <br />
+
             <h3>La calidad del aire respirada hoy es: <span id="calidadMediaHoyApp">Buena</span></h3>
-            
+
         </div>
 
         <div class="leyendas">
-           <div class="circuloYTexto"><div class ="circulo-leve"></div><p> BUENA</p></div>
-           <div class="circuloYTexto"><div class ="circulo-moderado"></div><p class="moderado"> MODERADA</p></div>
-           <div class="circuloYTexto"><div class ="circulo-alto"></div><p class="alto"> MALA</p></div>
-           <div class="circuloYTexto"><div class ="circulo-muy-alto"></div><p class="muyAlto"> MUY MALA</p></div>
+            <div class="circuloYTexto">
+                <div class="circulo-leve"></div>
+                <p> BUENA</p>
+            </div>
+            <div class="circuloYTexto">
+                <div class="circulo-moderado"></div>
+                <p class="moderado"> MODERADA</p>
+            </div>
+            <div class="circuloYTexto">
+                <div class="circulo-alto"></div>
+                <p class="alto"> MALA</p>
+            </div>
+            <div class="circuloYTexto">
+                <div class="circulo-muy-alto"></div>
+                <p class="muyAlto"> MUY MALA</p>
+            </div>
 
         </div>
-        
+
 
         <div class="myProgress">
 
@@ -175,17 +193,17 @@ dialog[open] {
             <div id="graficaCO">
                 <canvas id="chartCO" width="400" height="100"></canvas>
             </div>
-            <h4>O3 <span style="font-weight: normal;"></span></h4> 
+            <h4>O3 <span style="font-weight: normal;"></span></h4>
             <progress class="myBarO3" id="barO3" max="350"></progress>
             <div id="graficaO3">
                 <canvas id="chartO3" width="400" height="100"></canvas>
             </div>
-            <h4>NO2 <span style="font-weight: normal;"></span></h4> 
+            <h4>NO2 <span style="font-weight: normal;"></span></h4>
             <progress class="myBarNO2" id="barNO2" max="350"></progress>
             <div id="graficaNO2">
                 <canvas id="chartNO2" width="400" height="100"></canvas>
             </div>
-            <h4>SO2 <span style="font-weight: normal;"></span></h4> 
+            <h4>SO2 <span style="font-weight: normal;"></span></h4>
             <progress class="myBarSO2" id="barSO2" max="350"></progress>
             <div id="graficaSO2">
                 <canvas id="chartSO2" width="400" height="100"></canvas>
@@ -198,85 +216,102 @@ dialog[open] {
             <div class="contenedorTarjetas">
                 <img class="" src="recursos/home.svg" alt="Avatar" style="width:100%">
                 <div class="containerTarjeta">
-                    <h4><b>Casa</b></h4> 
-                    <p>Calidad del aire: </p> 
+                    <h4><b>Casa</b></h4>
+                    <p>Calidad del aire: </p>
                     <p>AQI: </p>
-                  </div>
+                </div>
             </div>
 
             <div class="contenedorTarjetas">
                 <img class="" src="recursos/trabajo.svg" alt="Avatar" style="width:100%">
                 <div class="containerTarjeta">
-                    <h4><b>Trabajo</b></h4> 
-                    <p>Calidad del aire: </p> 
+                    <h4><b>Trabajo</b></h4>
+                    <p>Calidad del aire: </p>
                     <p>AQI: </p>
-                  </div>
+                </div>
             </div>
 
             <div class="contenedorTarjetas">
                 <img class="" src="recursos/exterior.svg" alt="Avatar" style="width:100%">
                 <div class="containerTarjeta">
-                    <h4><b>Exterior</b></h4> 
-                    <p>Calidad del aire: </p> 
+                    <h4><b>Exterior</b></h4>
+                    <p>Calidad del aire: </p>
                     <p>AQI: </p>
-                  </div>
+                </div>
             </div>
 
         </div>
     </section>
 
     <footer>
-        <a class="linkLogo" href="index.html"><img class="logo-header" src="recursos/LogoPureLife.svg" alt="Logo PureLife"/></a>
+        <a class="linkLogo" href="index.html"><img class="logo-header" src="recursos/LogoPureLife.svg"
+                alt="Logo PureLife" /></a>
         <div class="contenedorFooter">
             <p class="nombreEmpresa">PureLife &copy; 2021. Todos los derechos reservados</p>
         </div>
     </footer>
-    <script src ="logica/LogicaFalsa.js"></script>
+    <script src="logica/LogicaFalsa.js"></script>
     <script src="logica/sesion.js"></script>
     <script src="logica/progressBar.js"></script>
     <script src="logica/mvc-estadisticasCalidadDelAire.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.6.0/dist/chart.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.3.2/chart.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/1.0.2/chartjs-plugin-annotation.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/1.0.2/chartjs-plugin-annotation.min.js"></script>
     <script>
         Chart.register('chartjs-plugin-annotation');
     </script>
 
     <script>
-        window.onload = function(){
+        window.onload = function () {
 
-            VistaCalidadDelAire.preparar("barCO","barO3","barNO2","barSO2","graficaCO", "graficaO3", "graficaNO2", "graficaSO2","chartCO","chartO3","chartNO2","chartSO2");
+            VistaCalidadDelAire.preparar("barCO", "barO3", "barNO2", "barSO2", "graficaCO", "graficaO3", "graficaNO2", "graficaSO2", "chartCO", "chartO3", "chartNO2", "chartSO2");
             ControladorVistaCalidadDelAire.iniciarLasBarras();
 
-            document.getElementById("barCO").addEventListener("click", function() {
+            document.getElementById("barCO").addEventListener("click", function () {
                 ControladorVistaCalidadDelAire.vista.toggleGrafica("graficaCO");
             });
-            document.getElementById("barO3").addEventListener("click", function() {
+            document.getElementById("barO3").addEventListener("click", function () {
                 ControladorVistaCalidadDelAire.vista.toggleGrafica("graficaO3");
             });
-            document.getElementById("barNO2").addEventListener("click", function() {
+            document.getElementById("barNO2").addEventListener("click", function () {
                 ControladorVistaCalidadDelAire.vista.toggleGrafica("graficaNO2");
             });
-            document.getElementById("barSO2").addEventListener("click", function() {
+            document.getElementById("barSO2").addEventListener("click", function () {
                 ControladorVistaCalidadDelAire.vista.toggleGrafica("graficaSO2");
             });
         }
 
-        function abrirDialogo (dialog){
-            var dialogo = document.getElementById(dialog);
-            dialogo.show();
+    // Get the modal
+    var modal = document.getElementById("myModal");
 
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal 
+    btn.onclick = function () {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
         }
-
-        function cerrarDialogo (dialog){
-            var dialogo = document.getElementById(dialog);
-            dialogo.close();
-
-        }
+    }
 
 
     </script>
 
 </body>
+
 </html>
