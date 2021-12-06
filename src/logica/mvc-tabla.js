@@ -14,7 +14,7 @@ var VistaTabla = {
                 console.log(datos[i])
                 this.tabla.innerHTML += "<tr>" + 
                 "<td>" + datos[i].id + "</td>" + 
-                "<td>" + datos[i].uuidSensor + "</td>" + 
+                "<td class = 'nombreSensor'>" + datos[i].uuidSensor + "</td>" + 
                 "<td class = 'Averiado'>" + datos[i].averiado + "</td>" + 
                 "<td>" + datos[i].pocaBateria + "</td>" + 
                 "<td class = 'Descalibrado'>" + datos[i].descalibrado + "</td>" + 
@@ -71,40 +71,35 @@ var ControladorTabla = {
 function createPDFAveriados() {
     var tabla = document.getElementById('tblDatos');
     let tablaM ="<table><tbody>";
+    var sensores = tabla.getElementsByClassName("nombreSensor")
     var estado = tabla.getElementsByClassName("Averiado");
     var fecha = tabla.getElementsByClassName("Fecha");
+    let ultimoSensor = "";
 
       for (let i = 0; i < tabla.rows.length; i++) {
         tablaM += "<tr>";
         
         if (i==0) {
-            for(let j = 0; j<tabla.rows[i].cells.length-1; j++){
-                tablaM += "<th>" + tabla.rows[i].cells[j].innerHTML + "</th>"
-            }
+            tablaM += "<th>" + tabla.rows[i].cells[1].innerHTML + "</th>" + 
+            "<th>" + tabla.rows[i].cells[5].innerHTML + "</th>";
         } else {
             
             averiado = estado[i-1]
             fechaDeUno = fecha[i-1]
+            sensorActual = sensores[i - 1].innerText;
             if(averiado != undefined && averiado.innerHTML=="1"){
                 let fechaDate = new Date(fechaDeUno.innerText)
                 let horas = (Date.now() - fechaDate.getTime())/1000/60/24
-                
-                
-                
-                if( i> 0 && horas>=24){
+                if( i> 0 && horas>=24 && ultimoSensor != sensorActual){
+                    ultimoSensor = sensorActual;
                     console.log("la i", i)
-                    for (let j = 0; j < tabla.rows[i].cells.length-1; j++) {
-                        let texto = ""                   
-                        texto = tabla.rows[i].cells[j].innerText
-                        
-                        console.log("", texto);
-                        tablaM += "<td>" + tabla.rows[i].cells[j].innerHTML + "</td>"            
-                    }
-                }
-            
-        }
 
-        
+                    tablaM += "<td>" + tabla.rows[i].cells[1].innerText + "</td>" + 
+                    "<td>" + tabla.rows[i].cells[5].innerText + "</td>";
+                }
+            } else if(averiado.innerHTML =="0") {
+                ultimoSensor = sensorActual;
+            }
         }
         tablaM += "</tr>";
       }
@@ -135,40 +130,36 @@ function createPDFAveriados() {
 function createPDFDescalibrados() {
     var tabla = document.getElementById('tblDatos');
     let tablaM ="<table><tbody>";
-    var estado = tabla.getElementsByClassName("Averiado");
+    var sensores = tabla.getElementsByClassName("nombreSensor")
+    var estado = tabla.getElementsByClassName("Descalibrado");
     var fecha = tabla.getElementsByClassName("Fecha");
+    let ultimoSensor = "";
 
       for (let i = 0; i < tabla.rows.length; i++) {
         tablaM += "<tr>";
         
         if (i==0) {
-            for(let j = 0; j<tabla.rows[i].cells.length-1; j++){
-                tablaM += "<th>" + tabla.rows[i].cells[j].innerHTML + "</th>"
-            }
+            tablaM += "<th>" + tabla.rows[i].cells[1].innerHTML + "</th>" + 
+            "<th>" + tabla.rows[i].cells[5].innerHTML + "</th>";
         } else {
             
             descalibrado = estado[i-1]
             fechaDeUno = fecha[i-1]
+            sensorActual = sensores[i - 1].innerText;
             if(descalibrado != undefined && descalibrado.innerHTML=="1"){
                 let fechaDate = new Date(fechaDeUno.innerText)
                 let horas = (Date.now() - fechaDate.getTime())/1000/60/24
-                
-                
-                
-                if( i> 0 && horas>=4){
-                    console.log("la i", i)
-                    for (let j = 0; j < tabla.rows[i].cells.length-1; j++) {
-                        let texto = ""                   
-                        texto = tabla.rows[i].cells[j].innerText
-                        
-                        console.log("", texto);
-                        tablaM += "<td>" + tabla.rows[i].cells[j].innerHTML + "</td>"            
-                    }
-                }
-            
-        }
 
-        
+                if( i> 0 && horas>=4 && ultimoSensor != sensorActual){
+                    ultimoSensor = sensorActual;
+                    console.log("la i", i)
+                    
+                    tablaM += "<td>" + tabla.rows[i].cells[1].innerText + "</td>" + 
+                    "<td>" + tabla.rows[i].cells[5].innerText + "</td>";
+                }
+            } else if (descalibrado.innerHTML == "0") {
+                ultimoSensor = sensorActual;
+            }
         }
         tablaM += "</tr>";
       }
