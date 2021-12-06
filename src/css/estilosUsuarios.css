@@ -158,6 +158,57 @@ nav ul li a:hover {
     height: 2.5rem;
     width: 2.5rem;
 }
+
+
+/*=========================================================================================*/
+/*leyenda*/
+/*=========================================================================================*/
+
+.leyendas {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    width: 70%;
+    padding-left: 30%;
+}
+
+.circulo-leve {
+    height: 1rem;
+    width: 1rem;
+    margin-right: 1rem;
+    border-radius: 6rem;
+    background-color: #3ABB90;
+  }
+  .circulo-moderado {
+    height: 1rem;
+    width: 1rem;
+    margin-right: 1rem;
+    border-radius: 6rem;
+    background-color: #ffc300;
+  }
+  .circulo-alto {
+    height: 1rem;
+    width: 1rem;
+    margin-right: 1rem;
+    border-radius: 6rem;
+    background-color: #e43939;
+  }
+  .circulo-muy-alto {
+    height: 1rem;
+    width: 1rem;
+    margin-right: 1rem;
+    border-radius: 6rem;
+    background-color: #86003b;
+  }
+  .circuloYTexto{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
 /*=========================================================================================*/
 /*graficas*/
 /*=========================================================================================*/

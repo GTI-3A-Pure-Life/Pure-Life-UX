@@ -10,6 +10,53 @@ dialog[open] {
     top: 10px;
 }
 
+.leyendas {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    width: 70%;
+    padding-left: 30%;
+}
+
+.circulo-leve {
+    height: 1rem;
+    width: 1rem;
+    margin-right: 1rem;
+    border-radius: 6rem;
+    background-color: #3ABB90;
+  }
+  .circulo-moderado {
+    height: 1rem;
+    width: 1rem;
+    margin-right: 1rem;
+    border-radius: 6rem;
+    background-color: #ffc300;
+  }
+  .circulo-alto {
+    height: 1rem;
+    width: 1rem;
+    margin-right: 1rem;
+    border-radius: 6rem;
+    background-color: #e43939;
+  }
+  .circulo-muy-alto {
+    height: 1rem;
+    width: 1rem;
+    margin-right: 1rem;
+    border-radius: 6rem;
+    background-color: #86003b;
+  }
+  .circuloYTexto{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  
+
 </style>
 
 <head>
@@ -104,6 +151,13 @@ dialog[open] {
             <p></p>
         </div>
 
+        <div class="leyendas">
+           <div class="circuloYTexto"><div class ="circulo-leve"></div><p> BUENA</p></div>
+           <div class="circuloYTexto"><div class ="circulo-moderado"></div><p class="moderado"> MODERADA</p></div>
+           <div class="circuloYTexto"><div class ="circulo-alto"></div><p class="alto"> MALA</p></div>
+           <div class="circuloYTexto"><div class ="circulo-muy-alto"></div><p class="muyAlto"> MUY MALA</p></div>
+
+        </div>
         
 
         <div class="myProgress">
