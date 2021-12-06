@@ -20,29 +20,40 @@
 <link href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 </head>
 <body>
+    <div class="info">
+        
+        <dialog id="extra-info" class="dialogo-info">
+
+            <h3 id="leve">LEVE</h3>
+            La calidad del aire se considera satisfactoria y la contaminación atmosférica presenta un riesgo escaso o nulo.
+            <h3 id="moderado">MODERADO</h3>
+            Los miembros de grupos sensibles pueden padecer efectos en la salud. Probablemente no afectará a las personas en general.
+            <h3 id="alto">ALTO</h3>
+            Todos pueden comenzar a padecer efectos en la salud y los miembros de grupos sensibles pueden padecer efectos más graves.
+            <h3 id="muyAlto">MUY ALTO</h3>
+            Alerta sanitaria: todos pueden padecer efectos sanitarios más graves.
+            <br>
+
+            <div class="contendorBotonesDialog">
+
+                <button class="botonCerrarInfo"onclick="cerrarDialogo('extra-info')">Volver</button>
+                <button class="botonAbrirInfo"><a href="https://www.who.int/phe/health_topics/AQG_spanish.pdf" class="leerMas">Leer Más</a></button>
+
+            </div>
+            
+        </dialog>
+                      
+    </div>
     <div id="loader"></div>
     <div id="map"></div>
 
-    <div class="contenedorDeInfo"><dialog id="extra-info" class="dialogo-info">
-    
-        <h3 id="leve">LEVE</h3>
-        La calidad del aire se considera satisfactoria y la contaminación atmosférica presenta un riesgo escaso o nulo.
-        <h3 id="moderado">MODERADO</h3>
-        Los miembros de grupos sensibles pueden padecer efectos en la salud. Probablemente no afectará a las personas en general.
-        <h3 id="alto">ALTO</h3>
-        Todos pueden comenzar a padecer efectos en la salud y los miembros de grupos sensibles pueden padecer efectos más graves.
-        <h3 id="muyAlto">MUY ALTO</h3>
-        Alerta sanitaria: todos pueden padecer efectos sanitarios más graves.
-        <br>
-        <a href="https://www.who.int/phe/health_topics/AQG_spanish.pdf" class="leerMax">Leer Más</a>
-    
-        <button type="buttonCerrar" onclick="cerrarDialogo('extra-info')">Cerrar</button>
-      
-    </dialog>
-    </div>
+   
+
     <div class="contenedorDeGases">
-        <h4 class="tituloDeContenedorDeGases">Tipo de gas</h4>
-        <i class="icon-info-sign" onclick="abrirDialogo('extra-info')"></i>
+        <div class="contenedorBotonInfoYTitulo">
+        <span>Tipo de gas</span>
+        <a onclick="abrirDialogo('extra-info')"><img class="iconoInfo" src="recursos/info2.svg" alt="icono info"/></a>
+        </div>
         <button class="botonDeGases botonActivo" value="1" onclick="ControladorMediciones.filtrarPorGas(value)">CO</button>
         <button class="botonDeGases botonActivo" value="2" onclick="ControladorMediciones.filtrarPorGas(value)">NO2 </button>
         <button class="botonDeGases botonActivo" value="3" onclick="ControladorMediciones.filtrarPorGas(value)">SO2 </button>

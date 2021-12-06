@@ -152,17 +152,77 @@ height: 87vh;
     color: #3ABB90;
     background-color: white;
 }
-.tituloDeContenedorDeGases{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
 .iconoCentrar{
     padding: 0.5rem;
     height: 2.5rem;
     width: 2.5rem;
     background-color: white;
     border-radius: 8px;
+}
+/*=========================================================================================*/
+/*Boton informacion*/
+/*=========================================================================================*/
+
+
+.contenedorBotonInfoYTitulo{
+    display: flex;
+    justify-content: center;
+    width: inherit;
+}
+.iconoInfo{
+	text-decoration: none;
+    height: 1.5rem;
+    width: 1.5rem;
+    margin-left: 1rem;
+}
+.iconoInfo:hover {
+	color: #3ABB90;
+    border-radius: 2rem;
+}
+#leve {
+    color: #3abb90;
+}
+#moderado {
+    color: sandybrown;
+}
+
+#alto {
+    color: tomato;
+}
+#muyAlto {
+    color: purple;
+}
+.dialogo-info{
+    border: none;
+    outline:none;
+    border-radius: 8px;
+}
+.contendorBotonesDialog{
+    position: relative;
+    float: right;
+
+}
+.botonCerrarInfo{
+    color: #3ABB90;
+    font-weight: bold;
+    background-color: transparent;
+    border: none;
+    outline:none;
+    cursor: pointer;
+    margin-right: 2rem;
+}
+.botonAbrirInfo{
+    height: 2.5rem;
+    width: 8rem;
+    font-weight: bold;
+    background-color: #3ABB90;
+    color: white;
+    border-radius: 8px;
+    border: none;
+}
+.leerMas{
+    text-decoration: none;
+    color: white;
 }
 /*=========================================================================================*/
 /*footer*/

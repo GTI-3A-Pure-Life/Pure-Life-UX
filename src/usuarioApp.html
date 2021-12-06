@@ -121,12 +121,15 @@ dialog[open] {
         </div>
 
         <div class="contendorTituloEstadisticas">
-            <h1>Estadísticas</h1>
+
+            <div class="contenedorBotonInfoYTitulo">
+                <h1>Estadísticas</h1>
+
+                <a onclick="abrirDialogo('extra-info')"><img class="iconoInfo" src="recursos/info2.svg" alt="icono info"/></a>
+            </div>   
         
             <div class="info">
-                <i class="icon-info-sign" onclick="abrirDialogo('extra-info')"></i>
         
-
                 <dialog id="extra-info" class="dialogo-info">
 
                     <h3 id="leve">LEVE</h3>
@@ -138,17 +141,22 @@ dialog[open] {
                     <h3 id="muyAlto">MUY ALTO</h3>
                     Alerta sanitaria: todos pueden padecer efectos sanitarios más graves.
                     <br>
-                    <a href="https://www.who.int/phe/health_topics/AQG_spanish.pdf" class="leerMax">Leer Más</a>
-                
-                    <button type="buttonCerrar" onclick="cerrarDialogo('extra-info')">Cerrar</button>
-                  
-                  </dialog>
-                
+
+                    <div class="contendorBotonesDialog">
+
+                        <button class="botonCerrarInfo"onclick="cerrarDialogo('extra-info')">Volver</button>
+                        <button class="botonAbrirInfo"><a href="https://www.who.int/phe/health_topics/AQG_spanish.pdf" class="leerMas">Leer Más</a></button>
+
+                    </div>
                     
-            </div><br />
+                </dialog>
+                              
+            </div>
+            
+            <br/>
             
             <h3>La calidad del aire respirada hoy es: <span id="calidadMediaHoyApp">Buena</span></h3>
-            <p></p>
+            
         </div>
 
         <div class="leyendas">

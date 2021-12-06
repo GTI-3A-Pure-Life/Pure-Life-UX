@@ -150,6 +150,7 @@ nav ul li a:hover {
 .contendorTituloEstadisticas{
     padding-left: 7rem;
     padding-right: 7rem;
+    width: 100%;
 }
 /*=========================================================================================*/
 /*icono*/
@@ -250,10 +251,23 @@ progress::-webkit-progress-bar {
   border-radius: 2rem;
 }
 
-/**********************/
-/****Boton informacion**/
-/*************************/
-
+/*=========================================================================================*/
+/*Boton informacion*/
+/*=========================================================================================*/
+.contenedorBotonInfoYTitulo{
+    display: flex;
+    justify-content: space-between;
+    width: inherit;
+}
+.iconoInfo{
+	text-decoration: none;
+    height: 2.5rem;
+    width: 2.5rem;
+}
+.iconoInfo:hover {
+	color: #3ABB90;
+    border-radius: 2rem;
+}
 #leve {
     color: #3abb90;
 }
@@ -267,8 +281,37 @@ progress::-webkit-progress-bar {
 #muyAlto {
     color: purple;
 }
-
-
+.dialogo-info{
+    border: none;
+    outline:none;
+    border-radius: 8px;
+}
+.contendorBotonesDialog{
+    position: relative;
+    float: right;
+}
+.botonCerrarInfo{
+    color: #3ABB90;
+    font-weight: bold;
+    background-color: transparent;
+    border: none;
+    outline:none;
+    cursor: pointer;
+    margin-right: 2rem;
+}
+.botonAbrirInfo{
+    height: 2.5rem;
+    width: 8rem;
+    font-weight: bold;
+    background-color: #3ABB90;
+    color: white;
+    border-radius: 8px;
+    border: none;
+}
+.leerMas{
+    text-decoration: none;
+    color: white;
+}
 /*=========================================================================================*/
 /*Tarjetas*/
 /*=========================================================================================*/
