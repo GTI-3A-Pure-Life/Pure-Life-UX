@@ -224,6 +224,22 @@ obtenerCalidadAirePorTiempoYUsuario : async function(fechaInicio,fechaFin, idUsu
     });
         return respuesta
 },
+
+obtenerEstacionesMedida: async function() {
+    let respuesta = await fetch("https://api.waqi.info/map/bounds/?latlng=43.112382,4.121760,27.074341,-18.587159&token=7c7d70d4cd3fed72c7756498fbecc70b8b5e7193")
+    .then(response => {
+        if(response.status == 200) {
+            return response.json()
+        } else if (response.status == 204) {
+            return[];
+        }else if (response.status == 400) {
+            throw Error("Error en datos");
+        } else if (response.status == 500) {
+            throw Error("Error en servidor");
+        }
+    });
+        return respuesta.data;
+},
 // .................................................................
 // cerrar() -->
 // .................................................................

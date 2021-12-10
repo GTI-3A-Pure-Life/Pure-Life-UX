@@ -80,6 +80,7 @@ var VistaMediciones = {
             this.crearMarkers(posSet[i])
                 
             }
+            this.controlador.obtenerEstaciones();
             this.cargarDatos();
 
         }
@@ -119,6 +120,28 @@ var VistaMediciones = {
                 radius: 20
             }).addTo(this.map);
             this.circulos.push(circle); 
+    },
+
+    crearMarkersEstaciones: function (lista) {
+
+        var greenIcon = L.icon({
+            iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
+            //shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
+        
+            iconSize:     [19, 47.5], // size of the icon
+            shadowSize:   [50, 64], // size of the shadow
+            iconAnchor:   [11, 47], // point of the icon which will correspond to marker's location
+            shadowAnchor: [4, 62],  // the same for the shadow
+            popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+        });
+
+        lista.forEach(element => {
+            let marker = L.marker([element[0], element[1]], {icon: greenIcon}).addTo(this.map);
+            let color = this.getColorCirculo(element[2]);
+            marker.bindPopup("<svg version='1.1' xmlns='http://www.w3.org/2000/svg' width='91' height='44.8' viewBox='0 0 12 10'><rect x='9' y='3' width='2.5' height='2.5' fill='"+ color + "' /></svg>" + "AQI " + element[2]);
+        });
+
+        
     },
 
     getGas: function(valor) {
@@ -190,6 +213,24 @@ var ControladorMediciones = {
             }).addTo(this.vista.map);
 
             this.vista.representarTodasLasMediciones(this.mediciones);
+        } catch (e) {
+            console.error(e);
+        }
+    },
+
+    obtenerEstaciones: async function() {
+        try {
+            let estaciones = await LogicaFalsa.obtenerEstacionesMedida();
+            let arrayFinal = new Array(0);
+            console.log("estaciones", estaciones);
+            estaciones.forEach(estacion => {
+                let nombre = "";
+                nombre = estacion.station.name; 
+                if(nombre.includes(", Spain")) {
+                    arrayFinal.push([estacion.lat, estacion.lon, estacion.aqi]);
+                }
+            });
+            this.vista.crearMarkersEstaciones(arrayFinal);
         } catch (e) {
             console.error(e);
         }
