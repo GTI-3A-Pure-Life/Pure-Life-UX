@@ -18,10 +18,18 @@ var VistaMediciones = {
     mediciones: [],
     circulos: [],
 
-
+    // .................................................................
     // esconder los elementos y mostrar la lista de mediciones
+    //
+    // mediciones -->
+    // representarTodasLasMediciones() --> 
+    // <-- Lista<MedicionCO2>
+    // .................................................................
+    /**
+     * 
+     * @param mediciones La lista de mediciones
+     */
     representarTodasLasMediciones: function (mediciones) {
-        console.log(mediciones);
 
         let posiciones = mediciones.map(medicion => {
             return medicion.posMedicion
@@ -33,10 +41,12 @@ var VistaMediciones = {
             t.latitud == element.latitud && t.longitud == element.longitud
         ))
       )
+      // Crear un Set con las posiciones y todas sus mediciones (vacías)
         posSet = posSet.map(element => {
             return {pos: element, valor: []}
         })
 
+        // Asigna todas las mediciones de una posicióon al array de posiciones
         for (let i = 0; i < posSet.length; i++) {
 
             for (let j = 0; j < mediciones.length; j++) {
@@ -45,7 +55,7 @@ var VistaMediciones = {
                 }
             }
         }
-        // Jordi porfa no me pegues uWu
+        // Jordi porfa no me pegues uWu esto ordena por fechas
         for (let i = 0; i < posSet.length; i++) {
             posSet[i].valor.sort(function(medicion1, medicion2) {
                 return new Date(medicion2.fechaHora) - new Date(medicion1.fechaHora)
@@ -53,12 +63,18 @@ var VistaMediciones = {
         }
         this.mediciones = posSet;
         console.log(posSet);
-        //this.mediciones = mediciones.sort( a=> {});
 
-        //pintar los elementos por mediciones
-
+        // Si hay mediciones, crea los puntos del gas (WIP para interpolar), 
+        // añade los markers de las estaciones de medida y muestra el mapa completo
         if (this.mediciones != null) {
-
+            
+            this.mediciones = posSet;
+            for (let i = 0; i < posSet.length; i++) {
+            this.crearMarkers(posSet[i])
+                
+            }
+            this.controlador.obtenerEstaciones();
+            this.cargarDatos();
             /*let max = this.getMaximoValor(this.puntos)
                   console.log(max);
       
@@ -73,16 +89,8 @@ var VistaMediciones = {
                           max: max
                       }).addTo(this.map);
       
-                  this.cargarDatos();*/
-            
-            this.mediciones = posSet;
-            for (let i = 0; i < posSet.length; i++) {
-            this.crearMarkers(posSet[i])
-                
-            }
-            this.controlador.obtenerEstaciones();
-            this.cargarDatos();
-
+                  this.cargarDatos();
+            */
         }
     },
 
@@ -111,7 +119,17 @@ var VistaMediciones = {
             }            
         }
     },
-
+    // .................................................................
+    // Crea los circulos de donde se toma el gas (hay que cambiarlo para cuando interpolemos el mapa)
+    //
+    // lista -->
+    // crearMarkers() -->
+    // <--
+    // .................................................................
+    /**
+     * 
+     * @param lista La lista de medidas sobre la que crea los markers
+     */
     crearMarkers: function(lista) {
             let circle = L.circle([lista.pos.latitud, lista.pos.longitud], {
                 color: this.getColorCirculo(lista.valor[0].valor),
@@ -121,7 +139,17 @@ var VistaMediciones = {
             }).addTo(this.map);
             this.circulos.push(circle); 
     },
-
+    // .................................................................
+    // Crea los markers de las estaciones de medida oficiales
+    //
+    // lista -->
+    // crearMarkersEstaciones() -->
+    // <--
+    // .................................................................
+    /**
+     * 
+     * @param lista La lista de medidas sobre la que crea los markers
+     */
     crearMarkersEstaciones: function (lista) {
 
         var greenIcon = L.icon({
@@ -143,19 +171,17 @@ var VistaMediciones = {
 
         
     },
-
-    getGas: function(valor) {
-        if(valor == 1) {
-            return "brown"
-        } else if(valor == 2) {
-            return "orange"
-        } else if(valor == 3) {
-            return "black"
-        } else {
-            return "grey"
-        }
-    },
-
+    // .................................................................
+    // Devuelve un color para el círculo según el gas (se eliminará cuando interpolemos)
+    //
+    // valor -->
+    // getColorCirculo() -->
+    // <-- color
+    // .................................................................
+    /**
+     * 
+     * @param valor El número que identifica cada gas
+     */
     getColorCirculo: function(valor) {
         if(valor >= 0 && valor <= 50) {
             return "green"
@@ -167,7 +193,17 @@ var VistaMediciones = {
             return "purple"
         }
     },
-
+    // .................................................................
+    // Devuelve el valor más alto de una lista (IMPLEMENTACIÓN FUTURA)
+    //
+    // lista -->
+    // getMaximoValor() -->
+    // <-- valor
+    // .................................................................
+    /**
+     * 
+     * @param valor El número que identifica cada gas
+     */
     getMaximoValor: function (lista) {
         let maximo = 0;
         lista.forEach((dato) => {
@@ -178,17 +214,24 @@ var VistaMediciones = {
 
         return maximo;
     },
-
-    pintarMapa: function (mediciones) {
-
-            this.crearMarkers(mediciones);
-            this.cargarDatos();
-    },
-
+    // .................................................................
+    // Inicia la carga del mapa
+    //
+    // -->
+    // iniciarLoader() -->
+    // <-- 
+    // .................................................................
     iniciarLoader: function () {
         document.getElementById("loader").style.display = "block";
         document.getElementById("map").style.display = "none";
     },
+    // .................................................................
+    // Muestra el mapa con sus datos
+    //
+    // -->
+    // cargarDatos() -->
+    // <-- 
+    // .................................................................
     cargarDatos: function () {
         document.getElementById("loader").style.display = "none";
         document.getElementById("map").style.display = "block";
@@ -200,7 +243,17 @@ var ControladorMediciones = {
     mediciones: [],
     todosLosGases: false,
 
+    // .................................................................
     // inicia la obtencion de todas las mediciones
+    //
+    // ipPuerto -->
+    // iniciarTodasObtenerMediciones() -->
+    // <-- 
+    // .................................................................
+    /**
+     * 
+     * @param ipPuerto La dirección ip a la que tiene que apuntar (para poder usar la misma función en android) 
+     */
     iniciarTodasObtenerMediciones: async function (ipPuerto) {
         this.vista.controlador = this;
 
@@ -217,7 +270,13 @@ var ControladorMediciones = {
             console.error(e);
         }
     },
-
+    // .................................................................
+    // Obtiene las estaciones de medida de España
+    //
+    // -->
+    // obtenerEstaciones() -->
+    // <-- 
+    // .................................................................
     obtenerEstaciones: async function() {
         try {
             let estaciones = await LogicaFalsa.obtenerEstacionesMedida();
@@ -235,7 +294,18 @@ var ControladorMediciones = {
             console.error(e);
         }
     },
-
+    // .................................................................
+    // Convierte un JSON en array
+    //
+    // json -->
+    // toArray() -->
+    // <-- array
+    // .................................................................
+    /**
+     * 
+     * @param lista La lista de objetos JSON a convertir 
+     * @returns un array de mediciones con psoición, valor y gas
+     */
     toArray: function (lista) {
         var arrayMediciones = [];
 
@@ -248,7 +318,18 @@ var ControladorMediciones = {
         }
         return arrayMediciones;
     },
-
+    // .................................................................
+    // Permite filtrar el mapa por cada gas (hay que hacer cambios)
+    //
+    // tipoGas -->
+    // filtrarPorGas() -->
+    // <--
+    // .................................................................
+    /**
+     * 
+     * @param tipoGas La id del gas a filtrar
+     * @returns 
+     */
     filtrarPorGas: function (tipoGas) {
         this.vista.iniciarLoader();
         //this.vista.mediciones = []
@@ -287,9 +368,19 @@ var ControladorMediciones = {
             return element.tipoGas == tipoGas;
         })
         this.vista.representarTodasLasMediciones(medicionesFiltradas)
-        //this.vista.pintarMapa(medicionesFiltradas);
-    },
 
+    },
+    // .................................................................
+    // Activa todos los gases (hay que hacer cambios)
+    //
+    // botones -->
+    // todosGasesActivos() -->
+    // <--
+    // .................................................................
+    /**
+     * 
+     * @param botones Los botones que controlan los filtros de los gases
+     */
     todosGasesActivos: function(botones) {
         
         for (let i = 0; i < botones.length; i++) {
@@ -299,7 +390,17 @@ var ControladorMediciones = {
             }   
         }
     },
-
+    // .................................................................
+    // Desactiva todos los gases (hay que hacer cambios)
+    //
+    // botones -->
+    // todosGasesInactivos() -->
+    // <--
+    // .................................................................
+    /**
+     * 
+     * @param botones Los botones que controlan los filtros de los gases
+     */
     todosGasesInactivos: function(botones) {
         for (let i = 0; i < botones.length; i++) {
             if(botones[i].classList.contains("botonActivo")) {

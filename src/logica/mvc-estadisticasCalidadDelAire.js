@@ -22,6 +22,26 @@ var VistaCalidadDelAire = {
     idChartO3: {},
     idChartNO2: {},
     idChartSO2: {},
+//======================================================================================================
+//
+// Guarda los objetos más comunes en la vista
+//
+//======================================================================================================
+/**
+ * 
+ * @param barCO id
+ * @param barO3 id
+ * @param barNO2 id
+ * @param barSO2 id
+ * @param graficaCO id
+ * @param graficaO3 id
+ * @param graficaNO2 id
+ * @param graficaSO2 id
+ * @param chartCO id
+ * @param chartO3 id
+ * @param chartNO2 id
+ * @param chartSO2 id
+ */
 
     preparar: function (barCO, barO3, barNO2, barSO2, 
         graficaCO, graficaO3, graficaNO2, graficaSO2, 
@@ -44,6 +64,10 @@ var VistaCalidadDelAire = {
 
     },
 
+//======================================================================================================
+// Oculta las gráficas
+//
+//======================================================================================================    
     ocultarGraficas: function () {
         this.idGraficaCO.style.display = "none";
         this.idGraficaO3.style.display = "none";
@@ -51,6 +75,13 @@ var VistaCalidadDelAire = {
         this.idGraficaSO2.style.display = "none";
     },
 
+//======================================================================================================
+// Muestra u oculta la gráfica cuya id sea la que le pasamos
+//
+// idGrafica -->
+// toggleGrafica() -->
+// <--
+//======================================================================================================
     toggleGrafica: function (idGrafica) {
         let grafica = document.getElementById(idGrafica);
 
@@ -89,15 +120,32 @@ var VistaCalidadDelAire = {
         }
     },
 
-    // metodo representar graficas 4 arrays
+//======================================================================================================
+// Carga los datos de las 4 gráficas
+//
+// lista -->
+// representarGraficas() -->
+// <--
+//======================================================================================================
     representarGraficas: function(listaCO,listaO3,listaNO2,listaSO2){
         this.cargarDatosEnGrafica(this.idChartCO,listaCO)
         this.cargarDatosEnGrafica(this.idChartO3,listaO3)
         this.cargarDatosEnGrafica(this.idChartNO2,listaNO2)
         this.cargarDatosEnGrafica(this.idChartSO2,listaSO2)
     },
-    // metodo idHtml grafic 
 
+//======================================================================================================
+// carga los datos en una gráfica
+//
+// idGrafica, datos -->
+// cargarDatosEnGrafica() -->
+// <--
+//======================================================================================================
+/**
+ * 
+ * @param idGrafica La gráfica en la que quieres cargar los datos
+ * @param datos Los datos a cargar
+ */
     cargarDatosEnGrafica: function (idGrafica, datos) {
         let valores = new Array();
         let tiempo = new Array();
@@ -140,6 +188,7 @@ var VistaCalidadDelAire = {
               }
             }
           };
+          // grafica
         const myChart = new Chart(ctx, {
             type: 'bar',
             data: {
@@ -169,7 +218,18 @@ var VistaCalidadDelAire = {
         });
     },
 
-
+//======================================================================================================
+// Obtiene un color hexadecimal según el valor de AQI
+//
+// valor -->
+// obtenerColorHexPorValor() -->
+// <-- color
+//======================================================================================================
+/**
+ * 
+ * @param valor el valor de AQI 
+ * @returns Un color hexadecimal
+ */
     obtenerColorHexPorValor: function(valor) {
         if(valor >= 0 && valor <= 50) {
             return '#3ABB90'
@@ -187,8 +247,10 @@ var VistaCalidadDelAire = {
 var ControladorVistaCalidadDelAire = {
 
     vista: VistaCalidadDelAire,
-
-    // inicia las barras
+//======================================================================================================
+// inicia las barras
+//
+//======================================================================================================
     iniciarLasBarras: async function () {
 
         //=================================================================================================
@@ -210,9 +272,7 @@ var ControladorVistaCalidadDelAire = {
         let medicionesNO2 = new Array();
         let medicionesO3 = new Array();
 
-       
-        
-
+        // Separar las mediciones por tipo de gas
         for(let i = 0; i< mediciones.length; i++){
             switch (mediciones[i].tipoGas) {
                 case 1:
@@ -242,7 +302,7 @@ var ControladorVistaCalidadDelAire = {
         this.vista.representarGraficas(medicionesCO,medicionesSO2,medicionesNO2,medicionesSO2);
 
         //===============================================================================================
-        //obtenerCalidadAirePorTiempoYUsuario
+        // obtiene la calidad del aire de cada gas de un usuario hoy para iniciar las barras
         //===============================================================================================
 
         let calidadAireAQI = await LogicaFalsa.obtenerCalidadAirePorTiempoYUsuario(fechaInicio, fechaFin,13/*user.id*/);
@@ -267,7 +327,7 @@ var ControladorVistaCalidadDelAire = {
         textosAQI[3].innerText = "AQI " + elemSO2.value;
 
         //=================================================================================================
-        // llamar a la logica obtenerMedicionesDeHastaPorUsuario
+        // inicializa los colores y los valores aqi de los lugares guardados del usuario
         //=================================================================================================
         let tarjetas = document.getElementsByClassName("contenedorTarjetas");
        
@@ -290,7 +350,18 @@ var ControladorVistaCalidadDelAire = {
         this.asignarColorTarjetas(tarjetas[2], calidadAireExterior)
         this.resumenCalidadAire(calidadAireExterior);
     },
-
+//======================================================================================================
+// Asigna un color a las barras de calidad de cada gas dependiendo de su valor
+//
+// barra, valor -->
+// asignarColorBarras() -->
+// <-- color
+//======================================================================================================
+/**
+ * 
+ * @param barra la barra a la que se le asigna el color
+ * @param valor el valor sobre el cual se decide el color
+ */
     asignarColorBarras: function(barra, valor) {
         if(valor >= 0 && valor <= 50) {
             barra.classList.add("verde");
@@ -302,7 +373,17 @@ var ControladorVistaCalidadDelAire = {
             barra.classList.add("morado");
         }
     },
-
+//======================================================================================================
+// En pocas palabras, define textualmente la calidad del aire que el usuario ha respirado hoy
+//
+// valor -->
+// resumenCalidadAire() -->
+// <-- texto
+//======================================================================================================
+/**
+ * 
+ * @param valor el valor sobre el cual se decide el resumen 
+ */
     resumenCalidadAire: function(valor) {
         let resumen = document.getElementById("calidadMediaHoyApp");
         if(valor >= 0 && valor <= 50) {
@@ -315,7 +396,18 @@ var ControladorVistaCalidadDelAire = {
             resumen.innerText = " Muy mala";
         }
     },
-
+//======================================================================================================
+// Obtiene el AQI más alto de una lista
+// 
+// lista<medicion> -->
+// getMaximoAQI() -->
+// <-- medicion
+//======================================================================================================
+/**
+ * 
+ * @param lista La lista que usa para averiguar el máximo 
+ * @returns el datoo con más aqi
+ */
     getMaximoAQI: function(lista) {
         let maximo = 0;
         lista.forEach( gas=> {
@@ -325,7 +417,18 @@ var ControladorVistaCalidadDelAire = {
         });
         return maximo;
     },
-
+//======================================================================================================
+// Le pone un color de fondo y un resumen a las localizaciones del usuario según el AQI
+//
+// tarjeta, valor -->
+// asignarColorTarjetas() -->
+// <--
+//======================================================================================================
+/**
+ * 
+ * @param tarjeta La tarjeta con la que trabaja
+ * @param valor El valor que usa para decidir qué le pone
+ */
     asignarColorTarjetas: function(tarjeta, valor) {
         if(valor >= 0 && valor <= 50) {
             tarjeta.getElementsByTagName("img")[0].classList.add("fondoDeTarjetaVerde");
@@ -342,7 +445,21 @@ var ControladorVistaCalidadDelAire = {
         }
         tarjeta.getElementsByTagName("p")[1].innerText += " " + valor;
     },
-
+//======================================================================================================
+// Devuelve si la primera medicion es más reciente que la segunda
+//
+// medicion1, medicion2 -->
+// ordenarPorFecha() -->
+// <-- VoF
+//======================================================================================================
+/**
+ * 
+ * @param medicion1 Una medición a comparar con la otra
+ * @param medicion2 Una medición a comparar con la otra
+ * @returns 1 si la primera es más reciente
+ * @returns -1 si la segunda es más reciente
+ * @returns 0 si son de la misma fecha
+ */
     ordenarPorFecha: function(medicion1,medicion2){
 
         let fecha1 = new Date(medicion1.fechaHora);
@@ -358,7 +475,18 @@ var ControladorVistaCalidadDelAire = {
           return 0;
 
     },
-
+//======================================================================================================
+// Transforma un JSON de mediciones en un array de mediciones de las últimas 24 horas
+//
+// JSON --> 
+// transformarMedicionesAArrayMedicionesPorHora24Horas() -->
+// <-- array
+//======================================================================================================
+/**
+ * 
+ * @param mediciones El JSON de mediciones 
+ * @returns Un array con las mediciones de las últimas 24 horas
+ */
     transformarMedicionesAArrayMedicionesPorHora24Horas: function(mediciones) {
         let horas = 24;
         let mediciones24Horas = new Array();

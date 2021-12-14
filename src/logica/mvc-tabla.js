@@ -5,7 +5,17 @@ var ModeloTabla = {
 
 var VistaTabla = {
     tabla: document.getElementById("tblDatos").getElementsByTagName("tbody")[0],
-
+    // .................................................................
+    // Añade los registros a la tabla
+    //
+    // datos -->
+    // rellenarTabla() -->
+    // <--
+    // .................................................................
+    /**
+     * 
+     * @param datos Los registros que va a añadir
+     */
     rellenarTabla: function(datos) {
         this.tabla.innerHTML = "<tr><th>ID</th><th>Sensor</th><th>Averiado</th><th>Poca batería</th><th>Descalibrado</th><th>Fecha</th><th>Leído</th></tr>";
         for(let i = 0; i < datos.length; i++) {
@@ -37,6 +47,13 @@ var VistaTabla = {
 var ControladorTabla = {
     modelo: ModeloTabla,
     vista: VistaTabla,
+    // .................................................................
+    // Crea la tabla de registros del estado de los sensores
+    //
+    // -->
+    // iniciarTabla() -->
+    // <--
+    // .................................................................
     iniciarTabla: async function() {
         try {
             this.modelo.datos = await LogicaFalsa.obtenerRegistros();
@@ -47,6 +64,17 @@ var ControladorTabla = {
             console.log(err);
         }
     },
+    // .................................................................
+    // Ordena la tabla según si se ha leído el registro o no
+    //
+    // datos -->
+    // ordenarTablaPorLeidos() -->
+    // <--
+    // .................................................................
+    /**
+     * 
+     * @param datos Los registros que va a ordenar por leídos
+     */
     ordenarTablaPorLeidos: function(datos) {
         return datos.sort(function(a, b) {
             if (a.leido > b.leido) {
@@ -58,6 +86,17 @@ var ControladorTabla = {
             return 0;
         });
     },
+    // .................................................................
+    // Publica en la BBDD que se ha leído un registro
+    //
+    // idRegstro -->
+    // publicarLeido() -->
+    // <--
+    // .................................................................
+    /**
+     * 
+     * @param id El registro que se ha leído
+     */
     publicarLeido: async function(id){
         try {
             await LogicaFalsa.actualizar_leido(id);
@@ -67,7 +106,13 @@ var ControladorTabla = {
         }
     }
 }
-
+// .................................................................
+// Crea un informe imprimible de los sensores averiados por más de 24h que no se hayan reparado
+//
+// -->
+// createPDFAveriados() -->
+// <--
+// .................................................................
 function createPDFAveriados() {
     var tabla = document.getElementById('tblDatos');
     let tablaM ="<table><tbody>";
@@ -78,7 +123,7 @@ function createPDFAveriados() {
 
       for (let i = 0; i < tabla.rows.length; i++) {
         tablaM += "<tr>";
-        
+        // Crea los headers al principio y luego asigna los datos
         if (i==0) {
             tablaM += "<th>" + tabla.rows[i].cells[1].innerHTML + "</th>" + 
             "<th>" + tabla.rows[i].cells[5].innerHTML + "</th>";
@@ -87,9 +132,11 @@ function createPDFAveriados() {
             averiado = estado[i-1]
             fechaDeUno = fecha[i-1]
             sensorActual = sensores[i - 1].innerText;
+            // Comprueba que el sensor esté averiado
             if(averiado != undefined && averiado.innerHTML=="1"){
                 let fechaDate = new Date(fechaDeUno.innerText)
                 let horas = (Date.now() - fechaDate.getTime())/1000/60/24
+                // Comprueba que el sensor esté averiado hace más de 24 horas y que no sea el mismo de antes
                 if( i> 0 && horas>=24 && ultimoSensor != sensorActual){
                     ultimoSensor = sensorActual;
                     console.log("la i", i)
@@ -104,7 +151,7 @@ function createPDFAveriados() {
         tablaM += "</tr>";
       }
       tablaM += "</tbody></table>";
-
+    // Crea el estilo de la tabla
     var style = "<style>";
     style = style + "table {width: 100%;font: 17px Calibri;}";
     style = style + "table, th, td {border: solid 1px #DDD; border-collapse: collapse;";
@@ -126,7 +173,13 @@ function createPDFAveriados() {
     win.print();    // PRINT THE CONTENTS.
 }
 
-
+// .................................................................
+// Crea un informe imprimible de los sensores descalibrados por más de 4h que no se hayan calibrado
+//
+// -->
+// createPDFDescalibrados() -->
+// <--
+// .................................................................
 function createPDFDescalibrados() {
     var tabla = document.getElementById('tblDatos');
     let tablaM ="<table><tbody>";
@@ -138,6 +191,7 @@ function createPDFDescalibrados() {
       for (let i = 0; i < tabla.rows.length; i++) {
         tablaM += "<tr>";
         
+        // Crea los headers al principio y luego asigna los datos
         if (i==0) {
             tablaM += "<th>" + tabla.rows[i].cells[1].innerHTML + "</th>" + 
             "<th>" + tabla.rows[i].cells[5].innerHTML + "</th>";
@@ -146,10 +200,11 @@ function createPDFDescalibrados() {
             descalibrado = estado[i-1]
             fechaDeUno = fecha[i-1]
             sensorActual = sensores[i - 1].innerText;
+            // Comprueba que el sensor esté descalibrado
             if(descalibrado != undefined && descalibrado.innerHTML=="1"){
                 let fechaDate = new Date(fechaDeUno.innerText)
                 let horas = (Date.now() - fechaDate.getTime())/1000/60/24
-
+                // Comprueba que el sensor esté descalibrado hace más de 4 horas y que no sea el mismo de antes
                 if( i> 0 && horas>=4 && ultimoSensor != sensorActual){
                     ultimoSensor = sensorActual;
                     console.log("la i", i)
@@ -165,6 +220,7 @@ function createPDFDescalibrados() {
       }
       tablaM += "</tbody></table>";
 
+    // Crea el estilo de la tabla
     var style = "<style>";
     style = style + "table {width: 100%;font: 17px Calibri;}";
     style = style + "table, th, td {border: solid 1px #DDD; border-collapse: collapse;";

@@ -12,6 +12,7 @@ LogicaFalsa = {
 
 
     // .................................................................
+    // Obtiene todas las mediciones
     // -->
     // obtenerTodasMediciones() --> 
     // <-- Lista<MedicionCO2>
@@ -48,6 +49,7 @@ LogicaFalsa = {
 
 
     // .................................................................
+    // Obtiene las últimas mediciones
     // cuantas:N -->
     // obtenerTodasMediciones() --> 
     // <-- Lista<MedicionCO2>
@@ -89,6 +91,18 @@ LogicaFalsa = {
 
     },
 
+    // .................................................................
+    // Inicia sesión en la app
+    // correo, contraseña -->
+    // iniciar_sesion() --> 
+    // <-- 
+    // .................................................................
+    /**
+     * 
+     * @param correo El correo del usuario
+     * @param contrasenya La coontraseña del usuario (cifrada)
+     * @returns Si se ha podido iniciar sesión o no
+     */
     iniciar_sesion : async function (correo, contrasenya) {
         let respuesta = await fetch(IP_PUERTO+"/usuario/iniciar_sesion",  {
             method: "POST",
@@ -106,7 +120,20 @@ LogicaFalsa = {
         return respuesta;
         
     },
-
+    // .................................................................
+    // Permite al usuario registrarse en la app
+    // nombre, correo, contraseña, telefono -->
+    // iniciar_sesion() --> 
+    // <-- 
+    // .................................................................
+    /**
+     * 
+     * @param nombre El nombre del usuario 
+     * @param correo El correo del usuario 
+     * @param contrasenya La coontraseña del usuario 
+     * @param telefono El número de teléfono del usuario 
+     * @returns Si el registro se ha podido realizar o no
+     */
     registrar_usuario : async function (nombre, correo, contrasenya, telefono) {
         let respuesta = await fetch(IP_PUERTO+"/usuario/registrarse",  {
             method: "POST",
@@ -126,10 +153,15 @@ LogicaFalsa = {
     },
 
     //==============================================================================================================================
-    //actualizar_leido
+    // Marca como leído un registro del sensor
     // @author Florescu, Lorena-Ioana
     // @version 24/11/2021
     //==============================================================================================================================
+    /**
+     * 
+     * @param id El registro que se ha leído 
+     * @returns Si la petición se realizó correctamente o no
+     */
 
     actualizar_leido : async function (id) {
         let respuesta = await fetch(IP_PUERTO+"/registro_estado_sensor/leido",  {
@@ -147,8 +179,19 @@ LogicaFalsa = {
         
     },
 //==============================================================================================================================
-//obtenerMedicionesDeHastaPorUsuario
+// Obtiene una lista de mediciones en una fecha concreta de un usuario
+//
+// fechaInicio, fechaFin, idUsuario -->
+// obtenerMedicionesDeHastaPorUsuario() -->
+// <-- Lista<Medicion>
 //==============================================================================================================================
+/**
+ * 
+ * @param fechaInicio La fecha desde donde empiezan las medidas
+ * @param fechaFin La fecha hasta donde acabam las medidas
+ * @param idUsuario El usuario del cual se cogen las medidas
+ * @returns Las mediciones del usuario en ese espacio de tiempo
+ */
     obtenerMedicionesDeHastaPorUsuario : async function(fechaInicio,fechaFin,idUsuario){
         let respuesta = await fetch(IP_PUERTO+"/mediciones/usuario?idUsuario="+idUsuario+"&fecha_inicio="+fechaInicio+"&fecha_fin="+fechaFin,{
                       headers : { 'User-Agent' : 'Ruben', 'Content-Type' : 'application/json' },
@@ -166,8 +209,21 @@ LogicaFalsa = {
         return respuesta
     },
 //==============================================================================================================================
-//obtenerCalidadAirePorTiempoYZona
+// Obtiene la calidad del aire de una zona en un tiempo determinado
+//
+// fechaInicio, fechaFin, latitud, longitud, radio -->
+// obtenerCalidadAirePorTiempoYZona() -->
+// <-- medicion
 //==============================================================================================================================
+/**
+ * 
+ * @param fechaInicio La fecha desde donde empiezan las medidas
+ * @param fechaFin La fecha hasta donde acaban las medidas
+ * @param latitud  La latitud de la coordenada que servirá como centro
+ * @param longitud La longitud de la coordenada que servirá como centro
+ * @param radio El radio con el cual se formará un círculo cuyo centro es la posición anterior
+ * @returns 
+ */
     obtenerCalidadAirePorTiempoYZona : async function(fechaInicio,fechaFin, latitud,longitud, radio) {
 
         let respuesta = await fetch(IP_PUERTO+"/calidad_aire/zona?fecha_inicio="+fechaInicio+"&fecha_fin="+fechaFin+"&latitud="+latitud+"&longitud="+longitud+"&radio="+radio,{
@@ -186,6 +242,13 @@ LogicaFalsa = {
             return respuesta
     },
 
+//==============================================================================================================================
+// Obtiene todos los registros de los estados de los sensores
+//
+// -->
+// obtenerRegistros() -->
+// <-- Lista<RegistroEstadoSensor>
+//==============================================================================================================================
 
     obtenerRegistros : async function() {
 
@@ -205,7 +268,11 @@ LogicaFalsa = {
             return respuesta;
     },
 //==============================================================================================================================
-//obtenerCalidadAirePorTiempoYUsuario
+// Obtiene la calidad del aire de un usuario en un tiempo determinado
+//
+// fechaInicio,fechaFin, idUsuario -->
+// obtenerCalidadAirePorTiempoYUsuario() -->
+// <-- medicion
 //==============================================================================================================================
 obtenerCalidadAirePorTiempoYUsuario : async function(fechaInicio,fechaFin, idUsuario) {
 
@@ -225,6 +292,13 @@ obtenerCalidadAirePorTiempoYUsuario : async function(fechaInicio,fechaFin, idUsu
         return respuesta
 },
 
+//==============================================================================================================================
+// Obtiene las estaciones de medida oficiales
+//
+// -->
+// obtenerEstacionesMedida() -->
+// <-- Lista<Texto>
+//==============================================================================================================================
 obtenerEstacionesMedida: async function() {
     let respuesta = await fetch("https://api.waqi.info/map/bounds/?latlng=43.112382,4.121760,27.074341,-18.587159&token=7c7d70d4cd3fed72c7756498fbecc70b8b5e7193")
     .then(response => {

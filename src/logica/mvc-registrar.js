@@ -30,7 +30,13 @@ var VistaRegistrar = {
     contrasenya: document.getElementsByClassName("campoParaIntroducirTexto")[1],
     confirmarContrasenya: document.getElementsByClassName("campoParaIntroducirTexto")[2],
     telefono: document.getElementsByClassName("campoParaIntroducirTexto")[3],
-
+//======================================================================================================
+// Cuando el usuario se registra, si es un usuario normal se lleva a la app y si es administrador, a la página de admin
+//
+// usuario --> 
+// redirigirUsuario() -->
+// <--
+//======================================================================================================
     redirigirUsuario : function(usuario) {
         if(usuario.rol == 1) {
             location.href = "usuarioApp.html";

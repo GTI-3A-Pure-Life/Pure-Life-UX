@@ -1,3 +1,9 @@
+//======================================================================================================
+// .....................................................................
+// MVC-login.js
+// Pablo Enguix Llopis 16/11/2021
+// .....................................................................
+//======================================================================================================
 var ModeloLogin = {
     usuario: {
         correo: "",
@@ -16,7 +22,13 @@ var ModeloLogin = {
 var VistaLogin = {
     correo: document.getElementById("correoInicioSesion"),
     contrasenya: document.getElementById("contrasenyaInicioSesion"),
-
+//======================================================================================================
+// Cuando el usuario se registra, si es un usuario normal se lleva a la app y si es administrador, a la página de admin
+//
+// usuario --> 
+// redirigirUsuario() -->
+// <--
+//======================================================================================================
     redirigirUsuario : function(usuario) {
         if(usuario.rol == 1) {
             location.href = "usuarioApp.html";
@@ -32,6 +44,7 @@ var ControladorLogin = {
     modelo: ModeloLogin,
     vista: VistaLogin,
     manejador: async function() {
+        // Convierte la contraseña a SHA1
         let pass = SHA1(this.vista.contrasenya.value);
         try {
             this.modelo.usuario = await LogicaFalsa.iniciar_sesion(this.vista.correo.value, pass);
