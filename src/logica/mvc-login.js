@@ -30,6 +30,7 @@ var VistaLogin = {
 // <--
 //======================================================================================================
     redirigirUsuario : function(usuario) {
+        console.log("3",usuario)
         if(usuario.rol == 1) {
             location.href = "usuarioApp.html";
             window.localStorage.setItem("sesion", JSON.stringify(usuario))
@@ -48,8 +49,10 @@ var ControladorLogin = {
         let pass = SHA1(this.vista.contrasenya.value);
         try {
             this.modelo.usuario = await LogicaFalsa.iniciar_sesion(this.vista.correo.value, pass);
+            console.log("2",this.modelo.usuario)
             this.vista.redirigirUsuario(this.modelo.usuario);
         } catch(err) {
+            console.log("2 catch",err)
             if(err.message == "Error en datos") {
                 alert("El usuario o la contraseña son incorrectos")
             } else if(err.message == "Error en servidor") {

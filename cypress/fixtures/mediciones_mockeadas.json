@@ -1,0 +1,266 @@
+[
+    {
+        "fechaHora": "2021-11-26 00:00:00",
+        "posMedicion": {
+        "latitud": 38.99744514102758,
+        "longitud": -0.16726696191395263
+        },
+        "valor": 0,
+        "idUsuario": 13,
+        "uuidSensor": "GTI-3A-1",
+        "tipoGas": 1
+    },
+    {
+        "fechaHora": "2021-11-26 01:00:00",
+        "posMedicion": {
+        "latitud": 38.99744514102758,
+        "longitud": -0.1618467544618909
+        },
+        "valor": 11.36,
+        "idUsuario": 13,
+        "uuidSensor": "GTI-3A-1",
+        "tipoGas": 1
+    },
+    {
+        "fechaHora": "2021-11-26 02:00:00",
+        "posMedicion": {
+        "latitud": 38.99443332884715,
+        "longitud": -0.16726696191395263
+        },
+        "valor": 22.73,
+        "idUsuario": 13,
+        "uuidSensor": "GTI-3A-1",
+        "tipoGas": 1
+    },
+    {
+        "fechaHora": "2021-11-26 03:00:00",
+        "posMedicion": {
+        "latitud": 38.99443332884715,
+        "longitud": -0.1618467544618909
+        },
+        "valor": 34.09,
+        "idUsuario": 13,
+        "uuidSensor": "GTI-3A-1",
+        "tipoGas": 1
+    },
+    {
+        "fechaHora": "2021-11-26 04:00:00",
+        "posMedicion": {
+        "latitud": 38.99744514102758,
+        "longitud": -0.16726696191395263
+        },
+        "valor": 45.45,
+        "idUsuario": 13,
+        "uuidSensor": "GTI-3A-1",
+        "tipoGas": 1
+    },
+    {
+        "fechaHora": "2021-11-26 05:00:00",
+        "posMedicion": {
+        "latitud": 38.99744514102758,
+        "longitud": -0.1618467544618909
+        },
+        "valor": 60.48,
+        "idUsuario": 13,
+        "uuidSensor": "GTI-3A-1",
+        "tipoGas": 1
+    },
+    {
+        "fechaHora": "2021-11-26 06:00:00",
+        "posMedicion": {
+        "latitud": 38.99443332884715,
+        "longitud": -0.16726696191395263
+        },
+        "valor": 72.58,
+        "idUsuario": 13,
+        "uuidSensor": "GTI-3A-1",
+        "tipoGas": 1
+    },
+    {
+        "fechaHora": "2021-11-26 07:00:00",
+        "posMedicion": {
+        "latitud": 38.99443332884715,
+        "longitud": -0.1618467544618909
+        },
+        "valor": 84.68,
+        "idUsuario": 13,
+        "uuidSensor": "GTI-3A-1",
+        "tipoGas": 1
+    },
+    {
+        "fechaHora": "2021-11-26 08:00:00",
+        "posMedicion": {
+        "latitud": 38.99744514102758,
+        "longitud": -0.16726696191395263
+        },
+        "valor": 96.77,
+        "idUsuario": 13,
+        "uuidSensor": "GTI-3A-1",
+        "tipoGas": 1
+    },
+    {
+        "fechaHora": "2021-11-26 09:00:00",
+        "posMedicion": {
+        "latitud": 38.99744514102758,
+        "longitud": -0.1618467544618909
+        },
+        "valor": 108.87,
+        "idUsuario": 13,
+        "uuidSensor": "GTI-3A-1",
+        "tipoGas": 1
+    },
+    {
+        "fechaHora": "2021-11-26 10:00:00",
+        "posMedicion": {
+        "latitud": 38.99443332884715,
+        "longitud": -0.16726696191395263
+        },
+        "valor": 120.97,
+        "idUsuario": 13,
+        "uuidSensor": "GTI-3A-1",
+        "tipoGas": 1
+    },
+    {
+        "fechaHora": "2021-11-26 11:00:00",
+        "posMedicion": {
+        "latitud": 38.99443332884715,
+        "longitud": -0.1618467544618909
+        },
+        "valor": 133.06,
+        "idUsuario": 13,
+        "uuidSensor": "GTI-3A-1",
+        "tipoGas": 1
+    },
+    {
+        "fechaHora": "2021-11-26 12:00:00",
+        "posMedicion": {
+        "latitud": 38.99744514102758,
+        "longitud": -0.16726696191395263
+        },
+        "valor": 145.16,
+        "idUsuario": 13,
+        "uuidSensor": "GTI-3A-1",
+        "tipoGas": 1
+    },
+    {
+        "fechaHora": "2021-11-26 13:00:00",
+        "posMedicion": {
+        "latitud": 38.99744514102758,
+        "longitud": -0.1618467544618909
+        },
+        "valor": 168.83,
+        "idUsuario": 13,
+        "uuidSensor": "GTI-3A-1",
+        "tipoGas": 1
+    },
+    {
+        "fechaHora": "2021-11-26 14:00:00",
+        "posMedicion": {
+        "latitud": 38.99443332884715,
+        "longitud": -0.16726696191395263
+        },
+        "valor": 181.82,
+        "idUsuario": 13,
+        "uuidSensor": "GTI-3A-1",
+        "tipoGas": 1
+    },
+    {
+        "fechaHora": "2021-11-26 15:00:00",
+        "posMedicion": {
+        "latitud": 38.99443332884715,
+        "longitud": -0.1618467544618909
+        },
+        "valor": 234,
+        "idUsuario": 13,
+        "uuidSensor": "GTI-3A-1",
+        "tipoGas": 1
+    },
+    {
+        "fechaHora": "2021-11-26 16:00:00",
+        "posMedicion": {
+        "latitud": 38.99744514102758,
+        "longitud": -0.16726696191395263
+        },
+        "valor": 181.82,
+        "idUsuario": 13,
+        "uuidSensor": "GTI-3A-1",
+        "tipoGas": 1
+    },
+    {
+        "fechaHora": "2021-11-26 17:00:00",
+        "posMedicion": {
+        "latitud": 38.99744514102758,
+        "longitud": -0.1618467544618909
+        },
+        "valor": 168.83,
+        "idUsuario": 13,
+        "uuidSensor": "GTI-3A-1",
+        "tipoGas": 1
+    },
+    {
+        "fechaHora": "2021-11-26 18:00:00",
+        "posMedicion": {
+        "latitud": 38.99443332884715,
+        "longitud": -0.16726696191395263
+        },
+        "valor": 145.16,
+        "idUsuario": 13,
+        "uuidSensor": "GTI-3A-1",
+        "tipoGas": 1
+    },
+    {
+        "fechaHora": "2021-11-26 19:00:00",
+        "posMedicion": {
+        "latitud": 38.99443332884715,
+        "longitud": -0.1618467544618909
+        },
+        "valor": 133.06,
+        "idUsuario": 13,
+        "uuidSensor": "GTI-3A-1",
+        "tipoGas": 1
+    },
+    {
+        "fechaHora": "2021-11-26 20:00:00",
+        "posMedicion": {
+        "latitud": 38.99744514102758,
+        "longitud": -0.16726696191395263
+        },
+        "valor": 120.97,
+        "idUsuario": 13,
+        "uuidSensor": "GTI-3A-1",
+        "tipoGas": 1
+    },
+    {
+        "fechaHora": "2021-11-26 21:00:00",
+        "posMedicion": {
+        "latitud": 38.99744514102758,
+        "longitud": -0.1618467544618909
+        },
+        "valor": 108.87,
+        "idUsuario": 13,
+        "uuidSensor": "GTI-3A-1",
+        "tipoGas": 1
+    },
+    {
+        "fechaHora": "2021-11-26 22:00:00",
+        "posMedicion": {
+        "latitud": 38.99443332884715,
+        "longitud": -0.16726696191395263
+        },
+        "valor": 96.77,
+        "idUsuario": 13,
+        "uuidSensor": "GTI-3A-1",
+        "tipoGas": 1
+    },
+    {
+        "fechaHora": "NaN-NaN-NaN NaN:NaN:NaN",
+        "posMedicion": {
+        "latitud": 38.99744514102758,
+        "longitud": -0.16726696191395263
+        },
+        "valor": 120.97,
+        "idUsuario": 13,
+        "uuidSensor": "GTI-3A-1",
+        "tipoGas": 1
+    }
+]  
