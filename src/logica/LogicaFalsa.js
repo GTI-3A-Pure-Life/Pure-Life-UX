@@ -104,6 +104,7 @@ LogicaFalsa = {
      * @returns Si se ha podido iniciar sesión o no
      */
     iniciar_sesion : async function (correo, contrasenya) {
+        
         let respuesta = await fetch(IP_PUERTO+"/usuario/iniciar_sesion",  {
             method: "POST",
             headers : { 'User-Agent' : 'Ruben', 'Content-Type' : 'application/json' },
@@ -114,6 +115,7 @@ LogicaFalsa = {
             } else if (response.status == 401) {
                 throw Error("Error en datos");
             } else if (response.status == 500) {
+
                 throw Error("Error en servidor");
             }
         });

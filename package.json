@@ -1,0 +1,26 @@
+{
+  "name": "pure-life-ux",
+  "version": "1.0.0",
+  "description": "Pure-Life-UX",
+  "main": "index.js",
+  "directories": {
+    "doc": "doc",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "cypress open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GTI-3A-Pure-Life/Pure-Life-UX.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GTI-3A-Pure-Life/Pure-Life-UX/issues"
+  },
+  "homepage": "https://github.com/GTI-3A-Pure-Life/Pure-Life-UX#readme",
+  "devDependencies": {
+    "cypress": "^9.1.1"
+  }
+}
