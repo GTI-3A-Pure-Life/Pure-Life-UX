@@ -143,6 +143,11 @@ height: 87vh;
     border: none;
 }
 
+.todosGases{
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
 .botonActivo {
     background-color: #3ABB90;
     color: white;

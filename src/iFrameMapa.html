@@ -66,6 +66,8 @@
         </button>
         <button class="botonDeGases botonActivo" value="4" onclick="ControladorMediciones.filtrarPorGas(value)">O3
         </button>
+        <br>
+        <button class="todosGases botonDeGases botonActivo" value="0" onclick="ControladorMediciones.filtrarPorGas(value)">Todos</button>
     </div>
 
 
@@ -79,7 +81,7 @@
 <script>
 
     window.onload = function () {
-        ControladorMediciones.iniciarTodasObtenerMediciones("http://localhost:8080");
+        ControladorMediciones.iniciarTodasObtenerMediciones("http://rparcas.upv.edu.es:80");
     }
 
     // Get the modal

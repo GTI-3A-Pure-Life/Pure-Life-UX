@@ -281,7 +281,6 @@ var ControladorMediciones = {
         try {
             let estaciones = await LogicaFalsa.obtenerEstacionesMedida();
             let arrayFinal = new Array(0);
-            console.log("estaciones", estaciones);
             estaciones.forEach(estacion => {
                 let nombre = "";
                 nombre = estacion.station.name; 
@@ -343,32 +342,38 @@ var ControladorMediciones = {
             }
         }
 
-        if (botonActual.classList.contains("botonActivo") && document.getElementsByClassName("botonActivo").length != botones.length) {
-            this.todosGasesActivos(botones)
-            for (let i = 0; i < this.vista.circulos.length; i++) {
-                this.vista.map.removeLayer(this.vista.circulos[i])
-            }
-        this.vista.representarTodasLasMediciones(this.mediciones)
-            return;
+        if (tipoGas==0) {
+            this.todosGasesActivos(botones);
         } else {
             this.todosGasesInactivos(botones);
-            for (let i = 0; i < 4; i++) {
-                if (botones[i].value == tipoGas) {
-                    botones[i].classList.remove("botonInactivo");
-                    botones[i].classList.add("botonActivo");
-                }
-            }
+            this.toggleGas(botonActual)
         }
 
         for (let i = 0; i < this.vista.circulos.length; i++) {
             this.vista.map.removeLayer(this.vista.circulos[i])
         }
+        if (tipoGas == 0) {
+            this.vista.representarTodasLasMediciones(this.mediciones)
+            return;
+        } else {
+            let medicionesFiltradas = this.mediciones.filter(element => {
+                return element.tipoGas == tipoGas;
+            })
+            console.log("mediciones filtro",medicionesFiltradas);
+            this.vista.representarTodasLasMediciones(medicionesFiltradas)
+        }
 
-        let medicionesFiltradas = this.mediciones.filter(element => {
-            return element.tipoGas == tipoGas;
-        })
-        this.vista.representarTodasLasMediciones(medicionesFiltradas)
-
+    },
+    /**
+     * 
+     * @param {HTMLElement[]} botones 
+     * @param {HTMLElement} botonActual 
+     */
+    toggleGas: function(botonActual) {
+        if(botonActual.classList.contains("botonInactivo")) {
+            botonActual.classList.remove("botonInactivo");
+            botonActual.classList.add("botonActivo");
+        }
     },
     // .................................................................
     // Activa todos los gases (hay que hacer cambios)
@@ -379,7 +384,7 @@ var ControladorMediciones = {
     // .................................................................
     /**
      * 
-     * @param botones Los botones que controlan los filtros de los gases
+     * @param {HTMLElement[]} botones Los botones que controlan los filtros de los gases
      */
     todosGasesActivos: function(botones) {
         
