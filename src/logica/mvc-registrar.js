@@ -30,6 +30,7 @@ var VistaRegistrar = {
     contrasenya: document.getElementsByClassName("campoParaIntroducirTexto")[1],
     confirmarContrasenya: document.getElementsByClassName("campoParaIntroducirTexto")[2],
     telefono: document.getElementsByClassName("campoParaIntroducirTexto")[3],
+    terminos: document.getElementsByClassName("checkbox")[0],
 //======================================================================================================
 // Cuando el usuario se registra, si es un usuario normal se lleva a la app y si es administrador, a la página de admin
 //
@@ -51,8 +52,9 @@ var VistaRegistrar = {
 var ControladorRegistrar = {
     modelo: ModeloRegistrar,
     vista: VistaRegistrar,
-    manejador: async function() {
+    manejador: async function() {        
         if(this.vista.contrasenya.value == this.vista.confirmarContrasenya.value) {
+            
             let pass = SHA1(this.vista.contrasenya.value);
             let nombre = this.vista.nombre.value;
             if(this.vista.apellidos.value != "") {
@@ -63,12 +65,17 @@ var ControladorRegistrar = {
                 telefono = null;
             }
             try {
-                this.modelo.usuario = await LogicaFalsa.registrar_usuario(nombre, this.vista.correo.value, pass, telefono);
+                if(!this.vista.terminos.checked){
+                    alert("Tienes que aceptar los Términos y Condiciones");
+                } else {
+                    this.modelo.usuario = await LogicaFalsa.registrar_usuario(nombre, this.vista.correo.value, pass, telefono);
 
-                this.modelo.usuario = await LogicaFalsa.iniciar_sesion(this.vista.correo.value, pass)
-                this.vista.redirigirUsuario(this.modelo.usuario);
+                    this.modelo.usuario = await LogicaFalsa.iniciar_sesion(this.vista.correo.value, pass)
+                    this.vista.redirigirUsuario(this.modelo.usuario);
+                 }
             } catch(err) {
                 if(err.message == "Error en datos") {
+    
                     alert("Los datos introducidos no son válidos o ya están en uso")
                 } else if(err.message == "Error en servidor") {
                     alert("Ha habido un error en el servidor, por favor, inténtelo más tarde");
