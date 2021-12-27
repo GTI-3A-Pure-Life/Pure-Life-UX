@@ -152,24 +152,34 @@ var VistaMediciones = {
      */
     crearMarkersEstaciones: function (lista) {
 
-        var greenIcon = L.icon({
-            iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
-            //shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
-        
-            iconSize:     [19, 47.5], // size of the icon
-            shadowSize:   [50, 64], // size of the shadow
-            iconAnchor:   [11, 47], // point of the icon which will correspond to marker's location
-            shadowAnchor: [4, 62],  // the same for the shadow
-            popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-        });
-
         lista.forEach(element => {
-            let marker = L.marker([element[0], element[1]], {icon: greenIcon}).addTo(this.map);
+            let icono = L.icon({
+                iconUrl: this.getColorMarker(element[2]),
+            
+                iconSize:     [19, 47.5], // size of the icon
+                shadowSize:   [50, 64], // size of the shadow
+                iconAnchor:   [11, 47], // point of the icon which will correspond to marker's location
+                shadowAnchor: [4, 62],  // the same for the shadow
+                popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+            });
+            let marker = L.marker([element[0], element[1]], {icon: icono}).addTo(this.map);
             let color = this.getColorCirculo(element[2]);
             marker.bindPopup("<svg version='1.1' xmlns='http://www.w3.org/2000/svg' width='91' height='44.8' viewBox='0 0 12 10'><rect x='9' y='3' width='2.5' height='2.5' fill='"+ color + "' /></svg>" + "AQI " + element[2]);
         });
 
         
+    },
+
+    getColorMarker: function(valor) {
+        if(valor >= 0 && valor <= 50) {
+            return "recursos/locVerde.png"
+        } else if(valor > 50 && valor <= 150) {
+            return "recursos/locAmarillo.png"
+        } else if(valor > 150 && valor <= 200) {
+            return "recursos/locRojo.png"
+        } else {
+            return "recursos/locPurpura.png"
+        }
     },
     // .................................................................
     // Devuelve un color para el círculo según el gas (se eliminará cuando interpolemos)
