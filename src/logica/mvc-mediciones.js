@@ -31,7 +31,7 @@ var VistaMediciones = {
      */
     representarTodasLasMediciones: function (mediciones) {
 
-        let posiciones = mediciones.map(medicion => {
+       /* let posiciones = mediciones.map(medicion => {
             return medicion.posMedicion
         })
 
@@ -57,49 +57,70 @@ var VistaMediciones = {
         }
         // Jordi porfa no me pegues uWu esto ordena por fechas
         for (let i = 0; i < posSet.length; i++) {
+          posSet[i].valor.sort(function(medicion1, medicion2) {
+            return medicion2.valor >= medicion1.valor
+          })
             posSet[i].valor.sort(function(medicion1, medicion2) {
                 return new Date(medicion2.fechaHora) - new Date(medicion1.fechaHora)
             })
+            
         }
-        this.mediciones = posSet;
-        console.log(posSet);
+
+
+
+        console.log("mediciones",mediciones);
+        this.mediciones = posSet.map(element=>{
+          return element.valor[element.valor.length-1]
+        });
+
+        console.log("posset",posSet);*/
+        this.mediciones = mediciones;
 
         // Si hay mediciones, crea los puntos del gas (WIP para interpolar), 
         // añade los markers de las estaciones de medida y muestra el mapa completo
         if (this.mediciones != null) {
             
-            this.mediciones = posSet;
-            for (let i = 0; i < posSet.length; i++) {
-            this.crearMarkers(posSet[i])
+            
+            /*for (let i = 0; i < posSet.length; i++) {
+              this.crearMarkers(posSet[i])
                 
-            }
+            }*/
             this.controlador.obtenerEstaciones();
+            this.puntos = this.formatearMedicionesLeaflet(this.mediciones)
+
+            
+      
+            var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+            }).addTo(this.map);
+
+            this.idw = L.idwLayer(this.puntos ,{
+                    opacity: 0.4,
+                    maxZoom: 18,
+                    cellSize: 20,
+                    exp: 5,
+                    max: 350
+                }).addTo(this.map);
+
             this.cargarDatos();
-            /*let max = this.getMaximoValor(this.puntos)
-                  console.log(max);
-      
-                  var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-                  }).addTo(this.map);
-                  this.idw = L.idwLayer(this.puntos ,{
-                          opacity: 0.5,
-                          maxZoom: 18,
-                          cellSize: 3,
-                          exp: 3,
-                          max: max
-                      }).addTo(this.map);
-      
-                  this.cargarDatos();
-            */
+            
         }
     },
 
-    crearArrayPuntos: async function (lista) {
-        this.puntos = []
-        
-        console.log("lista", lista);
+    borrarCapaInterpolacion: function(){
+      this.map.removeLayer(this.idw);
+    },
 
-        for (let i = 0; i < lista.length; i++) {
+    // .................................................................
+    // transformar mediciones en array para que lo interprete leaflet
+    //
+    // mediciones -->
+    // formatearMedicionesLeaflet() --> 
+    // <-- [[lat,lng,valor],...]
+    // .................................................................
+    formatearMedicionesLeaflet:  function (lista) {
+
+        /*for (let i = 0; i < lista.length; i++) {
             if(document.getElementsByClassName("botonDeGases")[i].classList.contains("botonActivo")) {
                 if(document.getElementsByClassName("botonDeGases")[i].value == 1) {
                     console.log(lista[0]);
@@ -117,7 +138,11 @@ var VistaMediciones = {
 
                 }
             }            
-        }
+        }*/
+
+       return lista.map(element=>{
+          return  [element.posMedicion.latitud,element.posMedicion.longitud,element.valor]
+       })
     },
     // .................................................................
     // Crea los circulos de donde se toma el gas (hay que cambiarlo para cuando interpolemos el mapa)
@@ -268,7 +293,8 @@ var ControladorMediciones = {
         this.vista.controlador = this;
 
         try {
-            this.mediciones = await LogicaFalsa.obtenerTodasMediciones(ipPuerto);
+           //this.mediciones = await LogicaFalsa.obtenerTodasMediciones(ipPuerto);
+           this.mediciones = await LogicaFalsa.obtenerTodasMediciones("http://localhost:8080");
 
             this.vista.map = L.map("map").setView([38.995591, -0.167129], 12);
             var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -276,6 +302,7 @@ var ControladorMediciones = {
             }).addTo(this.vista.map);
 
             this.vista.representarTodasLasMediciones(this.mediciones);
+            //this.vista.representarTodasLasMediciones([]);
         } catch (e) {
             console.error(e);
         }
@@ -343,8 +370,11 @@ var ControladorMediciones = {
         this.vista.iniciarLoader();
         //this.vista.mediciones = []
 
+        
         let botones = document.getElementsByClassName("botonDeGases");
         let botonActual;
+
+        this.vista.borrarCapaInterpolacion()
 
         for (let i = 0; i < botones.length; i++) {
             if (botones[i].value == tipoGas) {
@@ -359,17 +389,18 @@ var ControladorMediciones = {
             this.toggleGas(botonActual)
         }
 
-        for (let i = 0; i < this.vista.circulos.length; i++) {
-            this.vista.map.removeLayer(this.vista.circulos[i])
-        }
+ 
+            
+        console.log("tipo gas",tipoGas);
         if (tipoGas == 0) {
+            console.log("cuantas",this.mediciones.length);
             this.vista.representarTodasLasMediciones(this.mediciones)
             return;
         } else {
             let medicionesFiltradas = this.mediciones.filter(element => {
                 return element.tipoGas == tipoGas;
             })
-            console.log("mediciones filtro",medicionesFiltradas);
+            console.log("cuantas",medicionesFiltradas.length);
             this.vista.representarTodasLasMediciones(medicionesFiltradas)
         }
 

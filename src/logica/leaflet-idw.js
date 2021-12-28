@@ -26,9 +26,9 @@
             defaultCellSize: 25,
     
             defaultGradient: {
-                0.17: 'green',
-                0.5: "yellow",    
-                0.67: 'red',
+                0.14: 'green',
+                0.43: "yellow",    
+                0.57: 'red',
                 1.0: 'purple'
             },
     
