@@ -14,6 +14,10 @@ var VistaMediciones = {
     map: {},
     idw: {},
     loader: {},
+    slider: {},
+    minSlider: {},
+    maxSlider: {},
+    valorSlider: {},
     puntos: [],
     mediciones: [],
     circulos: [],
@@ -246,6 +250,52 @@ var VistaMediciones = {
         document.getElementById("loader").style.display = "none";
         document.getElementById("map").style.display = "block";
     },
+
+    setSlider: function(valor) {
+        this.slider.style.background = 'linear-gradient(90deg, #3ABB90 ' + valor + '%,#A7A7A7 ' + 0 + '%)';
+    },
+
+    setValoresSlider: function() {
+        this.slider = document.getElementById("date1");
+        this.minSlider = document.getElementsByClassName("startyear")[0];
+        this.maxSlider = document.getElementsByClassName("endyear")[0];
+        this.valorSlider = document.getElementsByClassName("setyear")[0];
+
+        let mediciones = this.controlador.mediciones.sort(function(a, b) {
+            if (a.fechaHora > b.fechaHora) {
+                return 1;
+            }
+            if (a.fechaHora < b.fechaHora) {
+                return -1;
+            }
+            return 0;
+        })
+        let hoy = new Date();
+        let mesPasado = this.formatearFecha(new Date(hoy.getFullYear() +"-" + hoy.getMonth() + "-" + hoy.getDate()))
+        this.slider.min = new Date(mesPasado).getTime() / 1000;
+        this.slider.max = new Date(this.formatearFecha(hoy)).getTime() / 1000;
+        this.slider.value = new Date().getTime() / 1000;
+
+        this.minSlider.innerHTML = mesPasado;
+        this.maxSlider.innerHTML = this.formatearFecha(new Date().toDateString());
+        this.valorSlider.innerHTML = this.maxSlider.innerHTML;
+
+    },
+
+    formatearFecha: function(fecha) {
+        let date = new Date(fecha)
+        let strRes = (date.getFullYear() + "-"+ (date.getMonth()+1) + "-"+ date.getDate());
+
+        return strRes;
+    },
+
+    actualizarSlider: function(valor, max, min) {
+        document.getElementsByClassName("setyear")[0].innerHTML = this.formatearFecha(new Date(valor*1000).toDateString());
+        valorRound = Math.round(((valor - min) / (max - min)) * 99)
+        gradiente = 'linear-gradient(90deg, #3ABB90 ' + valorRound + '%, #A7A7A7 ' + (valorRound+1) + '%)';
+
+        this.slider.style.background = gradiente;
+    }
 }; // vista
 
 var ControladorMediciones = {
@@ -274,12 +324,25 @@ var ControladorMediciones = {
             var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
             }).addTo(this.vista.map);
-
+            this.vista.setValoresSlider();
+            this.vista.setSlider(100);
             this.vista.representarTodasLasMediciones(this.mediciones);
         } catch (e) {
             console.error(e);
         }
     },
+
+    iniciarObtenerMedicionesDeHasta: async function(ipPuerto, fecha) {
+        let desde;
+        let hasta;
+        try {
+            this.mediciones = await LogicaFalsa.obtenerTodasMediciones(ipPuerto);
+
+            this.vista.representarTodasLasMediciones(this.mediciones);
+        } catch (e) {
+            console.error(e);
+        }
+    }
     // .................................................................
     // Obtiene las estaciones de medida de España
     //

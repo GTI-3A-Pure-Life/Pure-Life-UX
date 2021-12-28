@@ -5,6 +5,9 @@
     <title>GridLayer Test</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="css/leaflet.css" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+    <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
     <style>
         body {
             padding: 0;
@@ -133,11 +136,14 @@
     <div class="slider">
         <span class="startyear">1985</span>
         <div class="range">
-            <input type="range" name="date" id="date1" min="1985" max="2015" step="1" value="2015" oninput="actualizarSlider(this.value, this.max, this.min)" onchange="" required>
+            <input type="range" name="date" id="date1" min="1985" max="2015" step="86400" value="2021-11-26" 
+            oninput="ControladorMediciones.vista.actualizarSlider(this.value, this.max, this.min)" 
+            onchange='ControladorMediciones.iniciarObtenerMedicionesDe("http:rparcas.upv.edu.es:80", this.value)' required>
             <span class="setyear">2015</span>
         </div>
         <span class="endyear">2015</span>
     </div>
+
 
 </body>
 <script src="logica/leaflet.js"> </script>
@@ -146,15 +152,10 @@
 <script src="logica/mvc-mediciones.js"></script>
 
 <script>
-    setSlider(100);
-
-    function setSlider(valor) {
-        gradiente = 'linear-gradient(90deg, #3ABB90 ' + valor + '%,#A7A7A7 ' + 0 + '%)'
-
-document.getElementById("date1").style.background = gradiente;
-    }
     window.onload = function () {
+        
         ControladorMediciones.iniciarTodasObtenerMediciones("http://rparcas.upv.edu.es:80");
+        
     }
 
     // Get the modal
@@ -183,13 +184,6 @@ document.getElementById("date1").style.background = gradiente;
         }
     }
 
-    function actualizarSlider(valor, max, min) {
-        document.getElementsByClassName("setyear")[0].innerHTML = valor;
-        valorRound = Math.round(((valor- min) / (max - min)) * 99)
-        gradiente = 'linear-gradient(90deg, #3ABB90 ' + valorRound + '%,#A7A7A7 ' + (valorRound+1) + '%)';
-
-        document.getElementById("date1").style.background = gradiente;
-    }
 </script>
 
 </html>
