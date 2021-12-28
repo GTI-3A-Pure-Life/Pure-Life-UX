@@ -286,15 +286,7 @@ var VistaMediciones = {
         this.maxSlider = document.getElementsByClassName("endyear")[0];
         this.valorSlider = document.getElementsByClassName("setyear")[0];
 
-        let mediciones = this.controlador.mediciones.sort(function(a, b) {
-            if (a.fechaHora > b.fechaHora) {
-                return 1;
-            }
-            if (a.fechaHora < b.fechaHora) {
-                return -1;
-            }
-            return 0;
-        })
+    
         let hoy = new Date();
         let mesPasado = this.formatearFecha(new Date(hoy.getFullYear() +"-" + hoy.getMonth() + "-" + hoy.getDate()))
         this.slider.min = new Date(mesPasado).getTime() / 1000;
@@ -328,6 +320,16 @@ var ControladorMediciones = {
     mediciones: [],
     todosLosGases: false,
 
+
+    initMapaLeafLet: function(){
+      this.vista.map = L.map("map").setView([38.995591, -0.167129], 12);
+      var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(this.vista.map);
+      this.vista.setValoresSlider();
+      this.vista.setSlider(100)
+    },
+
     // .................................................................
     // inicia la obtencion de todas las mediciones
     //
@@ -359,17 +361,38 @@ var ControladorMediciones = {
         }
     },
 
-    iniciarObtenerMedicionesDeHasta: async function(ipPuerto, fecha) {
-        let desde;
-        let hasta;
-        try {
-            this.mediciones = await LogicaFalsa.obtenerTodasMediciones(ipPuerto);
+    
+    // .................................................................
+    // inicia la obtencion de todas las mediciones
+    //
+    // fecha,ipPuerto -->
+    // iniciarTodasObtenerMediciones() -->
+    // <-- 
+    // .................................................................
+    /**
+     * @param fecha fecha yyyy-MM-dd
+     * @param ipPuerto La dirección ip a la que tiene que apuntar (para poder usar la misma función en android) 
+     */
+     iniciarObtenerMedicionesDeHasta: async function (fecha) {
+      this.vista.controlador = this;
 
-            this.vista.representarTodasLasMediciones(this.mediciones);
-        } catch (e) {
-            console.error(e);
-        }
-    }
+      console.log("fecha entra",fecha);
+      fecha = this.vista.formatearFecha(fecha);
+      console.log("fecha sale",fecha);
+
+      let fechaIni = fecha+" 00:00:00";
+      let fechaFin = fecha+" 23:59:59";
+      try {
+      
+        this.vista.borrarCapaInterpolacion();
+        this.mediciones = await LogicaFalsa.obtenerMedicionesDeHasta(fechaIni,fechaFin);
+        this.vista.representarTodasLasMediciones(this.mediciones);
+          
+      } catch (e) {
+          console.error(e);
+      }
+  },
+
     // .................................................................
     // Obtiene las estaciones de medida de España
     //

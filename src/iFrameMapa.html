@@ -138,7 +138,7 @@
         <div class="range">
             <input type="range" name="date" id="date1" min="1985" max="2015" step="86400" value="2021-11-26" 
             oninput="ControladorMediciones.vista.actualizarSlider(this.value, this.max, this.min)" 
-            onchange='ControladorMediciones.iniciarObtenerMedicionesDe("http:rparcas.upv.edu.es:80", this.value)' required>
+            onchange='ControladorMediciones.iniciarObtenerMedicionesDeHasta(new Date(this.value*1000))' required>
             <span class="setyear">2015</span>
         </div>
         <span class="endyear">2015</span>
@@ -154,7 +154,10 @@
 <script>
     window.onload = function () {
         
-        ControladorMediciones.iniciarTodasObtenerMediciones("http://rparcas.upv.edu.es:80");
+
+        // obtener las mediciones de hoy
+        ControladorMediciones.initMapaLeafLet();
+        ControladorMediciones.iniciarObtenerMedicionesDeHasta( Date.now())
         
     }
 

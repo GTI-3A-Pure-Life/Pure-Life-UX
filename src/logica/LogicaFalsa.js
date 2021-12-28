@@ -47,6 +47,42 @@ LogicaFalsa = {
 
     },
 
+     // .................................................................
+    // Obtiene las mediciones en un rango temporal
+    // -->
+    // obtenerTodasMediciones() --> 
+    // <-- Lista<MedicionCO>
+    // .................................................................
+    /**
+     * 
+     * @returns Una Lista<MedicionCO2> con todas las mediciones de la BD
+     */
+     obtenerMedicionesDeHasta : async function(fechaIni,fechaFin) {
+        let respuesta = await fetch(  IP_PUERTO+"/mediciones/"+fechaIni+"/"+fechaFin,{
+                      headers : { 'User-Agent' : 'Ruben', 'Content-Type' : 'application/json' },
+                     }).then(response=>{
+
+                         if(response.status == 204){
+                            //ok pero vacío
+                            return {datos:[]};
+                         }else if(response.status == 200){
+                            // ok con contenido 
+                            return response.json();
+                         }else{
+                         
+                            // error
+                            throw Error("Error en get mediciones")
+                         }
+                         
+                        
+                     }).then(medicionesJSON=>{
+                        return medicionesJSON;
+                     })
+                    
+        return respuesta;
+
+    },
+
 
     // .................................................................
     // Obtiene las últimas mediciones
