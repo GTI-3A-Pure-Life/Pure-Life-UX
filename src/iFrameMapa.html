@@ -5,6 +5,9 @@
     <title>GridLayer Test</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="css/leaflet.css" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+    <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
     <style>
         body {
             padding: 0;
@@ -16,6 +19,66 @@
         #map {
             height: 100%;
             width: 100%;
+        }
+
+        .slider {
+            margin: -6rem auto;
+            padding: 2.5rem 0 1rem 0;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            position: relative;
+            z-index: 999;
+            border-radius: .5rem;
+            width: 98%;
+        }
+        .endyear {
+        	float: left;
+        	width: 10vw;
+        	color: #333;
+        	text-align: right;
+        	font-weight: bold;
+        }
+        .endyear {
+        	text-align: left;
+        }
+        .setyear {
+        	position: absolute;
+        	top: -1.5rem;
+        	left: 47.7%;
+        	width: 60px;
+        	height: 1em;
+        	text-align: center;
+        	color: #3ABB90;
+        	font-weight: bold;
+        	white-space: nowrap;
+        }
+        .range {
+        	position: relative;
+        	float: left;
+        	width: 80vw;
+        	padding: 0 0.9375rem;
+        }
+        input[type=range] {
+        	-webkit-appearance: none;
+        	display: block;
+        	width: 100%;
+        	height: .5rem;
+        	padding: 0;
+        	border-radius: 4px;
+        	background: #ccc;
+        	box-sizing: content-box;
+        }
+        input[type=range]:focus {
+          outline: none;
+        }
+        input[type=range]::-webkit-slider-thumb {
+        	-webkit-appearance: none;
+        	width: 1.5rem;
+        	height: 1.5rem;
+        	border: 2px solid #A7A7A7;
+        	border-radius: 25px;
+        	background: #3ABB90;
         }
     </style>
 
@@ -70,6 +133,16 @@
         <button class="todosGases botonDeGases botonActivo" value="0" onclick="ControladorMediciones.filtrarPorGas(value)">Todos</button>
     </div>
 
+    <div class="slider">
+        <span class="startyear">1985</span>
+        <div class="range">
+            <input type="range" name="date" id="date1" min="1985" max="2015" step="86400" value="2021-11-26" 
+            oninput="ControladorMediciones.vista.actualizarSlider(this.value, this.max, this.min)" 
+            onchange='ControladorMediciones.iniciarObtenerMedicionesDe("http:rparcas.upv.edu.es:80", this.value)' required>
+            <span class="setyear">2015</span>
+        </div>
+        <span class="endyear">2015</span>
+    </div>
 
 
 </body>
@@ -79,9 +152,10 @@
 <script src="logica/mvc-mediciones.js"></script>
 
 <script>
-
     window.onload = function () {
+        
         ControladorMediciones.iniciarTodasObtenerMediciones("http://rparcas.upv.edu.es:80");
+        
     }
 
     // Get the modal
@@ -109,6 +183,7 @@
             modal.style.display = "none";
         }
     }
+
 </script>
 
 </html>
