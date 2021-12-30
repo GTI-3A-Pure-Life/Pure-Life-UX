@@ -172,11 +172,11 @@ LogicaFalsa = {
      * @param telefono El número de teléfono del usuario 
      * @returns Si el registro se ha podido realizar o no
      */
-    registrar_usuario : async function (nombre, correo, contrasenya, telefono) {
+    registrar_usuario : async function (nombre, correo, contrasenya, telefono, token) {
         let respuesta = await fetch(IP_PUERTO+"/usuario/registrarse",  {
             method: "POST",
             headers : { 'User-Agent' : 'Ruben', 'Content-Type' : 'application/json' },
-            body : JSON.stringify({res:{nombre:nombre, correo: correo, contrasenya: contrasenya, telefono:telefono}})
+            body : JSON.stringify({res:{nombre:nombre, correo: correo, contrasenya: contrasenya, telefono:telefono, token: token}})
         }).then(response => {
             if(response.status == 200) {
                 return response.json();
@@ -188,6 +188,24 @@ LogicaFalsa = {
         });
         return respuesta;
         
+    },
+
+    mandar_correo: async function(nombre, correo, token) {
+        console.log("entra");
+        let respuesta = await fetch(IP_PUERTO+"/usuario/mandar_correo", {
+            method: "POST",
+            headers : { 'User-Agent' : 'Ruben', 'Content-Type' : 'application/json' },
+            body : JSON.stringify({res:{nombre: nombre, correo: correo, token: token}})
+        }).then(response => {
+            if(response.status == 200) {
+                return response.json();
+            } else if (response.status == 400) {
+                throw Error("Error en datos");
+            } else if (response.status == 500) {
+                throw Error("Error en servidor");
+            }
+        })
+        return respuesta;
     },
 
     //==============================================================================================================================

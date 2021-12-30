@@ -52,11 +52,20 @@ var VistaRegistrar = {
 var ControladorRegistrar = {
     modelo: ModeloRegistrar,
     vista: VistaRegistrar,
+
+    
     manejador: async function() {        
         if(this.vista.contrasenya.value == this.vista.confirmarContrasenya.value) {
             
             let pass = SHA1(this.vista.contrasenya.value);
             let nombre = this.vista.nombre.value;
+
+            const caracteres = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let token = '';
+            for (let i = 0; i < 25; i++) {
+                token += caracteres[Math.floor(Math.random() * caracteres.length )];
+            }
+
             if(this.vista.apellidos.value != "") {
                 nombre += " " + this.vista.apellidos.value;
             }
@@ -68,10 +77,18 @@ var ControladorRegistrar = {
                 if(!this.vista.terminos.checked){
                     alert("Tienes que aceptar los Términos y Condiciones");
                 } else {
-                    this.modelo.usuario = await LogicaFalsa.registrar_usuario(nombre, this.vista.correo.value, pass, telefono);
+                    console.log(token);
+                    this.modelo.usuario = await LogicaFalsa.registrar_usuario(nombre, this.vista.correo.value, pass, telefono, token);
 
-                    this.modelo.usuario = await LogicaFalsa.iniciar_sesion(this.vista.correo.value, pass)
-                    this.vista.redirigirUsuario(this.modelo.usuario);
+                    alert("Se le ha enviado un correo electrónico de verificiación a su cuenta de correo")
+                    try {
+                        await LogicaFalsa.mandar_correo(nombre, this.vista.correo.value, token)
+                    } catch (error) {
+                        console.log(error);
+                    }
+
+                    //this.modelo.usuario = await LogicaFalsa.iniciar_sesion(this.vista.correo.value, pass)
+                    //this.vista.redirigirUsuario(this.modelo.usuario);
                  }
             } catch(err) {
                 if(err.message == "Error en datos") {
