@@ -50,7 +50,12 @@ var ControladorLogin = {
         try {
             this.modelo.usuario = await LogicaFalsa.iniciar_sesion(this.vista.correo.value, pass);
             console.log("2",this.modelo.usuario)
-            this.vista.redirigirUsuario(this.modelo.usuario);
+            if (this.modelo.usuario.verificado) {
+                this.vista.redirigirUsuario(this.modelo.usuario);
+            }
+            else {
+                alert("Su cuenta no está verificada, por favor revise su correo electrónico");
+            }
         } catch(err) {
             console.log("2 catch",err)
             if(err.message == "Error en datos") {
