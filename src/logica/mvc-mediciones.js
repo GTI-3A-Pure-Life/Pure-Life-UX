@@ -288,12 +288,13 @@ var VistaMediciones = {
 
     
         let hoy = new Date();
-        let mesPasado = this.formatearFecha(new Date(hoy.getFullYear() +"-" + hoy.getMonth() + "-" + hoy.getDate()))
+        
+        let mesPasado = new Date(hoy.getTime() - (30*86400000))
         this.slider.min = new Date(mesPasado).getTime() / 1000;
         this.slider.max = new Date(this.formatearFecha(hoy)).getTime() / 1000;
         this.slider.value = new Date().getTime() / 1000;
 
-        this.minSlider.innerHTML = mesPasado;
+        this.minSlider.innerHTML = this.formatearFecha(mesPasado);
         this.maxSlider.innerHTML = this.formatearFecha(new Date().toDateString());
         this.valorSlider.innerHTML = this.maxSlider.innerHTML;
 
@@ -301,8 +302,13 @@ var VistaMediciones = {
 
     formatearFecha: function(fecha) {
         let date = new Date(fecha)
-        let strRes = (date.getFullYear() + "-"+ (date.getMonth()+1) + "-"+ date.getDate());
-
+        
+        let strRes;
+        if ((date.getMonth()+1) < 10) {
+            strRes = (date.getFullYear() + "-0"+ (date.getMonth()+1) + "-"+ date.getDate());
+        } else {
+            strRes = (date.getFullYear() + "-"+ (date.getMonth()+1) + "-"+ date.getDate());
+        }
         return strRes;
     },
 
@@ -376,9 +382,7 @@ var ControladorMediciones = {
      iniciarObtenerMedicionesDeHasta: async function (fecha) {
       this.vista.controlador = this;
 
-      console.log("fecha entra",fecha);
       fecha = this.vista.formatearFecha(fecha);
-      console.log("fecha sale",fecha);
 
       let fechaIni = fecha+" 00:00:00";
       let fechaFin = fecha+" 23:59:59";
