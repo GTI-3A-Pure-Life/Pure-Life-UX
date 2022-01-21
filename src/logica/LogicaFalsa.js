@@ -8,6 +8,8 @@
 
 const IP_PUERTO="http://rparcas.upv.edu.es:80"
 
+//const IP_PUERTO ="http://localhost:8080"
+
 LogicaFalsa = {
 
 
@@ -307,7 +309,6 @@ LogicaFalsa = {
 //==============================================================================================================================
 
     obtenerRegistros : async function() {
-
         let respuesta = await fetch(IP_PUERTO+"/registro_estado_sensor",{
             headers : { 'User-Agent' : 'Ruben', 'Content-Type' : 'application/json' },
         }).then(response =>{
@@ -369,6 +370,40 @@ obtenerEstacionesMedida: async function() {
         }
     });
         return respuesta.data;
+},
+
+obtenerCiudadPorUsuario: async function(usuarioId) {
+    let respuesta = await fetch(IP_PUERTO+"/ciudad/usuario?idUsuario="+usuarioId, {
+        headers : { 'User-Agent' : 'Ruben', 'Content-Type' : 'application/json' },
+    }).then(response => {
+        if(response.status == 200) {
+            return response.json()
+        } else if (response.status == 204) {
+            return[];
+        }else if (response.status == 400) {
+            throw Error("Error en datos");
+        } else if (response.status == 500) {
+            throw Error("Error en servidor");
+        }
+    });
+    return respuesta;
+},
+
+obtenerMedicionesPorZona: async function(lat, lng, radio) {
+    let respuesta = await fetch(IP_PUERTO+"/mediciones/zona?latitud="+lat+"&longitud="+lng+"&radio="+radio, {
+        headers : { 'User-Agent' : 'Ruben', 'Content-Type' : 'application/json' },
+    }).then(response => {
+        if(response.status == 200) {
+            return response.json()
+        } else if (response.status == 204) {
+            return[];
+        }else if (response.status == 400) {
+            throw Error("Error en datos");
+        } else if (response.status == 500) {
+            throw Error("Error en servidor");
+        }
+    });
+    return respuesta;
 },
 // .................................................................
 // cerrar() -->

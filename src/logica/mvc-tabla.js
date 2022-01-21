@@ -1,10 +1,12 @@
 var ModeloTabla = {
     datos: {},
+    mediciones: {},
 
 };
 
 var VistaTabla = {
-    tabla: document.getElementById("tblDatos").getElementsByTagName("tbody")[0],
+    tablaRegistros: document.getElementById("tblDatos").getElementsByTagName("tbody")[0],
+    tablaMediciones: document.getElementById("tblMediciones").getElementsByTagName("tbody")[0],
     // .................................................................
     // Añade los registros a la tabla
     //
@@ -16,13 +18,13 @@ var VistaTabla = {
      * 
      * @param datos Los registros que va a añadir
      */
-    rellenarTabla: function(datos) {
-        this.tabla.innerHTML = "<tr><th>ID</th><th>Sensor</th><th>Averiado</th><th>Poca batería</th><th>Descalibrado</th><th>Fecha</th><th>Leído</th></tr>";
+    rellenarTablaRegistros: function(datos) {
+        this.tablaRegistros.innerHTML = "<tr><th>ID</th><th>Sensor</th><th>Averiado</th><th>Poca batería</th><th>Descalibrado</th><th>Fecha</th><th>Leído</th></tr>";
         for(let i = 0; i < datos.length; i++) {
 
             if(!datos[i].leido) {
                 console.log(datos[i])
-                this.tabla.innerHTML += "<tr>" + 
+                this.tablaRegistros.innerHTML += "<tr>" + 
                 "<td>" + datos[i].id + "</td>" + 
                 "<td class = 'nombreSensor'>" + datos[i].uuidSensor + "</td>" + 
                 "<td class = 'Averiado'>" + datos[i].averiado + "</td>" + 
@@ -31,7 +33,7 @@ var VistaTabla = {
                 "<td class = 'Fecha'>" + datos[i].fechaHora + "</td>" + 
                 "<td><button onclick='ControladorTabla.publicarLeido("+ datos[i].id +")'>Marcar como leído</button></td></tr>";
             } else {
-                this.tabla.innerHTML += "<tr>" + 
+                this.tablaRegistros.innerHTML += "<tr>" + 
                 "<td>" + datos[i].id + "</td>" + 
                 "<td>" + datos[i].uuidSensor + "</td>" + 
                 "<td class = 'Averiado'>" + datos[i].averiado + "</td>" + 
@@ -40,6 +42,19 @@ var VistaTabla = {
                 "<td class = 'Fecha'>" + datos[i].fechaHora + "</td>" + 
                 "<td><button disabled>Marcar como leído</button></td></tr>";
             }
+        }
+    },
+
+    rellenarTablaMediciones: function(datos) {
+        this.tablaMediciones.innerHTML = "<tr><th>Fecha</th><th>Latitud</th><th>Longitud</th><th>Valor</th></tr>";
+
+        for (let i = 0; i < datos.length; i++) {
+            this.tablaMediciones.innerHTML += "<tr>" + 
+            "<td>" + datos[i].fechaHora + "</td>" +
+            "<td>" + datos[i].posMedicion.latitud + "</td>" +
+            "<td>" + datos[i].posMedicion.longitud + "</td>" +
+            "<td>" + datos[i].valor + "</td>" +
+            "</tr>";
         }
     },
 }
@@ -54,14 +69,31 @@ var ControladorTabla = {
     // iniciarTabla() -->
     // <--
     // .................................................................
-    iniciarTabla: async function() {
+    iniciarTablas: async function() {
+        await this.iniciarTablaRegistros();
+        await this.iniciarTablaMediciones();
+    },
+    iniciarTablaRegistros: async function() {
         try {
             this.modelo.datos = await LogicaFalsa.obtenerRegistros();
             this.modelo.datos = this.ordenarTablaPorLeidos(this.modelo.datos)
             console.log(this.modelo.datos);
-            this.vista.rellenarTabla(this.modelo.datos);
+            this.vista.rellenarTablaRegistros(this.modelo.datos);
         } catch(err) {
             console.log(err);
+        }
+    },
+    iniciarTablaMediciones: async function() {
+        let user = JSON.parse(localStorage.getItem("sesion"))
+        try {
+            let ciudad = await LogicaFalsa.obtenerCiudadPorUsuario(user.id);
+            //let ciudad = await LogicaFalsa.obtenerCiudadPorUsuario(22);
+            ciudad = ciudad[0];
+            this.modelo.mediciones = await LogicaFalsa.obtenerMedicionesPorZona(ciudad.posCiudad.x, ciudad.posCiudad.y, ciudad.radio);
+            console.log("mediciones", this.modelo.mediciones);
+            this.vista.rellenarTablaMediciones(this.modelo.mediciones);
+        } catch (err) {
+            console.log(err)
         }
     },
     // .................................................................
