@@ -22,19 +22,21 @@
         }
 
         .slider {
-            margin: -6rem auto;
-            padding: 2.5rem 0 1rem 0;
+            padding: 2rem;
+            margin-top: -6rem;
             background: #fff;
             display: flex;
+            flex-direction: row;
             align-items: center;
+            justify-content: space-between;
             position: relative;
             z-index: 999;
-            border-radius: .5rem;
-            width: 98%;
+            width: 100%;
+            
         }
+        
         .endyear {
         	float: left;
-        	width: 10vw;
         	color: #333;
         	text-align: right;
         	font-weight: bold;
@@ -43,11 +45,6 @@
         	text-align: left;
         }
         .setyear {
-        	position: absolute;
-        	top: -1.5rem;
-        	left: 47.7%;
-        	width: 60px;
-        	height: 1em;
         	text-align: center;
         	color: #3ABB90;
         	font-weight: bold;
@@ -56,8 +53,15 @@
         .range {
         	position: relative;
         	float: left;
-        	width: 80vw;
-        	padding: 0 0.9375rem;
+            display: flex;
+            flex-direction: column;
+        	width: 80%;
+        	padding-bottom: 1rem;
+        }
+        @media (max-width:500px) {
+            .range {
+                width: 50%;
+            }
         }
         input[type=range] {
         	-webkit-appearance: none;
@@ -133,15 +137,16 @@
         <button class="todosGases botonDeGases botonActivo" value="0" onclick="ControladorMediciones.filtrarPorGas(value)">Todos</button>
     </div>
 
-    <div class="slider">
-        <span class="startyear">1985</span>
-        <div class="range">
+    <div class="slider"><!--flex fila-->
+        <div class="startyear">1985</div>
+        <div class="range"><!--flex columna-->
+            <div class="setyear">2015</div>
             <input type="range" name="date" id="date1" min="1985" max="2015" step="86400" value="2021-11-26" 
             oninput="ControladorMediciones.vista.actualizarSlider(this.value, this.max, this.min)" 
             onchange='ControladorMediciones.iniciarObtenerMedicionesDeHasta(new Date(this.value*1000))' required>
-            <span class="setyear">2015</span>
+           
         </div>
-        <span class="endyear">2015</span>
+        <div class="endyear">2015</div>
     </div>
 
 

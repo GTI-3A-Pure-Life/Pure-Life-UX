@@ -46,13 +46,32 @@ var VistaTabla = {
     },
 
     rellenarTablaMediciones: function(datos) {
-        this.tablaMediciones.innerHTML = "<tr><th>Fecha</th><th>Latitud</th><th>Longitud</th><th>Valor</th></tr>";
+        this.tablaMediciones.innerHTML = "<tr><th>Fecha</th><th>Latitud</th><th>Longitud</th><th>Tipo de gas</th><th>Valor (ppm)</th></tr>";
 
+        let strTipoGas = "";
+        
         for (let i = 0; i < datos.length; i++) {
+
+            switch(datos[i].tipoGas){
+                case 1:
+                    strTipoGas = "CO";
+                    break;
+                case 2:
+                    strTipoGas = "NO2";
+                    break;
+                case 3:
+                    strTipoGas = "SO2";
+                    break;
+                case 4:
+                    strTipoGas = "O3";
+                    break;
+            }
+
             this.tablaMediciones.innerHTML += "<tr>" + 
             "<td>" + datos[i].fechaHora + "</td>" +
             "<td>" + datos[i].posMedicion.latitud + "</td>" +
             "<td>" + datos[i].posMedicion.longitud + "</td>" +
+            "<td>" + strTipoGas + "</td>" +
             "<td>" + datos[i].valor + "</td>" +
             "</tr>";
         }

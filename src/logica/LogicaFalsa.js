@@ -6,7 +6,7 @@
 
 //const { report } = require("process");
 
-const IP_PUERTO="http://rparcas.upv.edu.es:80"
+const IP_PUERTO="http://localhost:8080"
 
 //const IP_PUERTO ="http://localhost:8080"
 
